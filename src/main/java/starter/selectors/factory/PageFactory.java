@@ -20,11 +20,7 @@ public class PageFactory extends PageObject {
      */
     private static final Map<String, AbstractPage> map = new HashMap<String, AbstractPage>() {{
         put(LOGIN, initElements(getDriverStatic(), LoginPage.class));
-        put("LOGINI", initElements(getDriverStatic(), LoginPage.class));
-        put(PRODUCTS, initElements(getDriverStatic(), SaucedemoProductsPage.class));
-        put(YOURCART, initElements(getDriverStatic(), SaucedemoYourCartPage.class));
-        put(YOURINFORMATION, initElements(getDriverStatic(), SaucedemoYourInformationPage.class));
-        put(CHECKOUT, initElements(getDriverStatic(), SaucedemoCheckOutPage.class));
+        put(HOME_PAGE, initElements(getDriverStatic(), HomePage.class));
     }};
 
     /**

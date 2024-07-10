@@ -1,11 +1,15 @@
 Feature: Login to the application
 
   Scenario: Successful login
-#    Given go to web "https://intaws.triskellsoftware.com/triskell/"
-    Given go to web "https://ondemand.triskellsoftware.com/triskell/"
-    Then check to "login" has loaded
-    When send credential "username" to element "username"
-    And send credential "password" to element "password"
+    #AWS
+    Given go to web "https://intaws.triskellsoftware.com/triskell/"
+    #Prod
+#    Given go to web "https://ondemand.triskellsoftware.com/triskell/"
+      Then check to "login" has loaded
+      When send credential "username" to element "username"
+      And send credential "password" to element "password"
+      And click in "validate"
+      Then check to "home page" has loaded
 
 #    Given a valid user is on the login page
 #    When the user enters a valid username and password

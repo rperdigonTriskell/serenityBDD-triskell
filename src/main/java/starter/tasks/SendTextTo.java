@@ -28,7 +28,7 @@ public class SendTextTo {
     }
 
     /**
-     * Input the given text into the specified element.
+     * Input the given credential into the specified element.
      *
      * @param text    the text to input
      * @param element the element to input the text into
@@ -36,6 +36,7 @@ public class SendTextTo {
     public static void credential(String text, String element) {
         // Retrieve the credential value
         String credentialValue = getCredential(text, false);
+        // Send the credential value into the specified element
         input(credentialValue,element);
     }
 
@@ -45,7 +46,9 @@ public class SendTextTo {
      * @param table the DataTable to iterate through
      */
     public static void table(DataTable table) {
+        // Use a DataTable to iterate through the rows
         for (List<String> row : table.asLists(String.class)) {
+            // Call the input method with the elements of each row
             input(row.get(1), row.get(0));
         }
     }
