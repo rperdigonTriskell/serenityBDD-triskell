@@ -1,3 +1,4 @@
+src/test/resources/config.properties
 target/
 build
 out
@@ -10,7 +11,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-src/test/resources/config.properties
 .idea
 *.iml
 .DS_Store
