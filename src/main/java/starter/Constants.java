@@ -6,4 +6,6 @@ public class Constants {
     public final static String YOURCART = "your cart";
     public final static String YOURINFORMATION = "your information";
     public final static String CHECKOUT = "checkout";
+    public final static String USER = "user";
+    public final static String PASS = "user";
 }

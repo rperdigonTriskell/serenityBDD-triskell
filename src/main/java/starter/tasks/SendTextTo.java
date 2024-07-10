@@ -5,8 +5,11 @@ import net.serenitybdd.screenplay.actions.Clear;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
 import starter.selectors.factory.PageFactory;
+import starter.tasks.security.CredentialManager;
 
 import java.util.List;
+
+import static starter.tasks.security.CredentialManager.getCredential;
 
 public class SendTextTo {
     /**
@@ -22,6 +25,18 @@ public class SendTextTo {
                 // Enter the given text into the specified element
                 Enter.theValue(text).into(PageFactory.getCurrentPage().getSelector(element))
         );
+    }
+
+    /**
+     * Input the given text into the specified element.
+     *
+     * @param text    the text to input
+     * @param element the element to input the text into
+     */
+    public static void credential(String text, String element) {
+        // Retrieve the credential value
+        String credentialValue = getCredential(text, false);
+        input(credentialValue,element);
     }
 
     /**

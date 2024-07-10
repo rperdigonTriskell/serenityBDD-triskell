@@ -43,6 +43,11 @@ public class GenericStepDef {
         input(text, element);
     }
 
+    @When("send credential {string} to element {string}")
+    public void sendCredentialToElement(String text, String element) {
+        credential(text, element);
+    }
+
     @When("send text to:")
     public void sentTextToTable(DataTable table) {
         table(table);
