@@ -3,11 +3,13 @@ package starter.tasks;
 import net.serenitybdd.screenplay.GivenWhenThen;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
+import net.serenitybdd.screenplay.questions.Text;
 
 import static net.serenitybdd.screenplay.questions.Text.*;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotVisible;
 import static net.serenitybdd.screenplay.questions.WebElementQuestion.*;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasValue;
 import static starter.selectors.factory.PageFactory.*;
 
 public class ElementVisibilityVerifier {
@@ -44,35 +46,19 @@ public class ElementVisibilityVerifier {
                 ));
     }
 
-    /**
-     * Verify if the element number matches the expected number.
-     *
-     * @param number  the expected number
-     * @param element the element to verify
-     */
-    public static void verifyElementNumberIs(String number, String element) {
-        // Use the Actor to verify the element number
-        OnStage.theActorInTheSpotlight().should(
-                "check that the element number is: " + number,
-                GivenWhenThen.seeThat(
-                        of(getCurrentPage().getSelector(element)).asString(),
-                        equalTo(number)
-                )
-        );
-    }
 
     /**
-     * Verify if the element name matches the expected name.
+     * Verify if the element text matches the expected name.
      *
      * @param element the element to verify
      */
-    public static void verifyElementNameIs(String element) {
-        // Use the Actor to verify the element name
+    public static void verifyElementTextIs(String element, String expectedText) {
+        // Use the Actor to verify the element text
         OnStage.theActorInTheSpotlight().should(
-                "check that the element name: " + element,
                 GivenWhenThen.seeThat(
-                        of(getCurrentPage().getSelector(element)).asString(),
-                        equalTo(element)
+                        "check that the element text matches the expected text",
+                        Text.of(getCurrentPage().getSelector(element)),
+                        equalTo(expectedText)
                 )
         );
     }

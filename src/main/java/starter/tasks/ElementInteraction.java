@@ -15,7 +15,6 @@ import java.util.List;
 public class ElementInteraction {
     /**
      * Clicks on the given target element.
-     *
      * @param target The target element to click on.
      */
     public static void clickOnTarget(Object target) {
@@ -24,7 +23,6 @@ public class ElementInteraction {
 
     /**
      * Clicks on the first item in the list whose title contains the given text.
-     *
      * @param repeatedText      The text to search for in the list items.
      * @param listElement       The list to iterate for results.
      * @param elementWithTitle The title text to match in the list items.
@@ -41,7 +39,6 @@ public class ElementInteraction {
 
     /**
      * Gets a list of web elements whose selector contains the given text.
-     *
      * @param repeatedText The text to search for in the selector.
      * @return The list of matching web elements.
      */
@@ -53,7 +50,6 @@ public class ElementInteraction {
 
     /**
      * Creates a ClickInteraction object based on the type of the given target.
-     *
      * @param target The target to create the ClickInteraction for.
      * @return The ClickInteraction object.
      */
@@ -83,7 +79,6 @@ public class ElementInteraction {
 
     /**
      * Creates a ClickInteraction object for a By locator.
-     *
      * @param locator The By locator to click on.
      * @return The ClickInteraction object.
      */
@@ -93,7 +88,6 @@ public class ElementInteraction {
 
     /**
      * Creates a ClickInteraction object for a WebElementFacade.
-     *
      * @param elementFacade The WebElementFacade to click on.
      * @return The ClickInteraction object.
      */
@@ -103,7 +97,6 @@ public class ElementInteraction {
 
     /**
      * Creates a ClickInteraction object for a string selector.
-     *
      * @param selector The string selector to click on.
      * @return The ClickInteraction object.
      */

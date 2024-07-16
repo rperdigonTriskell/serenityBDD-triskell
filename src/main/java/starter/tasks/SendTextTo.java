@@ -34,10 +34,8 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void credential(String text, String element) {
-        // Retrieve the credential value
-        String credentialValue = getCredential(text, false);
-        // Send the credential value into the specified element
-        input(credentialValue,element);
+        // Retrieve the credential value and send the credential value into the specified element
+        input(getCredential(text, false),element);
     }
 
     /**

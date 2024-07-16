@@ -7,9 +7,11 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
 import static starter.tasks.ElementInteraction.*;
+import static starter.tasks.ElementVisibilityVerifier.verifyElementTextIs;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.tasks.SendTextTo.*;
+import static starter.tasks.security.CredentialManager.getCredential;
 
 public class GenericStepDef {
     //Actor for scenario
@@ -28,9 +30,20 @@ public class GenericStepDef {
         theWebSite(url, actor);
     }
 
+    @Given("go to web {string} with domain {string}")
+    public void goToWebWithDomain(String url) {
+        // Retrieve the credential value
+        theWebSite(url + getCredential(url, false), actor);
+    }
+
     @Then("check to {string} has loaded")
     public void checkToHasLoaded(String page) {
         isLoadPage(page.toLowerCase());
+    }
+
+    @Then("verify the text element {string} is {string}")
+    public void verifyTheTextElementIs(String element, String text) {
+        verifyElementTextIs(element, text);
     }
 
     @When("click in {string}")

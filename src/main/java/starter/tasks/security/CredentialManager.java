@@ -10,31 +10,31 @@ public class CredentialManager {
 
     static {
         try {
-            // Cargar el archivo properties
+            // Load the properties file
             properties.load(new FileInputStream("src/test/resources/config.properties"));
         } catch (IOException e) {
-            throw new RuntimeException("Error cargando el archivo de credenciales", e);
+            throw new RuntimeException("Error loading the credentials file", e);
         }
     }
 
     /**
-     * Obtiene la credencial especificada.
+     * Get the specified credential.
      *
-     * @param credentialName Nombre de la credencial a obtener
-     * @param useAwsSecrets Indica si se debe utilizar AWS Secrets Manager para obtener la credencial (no se usa en este caso)
-     * @return El valor de la credencial obtenida
-     * @throws RuntimeException Si ocurre algún error durante la obtención de la credencial
+     * @param credentialName Name of the credential to retrieve
+     * @param useAwsSecrets Indicates whether AWS Secrets Manager should be used to retrieve the credential (not used in this case)
+     * @return The value of the retrieved credential
+     * @throws RuntimeException If an error occurs during credential retrieval
      */
     public static String getCredential(String credentialName, boolean useAwsSecrets) {
-        // Validar si useAwsSecrets es verdadero y lanzar una excepción si lo es (no implementado)
+        // Check if useAwsSecrets is true and throw an exception if it is (not implemented)
         if (useAwsSecrets) {
-            throw new UnsupportedOperationException("Obtención de credenciales de AWS no implementada aún");
+            throw new UnsupportedOperationException("AWS credential retrieval not yet implemented");
         }
 
-        // Obtener la credencial del archivo properties
+        // Get the credential from the properties file
         String credentialValue = properties.getProperty(credentialName);
         if (credentialValue == null) {
-            throw new RuntimeException("Credencial no encontrada en properties: " + credentialName);
+            credentialValue=credentialName;
         }
         return credentialValue;
     }
