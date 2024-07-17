@@ -8,6 +8,11 @@ import java.util.Map;
 import static starter.Constants.*;
 
 public class LoginPage extends AbstractPage {
+    /**
+     * Returns a Login map of selectors for different elements on the page.
+     *
+     * @return         a map containing selectors for various elements
+     */
     @Override
     public Map mapSelectors() {
         mapSelectors.put(LOGIN, By.cssSelector("fieldset[id*='fieldset']"));

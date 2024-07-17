@@ -104,6 +104,11 @@ public class PageFactory extends PageObject {
         throw new IllegalArgumentException("Unrecognized format of WebElement.toString()");
     }
 
+    /**
+     * A map that associates locator types with functions that take a string parameter and return a By object.
+     *
+     * @see By
+     */
     public static final Map<String, Function<String, By>> LOCATOR_MAP = new HashMap<String, Function<String, By>>() {{
         put("id", By::id);
         put("xpath", By::xpath);

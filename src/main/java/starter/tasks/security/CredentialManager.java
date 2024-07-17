@@ -6,8 +6,14 @@ import java.util.Properties;
 
 public class CredentialManager {
 
+    /**
+     * Declaration of a static final Properties object.
+     */
     private static final Properties properties = new Properties();
 
+    /**
+     * Static block to load properties from the config file.
+     */
     static {
         try {
             // Load the properties file

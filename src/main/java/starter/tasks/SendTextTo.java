@@ -5,7 +5,6 @@ import net.serenitybdd.screenplay.actions.Clear;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
 import starter.selectors.factory.PageFactory;
-import starter.tasks.security.CredentialManager;
 
 import java.util.List;
 

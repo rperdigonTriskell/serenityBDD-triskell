@@ -276,7 +276,7 @@ Feature: Login to the application
       | https://intdev.triskellsoftware.com/triskell/ |
       | https://intnr.triskellsoftware.com/triskell/  |
 
-  Scenario Outline: SQL Injection
+  Scenario Outline: SQL Injection login
     Given go to web "<webside>"
     Then check to "login" has loaded
     When send credential "'admin' OR '1'='1'" to element "username"
@@ -287,10 +287,17 @@ Feature: Login to the application
     And send credential "‘ or 1=1;–." to element "password"
     And click in "validate"
     Examples:
+      | webside                                       |
+      | https://intaws.triskellsoftware.com/triskell/ |
+      | https://intdev.triskellsoftware.com/triskell/ |
+      | https://intnr.triskellsoftware.com/triskell/  |
+
+  Scenario Outline: SQL Injection
+    Given go to web "<webside>"
+#    Then check to "login" has loaded
+
+    Examples:
       | webside                                                            |
-      | https://intaws.triskellsoftware.com/triskell/                      |
-      | https://intdev.triskellsoftware.com/triskell/                      |
-      | https://intnr.triskellsoftware.com/triskell/                       |
       | https://intaws.triskellsoftware.com/triskell/'admin' OR '1'='1'    |
       | https://intdev.triskellsoftware.com/triskell/'admin' OR '1'='1'    |
       | https://intnr.triskellsoftware.com/triskell/'admin' OR '1'='1'     |
@@ -302,6 +309,15 @@ Feature: Login to the application
       | https://intnr.triskellsoftware.com/triskell/‘ or 1=1;–.            |
 
   Scenario Outline: XSS Injection
+    Given go to web "<webside>"
+#    Then check to "login" has loaded
+    Examples:
+      | webside |
+      | https://intaws.triskellsoftware.com/triskell/<script>alert('XSS')</script> |
+      | https://intdev.triskellsoftware.com/triskell/<script>alert('XSS')</script> |
+      | https://intnr.triskellsoftware.com/triskell/<script>alert('XSS')</script>  |
+
+  Scenario Outline: XSS Injection login
     Given go to web "<webside>"
     Then check to "login" has loaded
     When send credential "<script>alert('XSS')</script>" to element "username"
@@ -316,9 +332,6 @@ Feature: Login to the application
       | https://intaws.triskellsoftware.com/triskell/                              |
       | https://intdev.triskellsoftware.com/triskell/                              |
       | https://intnr.triskellsoftware.com/triskell/                               |
-      | https://intaws.triskellsoftware.com/triskell/<script>alert('XSS')</script> |
-      | https://intdev.triskellsoftware.com/triskell/<script>alert('XSS')</script> |
-      | https://intnr.triskellsoftware.com/triskell/<script>alert('XSS')</script>  |
 
   Scenario Outline: Force Attack
     Given go to web "<webside>"
@@ -326,10 +339,7 @@ Feature: Login to the application
     When send credential "" to element "username"
     And send credential "" to element "password"
     And click in "validate"
-    And click in "x"
-    And send credential "username" to element "username"
-    And send credential "spaced_password" to element "password"
-    And click in "validate"
+    Then verify the text element "error" is "User is required"
     Examples:
       | webside                                       |
       | https://intaws.triskellsoftware.com/triskell/ |

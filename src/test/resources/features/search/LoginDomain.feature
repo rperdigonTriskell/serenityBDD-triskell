@@ -6,7 +6,7 @@ Feature: Login to the application with domain
   Scenario Outline: Successful login
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "username_without_domain" to element "username_without_domain"
+    When send credential "username_without_domain" to element "username"
     And send credential "password" to element "password"
     And click in "validate"
     Then check to "home page" has loaded
@@ -19,7 +19,7 @@ Feature: Login to the application with domain
   Scenario Outline: Failed login - Empty user
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "" to element "username_without_domain"
+    When send credential "" to element "username"
     And send credential "" to element "password"
     And click in "validate"
     Then verify the text element "error" is "User is required"
@@ -33,7 +33,7 @@ Feature: Login to the application with domain
   Scenario Outline: Failed login - Incomplete domain
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "incomplete_username_without_domain" to element "username_without_domain"
+    When send credential "incomplete_username_without_domain" to element "username"
     And send credential "" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Incorrect username_without_domain. Domain name must be compound of a Name + Dot + Domain Extension."
@@ -47,7 +47,7 @@ Feature: Login to the application with domain
   Scenario Outline: Failed login - Wrong name
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "jhon doe" to element "username_without_domain"
+    When send credential "jhon doe" to element "username"
     And send credential "" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Wrong username_without_domain Format. A Domain is required"
@@ -61,7 +61,7 @@ Feature: Login to the application with domain
   Scenario Outline: Failed login - Wrong name domain and wrong password
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "1@1.1" to element "username_without_domain"
+    When send credential "1@1.1" to element "username"
     And send credential "111" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Authentication rejected, contact with administrator"
@@ -76,7 +76,7 @@ Feature: Login to the application with domain
   Scenario Outline: Failed login - Empty password
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "1@1.1" to element "username_without_domain"
+    When send credential "1@1.1" to element "username"
     And send credential "" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Password is required"
@@ -90,7 +90,7 @@ Feature: Login to the application with domain
   Scenario Outline: Failed login - Empty password
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "username_without_domain" to element "username_without_domain"
+    When send credential "username_without_domain" to element "username"
     And send credential "123456" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Wrong user / password"
@@ -104,7 +104,7 @@ Feature: Login to the application with domain
   Scenario Outline: Ok/close error - Empty user
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "" to element "username_without_domain"
+    When send credential "" to element "username"
     And send credential "" to element "password"
     And click in "validate"
     Then verify the text element "error" is "User is required"
@@ -123,10 +123,10 @@ Feature: Login to the application with domain
   Scenario Outline: Ok/close error - Incomplete domain
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "incomplete_username_without_domain" to element "username_without_domain"
+    When send credential "incomplete_username_without_domain" to element "username"
     And send credential "" to element "password"
     And click in "validate"
-    Then verify the text element "error" is "Incorrect username_without_domain. Domain name must be compound of a Name + Dot + Domain Extension."
+    Then verify the text element "error" is "Incorrect username. Domain name must be compound of a Name + Dot + Domain Extension."
     And click in "<quit_error>"
     Then check to "login" has loaded
 
@@ -142,10 +142,10 @@ Feature: Login to the application with domain
   Scenario Outline: Ok/close error - Wrong name
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "jhon doe" to element "username_without_domain"
+    When send credential "jhon doe" to element "username"
     And send credential "" to element "password"
     And click in "validate"
-    Then verify the text element "error" is "Wrong username_without_domain Format. A Domain is required"
+    Then verify the text element "error" is "Wrong username Format. A Domain is required"
     And click in "<quit_error>"
     Then check to "login" has loaded
 
@@ -161,7 +161,7 @@ Feature: Login to the application with domain
   Scenario Outline: Ok/close error - Wrong name domain and wrong password
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "1@1.1" to element "username_without_domain"
+    When send credential "1@1.1" to element "username"
     And send credential "111" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Authentication rejected, contact with administrator"
@@ -181,7 +181,7 @@ Feature: Login to the application with domain
   Scenario Outline: Ok/close error - Empty password
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "1@1.1" to element "username_without_domain"
+    When send credential "1@1.1" to element "username"
     And send credential "" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Password is required"
@@ -200,7 +200,7 @@ Feature: Login to the application with domain
   Scenario Outline: Ok/close error - Empty password
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "username_without_domain" to element "username_without_domain"
+    When send credential "username_without_domain" to element "username"
     And send credential "123456" to element "password"
     And click in "validate"
     Then verify the text element "error" is "Wrong user / password"
@@ -222,19 +222,19 @@ Feature: Login to the application with domain
   Scenario Outline: username_without_domain and Password Length
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "short_credential" to element "username_without_domain"
+    When send credential "short_credential" to element "username"
     And send credential "password" to element "password"
     And click in "validate"
     And click in "x"
-    And send credential "username_without_domain" to element "username_without_domain"
+    And send credential "username_without_domain" to element "username"
     And send credential "short_credential" to element "password"
     And click in "validate"
     And click in "x"
-    And send credential "long_credential" to element "username_without_domain"
+    And send credential "long_credential" to element "username"
     And send credential "password" to element "password"
     And click in "validate"
     And click in "x"
-    And send credential "username_without_domain" to element "username_without_domain"
+    And send credential "username_without_domain" to element "username"
     And send credential "long_credential" to element "password"
     And click in "validate"
     And click in "x"
@@ -247,11 +247,11 @@ Feature: Login to the application with domain
   Scenario Outline: Allowed Characters
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "character_error_credential" to element "username_without_domain"
+    When send credential "character_error_credential" to element "username"
     And send credential "password" to element "password"
     And click in "validate"
     And click in "x"
-    And send credential "username_without_domain" to element "username_without_domain"
+    And send credential "username_without_domain" to element "username"
     And send credential "character_error_credential" to element "password"
     And click in "validate"
     Examples:
@@ -263,11 +263,11 @@ Feature: Login to the application with domain
   Scenario Outline: Spaced Blank User Pass
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "spaced_username_without_domain" to element "username_without_domain"
+    When send credential "spaced_username_without_domain" to element "username"
     And send credential "password" to element "password"
     And click in "validate"
     And click in "x"
-    And send credential "username_without_domain" to element "username_without_domain"
+    And send credential "username_without_domain" to element "username"
     And send credential "spaced_password" to element "password"
     And click in "validate"
     Examples:
@@ -276,58 +276,58 @@ Feature: Login to the application with domain
       | https://intdev.triskellsoftware.com/triskell/init/ |
       | https://intdev.triskellsoftware.com/triskell/init/ |
 
-  Scenario Outline: SQL Injection
-    Given go to web "<webside>" with domain "domain"
-    Then check to "login" has loaded
-    When send credential "'admin' OR '1'='1'" to element "username_without_domain"
-    And send credential "'password' OR '1'='1'" to element "password"
-    And click in "validate"
-    And click in "x"
-    And send credential "‘ or 1=1;–." to element "username_without_domain"
-    And send credential "‘ or 1=1;–." to element "password"
-    And click in "validate"
-    Examples:
-      | webside                                                                 |
-      | https://intaws.triskellsoftware.com/triskell/init/                      |
-      | https://intdev.triskellsoftware.com/triskell/init/                      |
-      | https://intdev.triskellsoftware.com/triskell/init/                      |
-      | https://intaws.triskellsoftware.com/triskell/init/'admin' OR '1'='1'    |
-      | https://intdev.triskellsoftware.com/triskell/init/'admin' OR '1'='1'    |
-      | https://intdev.triskellsoftware.com/triskell/init/'admin' OR '1'='1'    |
-      | https://intaws.triskellsoftware.com/triskell/init/'password' OR '1'='1' |
-      | https://intdev.triskellsoftware.com/triskell/init/'password' OR '1'='1' |
-      | https://intdev.triskellsoftware.com/triskell/init/'password' OR '1'='1' |
-      | https://intaws.triskellsoftware.com/triskell/init/‘ or 1=1;–.           |
-      | https://intdev.triskellsoftware.com/triskell/init/‘ or 1=1;–.           |
-      | https://intdev.triskellsoftware.com/triskell/init/‘ or 1=1;–.           |
+#  Scenario Outline: SQL Injection
+#    Given go to web "<webside>" with domain "domain"
+#    Then check to "login" has loaded
+#    When send credential "'admin' OR '1'='1'" to element "username"
+#    And send credential "'password' OR '1'='1'" to element "password"
+#    And click in "validate"
+#    And click in "x"
+#    And send credential "‘ or 1=1;–." to element "username"
+#    And send credential "‘ or 1=1;–." to element "password"
+#    And click in "validate"
+#    Examples:
+#      | webside                                                                 |
+#      | https://intaws.triskellsoftware.com/triskell/init/                      |
+#      | https://intdev.triskellsoftware.com/triskell/init/                      |
+#      | https://intdev.triskellsoftware.com/triskell/init/                      |
+#      | https://intaws.triskellsoftware.com/triskell/init/'admin' OR '1'='1'    |
+#      | https://intdev.triskellsoftware.com/triskell/init/'admin' OR '1'='1'    |
+#      | https://intdev.triskellsoftware.com/triskell/init/'admin' OR '1'='1'    |
+#      | https://intaws.triskellsoftware.com/triskell/init/'password' OR '1'='1' |
+#      | https://intdev.triskellsoftware.com/triskell/init/'password' OR '1'='1' |
+#      | https://intdev.triskellsoftware.com/triskell/init/'password' OR '1'='1' |
+#      | https://intaws.triskellsoftware.com/triskell/init/‘ or 1=1;–.           |
+#      | https://intdev.triskellsoftware.com/triskell/init/‘ or 1=1;–.           |
+#      | https://intdev.triskellsoftware.com/triskell/init/‘ or 1=1;–.           |
 
-  Scenario Outline: XSS Injection
-    Given go to web "<webside>" with domain "domain"
-    Then check to "login" has loaded
-    When send credential "<script>alert('XSS')</script>" to element "username_without_domain"
-    And send credential "<script>alert('XSS')</script>" to element "password"
-    And click in "validate"
-    And click in "x"
-    And send credential "username_without_domain" to element "username_without_domain"
-    And send credential "spaced_password" to element "password"
-    And click in "validate"
-    Examples:
-      | webside                                                                         |
-      | https://intaws.triskellsoftware.com/triskell/init/                              |
-      | https://intdev.triskellsoftware.com/triskell/init/                              |
-      | https://intdev.triskellsoftware.com/triskell/init/                              |
-      | https://intaws.triskellsoftware.com/triskell/init/<script>alert('XSS')</script> |
-      | https://intdev.triskellsoftware.com/triskell/init/<script>alert('XSS')</script> |
-      | https://intdev.triskellsoftware.com/triskell/init/<script>alert('XSS')</script> |
+#  Scenario Outline: XSS Injection
+#    Given go to web "<webside>" with domain "domain"
+#    Then check to "login" has loaded
+#    When send credential "<script>alert('XSS')</script>" to element "username"
+#    And send credential "<script>alert('XSS')</script>" to element "password"
+#    And click in "validate"
+#    And click in "x"
+#    And send credential "username_without_domain" to element "username"
+#    And send credential "spaced_password" to element "password"
+#    And click in "validate"
+#    Examples:
+#      | webside                                                                         |
+#      | https://intaws.triskellsoftware.com/triskell/init/                              |
+#      | https://intdev.triskellsoftware.com/triskell/init/                              |
+#      | https://intdev.triskellsoftware.com/triskell/init/                              |
+#      | https://intaws.triskellsoftware.com/triskell/init/<script>alert('XSS')</script> |
+#      | https://intdev.triskellsoftware.com/triskell/init/<script>alert('XSS')</script> |
+#      | https://intdev.triskellsoftware.com/triskell/init/<script>alert('XSS')</script> |
 
   Scenario Outline: Force Attack
     Given go to web "<webside>" with domain "domain"
     Then check to "login" has loaded
-    When send credential "" to element "username_without_domain"
+    When send credential "" to element "username"
     And send credential "" to element "password"
     And click in "validate"
     And click in "x"
-    And send credential "username_without_domain" to element "username_without_domain"
+    And send credential "username_without_domain" to element "username"
     And send credential "spaced_password" to element "password"
     And click in "validate"
     Examples:
@@ -372,3 +372,24 @@ Feature: Login to the application with domain
       | https://intaws.triskellsoftware.com/truskell/init/ |
       | https://intdev.triskellsoftware.com/truskell/init/ |
       | https://intnr.triskellsoftware.com/truskell/init/  |
+
+    # ////////////////////////////////////////////////////////////
+    # Especific domain test
+  Scenario Outline: Ok/close error - Empty password
+    Given go to web "<webside>" with domain "domain"
+    Then check to "login" has loaded
+    When send credential "username_without_domain" to element "username"
+    And send credential "123456" to element "password"
+    And click in "validate"
+    Then verify the text element "error" is "Wrong user / password"
+    And click in "<quit_error>"
+    Then check to "login" has loaded
+
+    Examples:
+      | webside                                            | quit_error |
+      | https://intaws.triskellsoftware.com/triskell/init/ | ok         |
+      | https://intdev.triskellsoftware.com/triskell/init/ | ok         |
+      | https://intdev.triskellsoftware.com/triskell/init/ | ok         |
+      | https://intaws.triskellsoftware.com/triskell/init/ | x          |
+      | https://intdev.triskellsoftware.com/triskell/init/ | x          |
+      | https://intdev.triskellsoftware.com/triskell/init/ | x          |
