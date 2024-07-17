@@ -20,13 +20,26 @@ import static starter.selectors.factory.PageFactory.LOCATOR_MAP;
 
 public class YamlFactory implements SelectorFactory {
 
+    /**
+     * The directory path is obtained from the "serenity.yaml.directory.path" property.
+     */
     private final String directoryPath;
 
+    /**
+     * Creates a new YamlFactory instance.
+     * The directory path is obtained from the "serenity.yaml.directory.path" property.
+     */
     public YamlFactory() {
         EnvironmentVariables environmentVariables = SystemEnvironmentVariables.createEnvironmentVariables();
         directoryPath = environmentVariables.getProperty("serenity.yaml.directory.path");
     }
 
+    /**
+     * Returns a list of selectors defined in the YAML file specified by the given file path.
+     *
+     * @param filePath the path to the YAML file
+     * @return a list of selectors defined in the file
+     */
     private List<Map<String, String>> getSelectorsFromFile(String filePath) {
         List<Map<String, String>> selectors = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(filePath)) {
@@ -47,6 +60,12 @@ public class YamlFactory implements SelectorFactory {
         return selectors;
     }
 
+    /**
+     * Returns a list of all selectors defined in the YAML files located in the directory specified by the "serenity.yaml.directory.path" property.
+     *
+     * @param fileName the name of the file (without the extension)
+     * @return a list of all selectors defined in the file
+     */
     private List<Map<String, String>> getAllSelectorsFromPage(String fileName) {
         List<Map<String, String>> allSelectors = new ArrayList<>();
         try {
@@ -61,6 +80,12 @@ public class YamlFactory implements SelectorFactory {
         return allSelectors;
     }
 
+    /**
+     * Returns a By instance based on the name of the selector requested.
+     *
+     * @param name the name of the selector
+     * @return a By instance based on the name of the selector
+     */
     @Override
     public By getSelector(String name) {
         String page = PageFactory.getCurrentPageName();
@@ -72,6 +97,12 @@ public class YamlFactory implements SelectorFactory {
                 .orElse(null);
     }
 
+    /**
+     * Returns a By instance based on the locator type and value from the given element data.
+     *
+     * @param  elementData a Map containing the locator type and value
+     * @return             a By instance based on the locator type and value
+     */
     private By getByFromElementData(Map<String, String> elementData) {
         String locatorType = elementData.get("locator-type");
         String locatorValue = elementData.get("locator-value");

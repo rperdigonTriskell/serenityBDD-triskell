@@ -19,11 +19,8 @@ public class PageFactory extends PageObject {
      * Map associating page names with their corresponding instances.
      */
     private static final Map<String, AbstractPage> map = new HashMap<String, AbstractPage>() {{
-        put(LOGIN, initElements(getDriverStatic(), SaucedemoLoginPage.class));
-        put(PRODUCTS, initElements(getDriverStatic(), SaucedemoProductsPage.class));
-        put(YOURCART, initElements(getDriverStatic(), SaucedemoYourCartPage.class));
-        put(YOURINFORMATION, initElements(getDriverStatic(), SaucedemoYourInformationPage.class));
-        put(CHECKOUT, initElements(getDriverStatic(), SaucedemoCheckOutPage.class));
+        put(LOGIN, initElements(getDriverStatic(), LoginPage.class));
+        put(HOME_PAGE, initElements(getDriverStatic(), HomePage.class));
     }};
 
     /**
@@ -107,6 +104,11 @@ public class PageFactory extends PageObject {
         throw new IllegalArgumentException("Unrecognized format of WebElement.toString()");
     }
 
+    /**
+     * A map that associates locator types with functions that take a string parameter and return a By object.
+     *
+     * @see By
+     */
     public static final Map<String, Function<String, By>> LOCATOR_MAP = new HashMap<String, Function<String, By>>() {{
         put("id", By::id);
         put("xpath", By::xpath);
