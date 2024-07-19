@@ -20,6 +20,8 @@ public class PageFactory extends PageObject {
      */
     private static final Map<String, AbstractPage> map = new HashMap<String, AbstractPage>() {{
         put(LOGIN, initElements(getDriverStatic(), LoginPage.class));
+        put(BAD_URL, initElements(getDriverStatic(), LoginPage.class));
+        put(BAD_URL_FOLDER, initElements(getDriverStatic(), LoginPage.class));
         put(HOME_PAGE, initElements(getDriverStatic(), HomePage.class));
     }};
 

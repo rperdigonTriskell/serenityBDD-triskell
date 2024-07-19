@@ -16,7 +16,7 @@ public class LoginPage extends AbstractPage {
     @Override
     public Map mapSelectors() {
         mapSelectors.put(LOGIN, By.cssSelector("fieldset[id*='fieldset']"));
-        mapSelectors.put("bad url", By.cssSelector("fieldset[id*='fieldset']"));
+        mapSelectors.put("bad url", By.id("main-frame-error"));
         mapSelectors.put("bad url folder", By.id("article"));
         mapSelectors.put("retry", By.cssSelector("#article > div > p:nth-child(2) > a"));
         mapSelectors.put("username", By.name("username"));
