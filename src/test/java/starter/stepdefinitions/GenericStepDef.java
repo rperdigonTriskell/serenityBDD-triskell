@@ -74,6 +74,28 @@ public class GenericStepDef {
     }
 
     /**
+     * Navigates to a web page with a XSS Atack.
+     *
+     * @param url    the URL of the web page
+     */
+    @Given("go to wrong web {string} with XSS atack")
+    public void goToWrongWebWithXSSAtack(String url) {
+        theWrongWebSite(url+"<script>alert('XSS')</script>", actor);
+    }
+
+    /**
+     * Navigates to a web page with a domain.
+     *
+     * @param url    the URL of the web page
+     * @param domain the domain to append to the URL
+     */
+    @Given("go to wrong web {string} with domain {string} and XSS atack")
+    public void goToWrongWebWithDomainAndXSSAtack(String url, String domain) {
+        url = url.replace("domain", getCredential(domain, false));
+        theWrongWebSite(url+"<script>alert('XSS')</script>", actor);
+    }
+
+    /**
      * Checks if a page has loaded.
      *
      * @param page the name of the page to check

@@ -5,9 +5,9 @@ import starter.selectors.factory.AbstractPage;
 
 import java.util.Map;
 
-import static starter.Constants.HOME_PAGE;
+import static starter.Constants.DASHBOARD;
 
-public class HomePage extends AbstractPage {
+public class DashboardPage extends AbstractPage {
     /**
      * Returns a Home map of selectors for different elements on the page.
      *
@@ -15,7 +15,7 @@ public class HomePage extends AbstractPage {
      */
     @Override
     public Map mapSelectors() {
-        mapSelectors.put(HOME_PAGE, By.id("APP_HOME_BUTTON"));
+        mapSelectors.put(DASHBOARD, By.id("APP_HOME_BUTTON"));
         return mapSelectors;
     }
 }

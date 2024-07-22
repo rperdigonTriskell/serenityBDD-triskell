@@ -22,7 +22,7 @@ public class PageFactory extends PageObject {
         put(LOGIN, initElements(getDriverStatic(), LoginPage.class));
         put(BAD_URL, initElements(getDriverStatic(), LoginPage.class));
         put(BAD_URL_FOLDER, initElements(getDriverStatic(), LoginPage.class));
-        put(HOME_PAGE, initElements(getDriverStatic(), HomePage.class));
+        put(DASHBOARD, initElements(getDriverStatic(), DashboardPage.class));
     }};
 
     /**
