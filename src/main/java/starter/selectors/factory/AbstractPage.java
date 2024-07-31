@@ -24,6 +24,6 @@ public abstract class AbstractPage implements SelectorFactory {
      * @return the By object corresponding to the selector name.
      */
     public By getSelector(String selector) {
-        return mapSelectors().get(selector.toLowerCase());
+        return mapSelectors().get(selector);
     }
 }

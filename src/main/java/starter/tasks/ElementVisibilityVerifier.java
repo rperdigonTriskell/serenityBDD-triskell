@@ -1,65 +1,84 @@
 package starter.tasks;
 
-import net.serenitybdd.screenplay.GivenWhenThen;
-import net.serenitybdd.screenplay.actors.OnStage;
+import io.cucumber.datatable.DataTable;
 import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
 import net.serenitybdd.screenplay.questions.Text;
 
-import static net.serenitybdd.screenplay.questions.Text.*;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isNotVisible;
-import static net.serenitybdd.screenplay.questions.WebElementQuestion.*;
+import java.util.Map;
+import java.util.function.Consumer;
+
+import static net.serenitybdd.screenplay.questions.WebElementQuestion.the;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasValue;
-import static starter.selectors.factory.PageFactory.*;
+import static starter.Constants.*;
+import static starter.selectors.factory.PageFactory.getCurrentPage;
+import static starter.tasks.GenericTasks.*;
 
 public class ElementVisibilityVerifier {
+
     /**
-     * Verifies if the given web element is visible
+     * Verifies if the given web element is visible or not.
      *
-     * @param element The element to be verified
+     * @param element   The element to be verified.
+     * @param isVisible A boolean that determines if the element should be visible or not.
+     */
+    public static void verifyElementVisibility(String element, boolean isVisible) {
+        performShouldSeeThat(
+                "check that the element visibility is: " + isVisible + ", for element: " + element,
+                actor -> the(getCurrentPage().getSelector(element)).answeredBy(actor),
+                isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible()
+        );
+    }
+
+    /**
+     * Verifies if the given web element is visible.
+     *
+     * @param element The element to be verified.
      */
     public static void verifyElementIsVisible(String element) {
-        // Use the actor in the spotlight to check if the element is visible
-        OnStage.theActorInTheSpotlight().should(
-                "check that the element is visible: " + element,
-                GivenWhenThen.seeThat(
-                        // Get the web element using the selector for the current page
-                        the(getCurrentPage().getSelector(element)),
-                        WebElementStateMatchers.isVisible()
-                ));
+        verifyElementVisibility(element, true);
     }
 
     /**
      * Verifies that the given element is not visible on the current page.
      *
-     * @param element the element to be verified
+     * @param element The element to be verified.
      */
     public static void verifyElementIsNotVisible(String element) {
-        // Use the actor in the spotlight to check if the element is not visible
-        OnStage.theActorInTheSpotlight().should(
-                // Provide a description for the verification
-                "check that the element is not visible: " + element,
-                // Use WebElementQuestion to locate the element and WebElementStateMatchers to check its visibility
-                GivenWhenThen.seeThat(
-                        the(getCurrentPage().getSelector(element)),
-                        isNotVisible()
-                ));
+        verifyElementVisibility(element, false);
     }
 
-
     /**
-     * Verify if the element text matches the expected name.
+     * Verifies if the element text matches the expected text.
      *
-     * @param element the element to verify
+     * @param element      The element to verify.
+     * @param expectedText The expected text to match.
      */
     public static void verifyElementTextIs(String element, String expectedText) {
-        // Use the Actor to verify the element text
-        OnStage.theActorInTheSpotlight().should(
-                GivenWhenThen.seeThat(
-                        "check that the element text matches the expected text",
-                        Text.of(getCurrentPage().getSelector(element)),
-                        equalTo(expectedText)
-                )
+        performShouldSeeThat(
+                "check that the element text matches the expected text",
+                actor -> Text.of(getCurrentPage().getSelector(element)).answeredBy(actor),
+                equalTo(expectedText)
         );
+    }
+
+    /**
+     * Verifies if the elements in the DataTable are visible according to their specified visibility.
+     *
+     * @param dataTable The DataTable containing elements and their visibility state.
+     */
+    public static void dataTableAreVisible(String context, DataTable dataTable) {
+        Consumer<Map<String, String>> elementProcessor = element -> {
+            String elementName = element.get(ELEMENT);
+            String visibility = element.get(VISIBILITY);
+            if (visibility.equalsIgnoreCase(STATES[0])) {
+                verifyElementIsVisible(context + elementName);
+            } else if (STATES[1].equalsIgnoreCase(visibility)) {
+                verifyElementIsNotVisible(context + elementName);
+            } else {
+                throw new IllegalArgumentException("Unknown visibility state: " + visibility);
+            }
+        };
+
+        dataTableUtil(dataTable, elementProcessor);
     }
 }

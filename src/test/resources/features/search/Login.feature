@@ -6,9 +6,9 @@
 #  Scenario Outline: Successful login
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "username" to element "username"
-#    And send credential "password" to element "password"
-#    And click in "validate"
+#    When send credential "username" to element "Username"
+#    And send credential "password" to element "Password"
+#    And click in "Validate"
 #    Then check to "dashboard" has loaded
 #    Examples:
 #      | webside                                        |
@@ -20,10 +20,10 @@
 #  Scenario Outline: Failed login - Empty user
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "User is required"
+#    When send credential "" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "User is required"
 #
 #    Examples:
 #      | webside                                        |
@@ -35,10 +35,10 @@
 #  Scenario Outline: Failed login - Incomplete domain
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "incomplete_username" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Incorrect Username. Domain name must be compound of a Name + Dot + Domain Extension."
+#    When send credential "incomplete_username" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Incorrect Username. Domain name must be compound of a Name + Dot + Domain Extension."
 #
 #    Examples:
 #      | webside                                        |
@@ -50,10 +50,10 @@
 #  Scenario Outline: Failed login - Wrong name
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "jhon doe" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Wrong Username Format. A Domain is required"
+#    When send credential "jhon doe" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Wrong Username Format. A Domain is required"
 #
 #    Examples:
 #      | webside                                        |
@@ -65,10 +65,10 @@
 #  Scenario Outline: Failed login - Wrong name domain and wrong password
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "1@1.1" to element "username"
-#    And send credential "111" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Authentication rejected, contact with administrator"
+#    When send credential "1@1.1" to element "Username"
+#    And send credential "111" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Authentication rejected, contact with administrator"
 #
 #    Examples:
 #      | webside                                        |
@@ -80,10 +80,10 @@
 #  Scenario Outline: Failed login - Empty password
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "1@1.1" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Password is required"
+#    When send credential "1@1.1" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Password is required"
 #
 #    Examples:
 #      | webside                                        |
@@ -95,10 +95,10 @@
 #  Scenario Outline: Failed login - Wrong pasword
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "username" to element "username"
-#    And send credential "123456" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Wrong user / password"
+#    When send credential "username" to element "Username"
+#    And send credential "123456" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Wrong user / password"
 #
 #    Examples:
 #      | webside                                        |
@@ -107,132 +107,132 @@
 #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
 #
-#  Scenario Outline: Ok/close error - Empty user
+#  Scenario Outline: OK/close error - Empty user
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "User is required"
+#    When send credential "" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "User is required"
 #    And click in "<quit_error>"
 #    Then check to "login" has loaded
 #
 #    Examples:
 #      | webside                                        | quit_error |
-#      | https://intaws.triskellsoftware.com/triskell/  | ok         |
-#      | https://intdev.triskellsoftware.com/triskell/  | ok         |
-#      | https://intnr.triskellsoftware.com/triskell/   | ok         |
-#      | https://ondemand.triskellsoftware.com/triskell | ok         |
-#      | https://intaws.triskellsoftware.com/triskell/  | x          |
-#      | https://intdev.triskellsoftware.com/triskell/  | x          |
-#      | https://intnr.triskellsoftware.com/triskell/   | x          |
-#      | https://ondemand.triskellsoftware.com/triskell | x          |
+#      | https://intaws.triskellsoftware.com/triskell/  | OK         |
+#      | https://intdev.triskellsoftware.com/triskell/  | OK         |
+#      | https://intnr.triskellsoftware.com/triskell/   | OK         |
+#      | https://ondemand.triskellsoftware.com/triskell | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/  | X          |
+#      | https://intdev.triskellsoftware.com/triskell/  | X          |
+#      | https://intnr.triskellsoftware.com/triskell/   | X          |
+#      | https://ondemand.triskellsoftware.com/triskell | X          |
 #
-#  Scenario Outline: Ok/close error - Incomplete domain
+#  Scenario Outline: OK/close error - Incomplete domain
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "incomplete_username" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Incorrect Username. Domain name must be compound of a Name + Dot + Domain Extension."
+#    When send credential "incomplete_username" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Incorrect Username. Domain name must be compound of a Name + Dot + Domain Extension."
 #    And click in "<quit_error>"
 #    Then check to "login" has loaded
 #
 #    Examples:
 #      | webside                                         | quit_error |
-#      | https://intaws.triskellsoftware.com/triskell/   | ok         |
-#      | https://intdev.triskellsoftware.com/triskell/   | ok         |
-#      | https://intnr.triskellsoftware.com/triskell/    | ok         |
-#      | https://ondemand.triskellsoftware.com/triskell/ | ok         |
-#      | https://intaws.triskellsoftware.com/triskell/   | x          |
-#      | https://intdev.triskellsoftware.com/triskell/   | x          |
-#      | https://intnr.triskellsoftware.com/triskell/    | x          |
-#      | https://ondemand.triskellsoftware.com/triskell/ | x          |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intdev.triskellsoftware.com/triskell/   | OK         |
+#      | https://intnr.triskellsoftware.com/triskell/    | OK         |
+#      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intdev.triskellsoftware.com/triskell/   | X          |
+#      | https://intnr.triskellsoftware.com/triskell/    | X          |
+#      | https://ondemand.triskellsoftware.com/triskell/ | X          |
 #
-#  Scenario Outline: Ok/close error - Wrong name
+#  Scenario Outline: OK/close error - Wrong name
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "jhon doe" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Wrong Username Format. A Domain is required"
+#    When send credential "jhon doe" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Wrong Username Format. A Domain is required"
 #    And click in "<quit_error>"
 #    Then check to "login" has loaded
 #
 #    Examples:
 #      | webside                                         | quit_error |
-#      | https://intaws.triskellsoftware.com/triskell/   | ok         |
-#      | https://intdev.triskellsoftware.com/triskell/   | ok         |
-#      | https://intnr.triskellsoftware.com/triskell/    | ok         |
-#      | https://ondemand.triskellsoftware.com/triskell/ | ok         |
-#      | https://intaws.triskellsoftware.com/triskell/   | x          |
-#      | https://intdev.triskellsoftware.com/triskell/   | x          |
-#      | https://intnr.triskellsoftware.com/triskell/    | x          |
-#      | https://ondemand.triskellsoftware.com/triskell/ | x          |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intdev.triskellsoftware.com/triskell/   | OK         |
+#      | https://intnr.triskellsoftware.com/triskell/    | OK         |
+#      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intdev.triskellsoftware.com/triskell/   | X          |
+#      | https://intnr.triskellsoftware.com/triskell/    | X          |
+#      | https://ondemand.triskellsoftware.com/triskell/ | X          |
 #
-#  Scenario Outline: Ok/close error - Wrong name domain and wrong password
+#  Scenario Outline: OK/close error - Wrong name domain and wrong password
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "1@1.1" to element "username"
-#    And send credential "111" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Authentication rejected, contact with administrator"
+#    When send credential "1@1.1" to element "Username"
+#    And send credential "111" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Authentication rejected, contact with administrator"
 #    And click in "<quit_error>"
 #    Then check to "login" has loaded
 #
 #    Examples:
 #      | webside                                         | quit_error |
-#      | https://intaws.triskellsoftware.com/triskell/   | ok         |
-#      | https://intdev.triskellsoftware.com/triskell/   | ok         |
-#      | https://intnr.triskellsoftware.com/triskell/    | ok         |
-#      | https://ondemand.triskellsoftware.com/triskell/ | ok         |
-#      | https://intaws.triskellsoftware.com/triskell/   | x          |
-#      | https://intdev.triskellsoftware.com/triskell/   | x          |
-#      | https://intnr.triskellsoftware.com/triskell/    | x          |
-#      | https://ondemand.triskellsoftware.com/triskell/ | x          |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intdev.triskellsoftware.com/triskell/   | OK         |
+#      | https://intnr.triskellsoftware.com/triskell/    | OK         |
+#      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intdev.triskellsoftware.com/triskell/   | X          |
+#      | https://intnr.triskellsoftware.com/triskell/    | X          |
+#      | https://ondemand.triskellsoftware.com/triskell/ | X          |
 #
 #
-#  Scenario Outline: Ok/close error - Empty password
+#  Scenario Outline: OK/close error - Empty password
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "1@1.1" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Password is required"
+#    When send credential "1@1.1" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Password is required"
 #    And click in "<quit_error>"
 #    Then check to "login" has loaded
 #
 #    Examples:
 #      | webside                                         | quit_error |
-#      | https://intaws.triskellsoftware.com/triskell/   | ok         |
-#      | https://intdev.triskellsoftware.com/triskell/   | ok         |
-#      | https://intnr.triskellsoftware.com/triskell/    | ok         |
-#      | https://ondemand.triskellsoftware.com/triskell/ | ok         |
-#      | https://intaws.triskellsoftware.com/triskell/   | x          |
-#      | https://intdev.triskellsoftware.com/triskell/   | x          |
-#      | https://intnr.triskellsoftware.com/triskell/    | x          |
-#      | https://ondemand.triskellsoftware.com/triskell/ | x          |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intdev.triskellsoftware.com/triskell/   | OK         |
+#      | https://intnr.triskellsoftware.com/triskell/    | OK         |
+#      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intdev.triskellsoftware.com/triskell/   | X          |
+#      | https://intnr.triskellsoftware.com/triskell/    | X          |
+#      | https://ondemand.triskellsoftware.com/triskell/ | X          |
 #
-#  Scenario Outline: Ok/close error - Wrong password
+#  Scenario Outline: OK/close error - Wrong password
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "username" to element "username"
-#    And send credential "123456" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "Wrong user / password"
+#    When send credential "username" to element "Username"
+#    And send credential "123456" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "Wrong user / password"
 #    And click in "<quit_error>"
 #    Then check to "login" has loaded
 #
 #    Examples:
 #      | webside                                        | quit_error |
-#      | https://intaws.triskellsoftware.com/triskell/  | ok         |
-#      | https://intdev.triskellsoftware.com/triskell/  | ok         |
-#      | https://intnr.triskellsoftware.com/triskell/   | ok         |
-#      | https://ondemand.triskellsoftware.com/triskell | ok         |
-#      | https://intaws.triskellsoftware.com/triskell/  | x          |
-#      | https://intdev.triskellsoftware.com/triskell/  | x          |
-#      | https://intnr.triskellsoftware.com/triskell/   | x          |
-#      | https://ondemand.triskellsoftware.com/triskell | x          |
+#      | https://intaws.triskellsoftware.com/triskell/  | OK         |
+#      | https://intdev.triskellsoftware.com/triskell/  | OK         |
+#      | https://intnr.triskellsoftware.com/triskell/   | OK         |
+#      | https://ondemand.triskellsoftware.com/triskell | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/  | X          |
+#      | https://intdev.triskellsoftware.com/triskell/  | X          |
+#      | https://intnr.triskellsoftware.com/triskell/   | X          |
+#      | https://ondemand.triskellsoftware.com/triskell | X          |
 #
 # #//////////////////////////////////////////////////////////////////////////////
 # # Field Validation Tests
@@ -240,22 +240,22 @@
 #  Scenario Outline: Username and Password Length
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "short_credential" to element "username"
-#    And send credential "password" to element "password"
-#    And click in "validate"
-#    And click in "x"
-#    And send credential "username" to element "username"
-#    And send credential "short_credential" to element "password"
-#    And click in "validate"
-#    And click in "x"
-#    And send credential "long_credential" to element "username"
-#    And send credential "password" to element "password"
-#    And click in "validate"
-#    And click in "x"
-#    And send credential "username" to element "username"
-#    And send credential "long_credential" to element "password"
-#    And click in "validate"
-#    And click in "x"
+#    When send credential "short_credential" to element "Username"
+#    And send credential "password" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "username" to element "Username"
+#    And send credential "short_credential" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "long_credential" to element "Username"
+#    And send credential "password" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "username" to element "Username"
+#    And send credential "long_credential" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
 #    Examples:
 #      | webside                                        |
 #      | https://intaws.triskellsoftware.com/triskell/  |
@@ -266,13 +266,13 @@
 #  Scenario Outline: Allowed Characters
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "character_error_credential" to element "username"
-#    And send credential "password" to element "password"
-#    And click in "validate"
-#    And click in "x"
-#    And send credential "username" to element "username"
-#    And send credential "character_error_credential" to element "password"
-#    And click in "validate"
+#    When send credential "character_error_credential" to element "Username"
+#    And send credential "password" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "username" to element "Username"
+#    And send credential "character_error_credential" to element "Password"
+#    And click in "Validate"
 #    Examples:
 #      | webside                                        |
 #      | https://intaws.triskellsoftware.com/triskell/  |
@@ -283,13 +283,13 @@
 #  Scenario Outline: Spaced Blank User Pass
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "spaced_username" to element "username"
-#    And send credential "password" to element "password"
-#    And click in "validate"
-#    And click in "x"
-#    And send credential "username" to element "username"
-#    And send credential "spaced_password" to element "password"
-#    And click in "validate"
+#    When send credential "spaced_username" to element "Username"
+#    And send credential "password" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "username" to element "Username"
+#    And send credential "spaced_password" to element "Password"
+#    And click in "Validate"
 #    Examples:
 #      | webside                                        |
 #      | https://intaws.triskellsoftware.com/triskell/  |
@@ -317,13 +317,13 @@
 #  Scenario Outline: SQL Injection login
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "'admin' OR '1'='1'" to element "username"
-#    And send credential "'password' OR '1'='1'" to element "password"
-#    And click in "validate"
-#    And click in "x"
-#    And send credential "‘ or 1=1;–." to element "username"
-#    And send credential "‘ or 1=1;–." to element "password"
-#    And click in "validate"
+#    When send credential "'admin' OR '1'='1'" to element "Username"
+#    And send credential "'password' OR '1'='1'" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "‘ or 1=1;–." to element "Username"
+#    And send credential "‘ or 1=1;–." to element "Password"
+#    And click in "Validate"
 #    Examples:
 #      | webside                                         |
 #      | https://intaws.triskellsoftware.com/triskell/   |
@@ -344,13 +344,13 @@
 ##  Scenario Outline: XSS Injection login
 ##    Given go to web "<webside>"
 ##    Then check to "login" has loaded
-##    When send credential "xss" to element "username"
-##    And send credential "xss" to element "password"
-##    And click in "validate"
-##    And click in "x"
-##    And send credential "username" to element "username"
-##    And send credential "spaced_password" to element "password"
-##    And click in "validate"
+##    When send credential "xss" to element "Username"
+##    And send credential "xss" to element "Password"
+##    And click in "Validate"
+##    And click in "X"
+##    And send credential "username" to element "Username"
+##    And send credential "spaced_password" to element "Password"
+##    And click in "Validate"
 ##    Examples:
 ##      | webside                                       |
 ##      | https://intaws.triskellsoftware.com/triskell/ |
@@ -361,10 +361,10 @@
 #  Scenario Outline: Force Attack
 #    Given go to web "<webside>"
 #    Then check to "login" has loaded
-#    When send credential "" to element "username"
-#    And send credential "" to element "password"
-#    And click in "validate"
-#    Then verify the text element "error" is "User is required"
+#    When send credential "" to element "Username"
+#    And send credential "" to element "Password"
+#    And click in "Validate"
+#    Then verify the text element "Error" is "User is required"
 #    Examples:
 #      | webside                                        |
 #      | https://intaws.triskellsoftware.com/triskell/  |

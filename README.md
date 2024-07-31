@@ -199,6 +199,13 @@ Or
 ```json
 $ gradle clean test -Pdriver=firefox
 ```
+```json
+$ mvn clean verify -Ddriver=firefox
+```
+Or
+```json
+$ gradle clean test -Pdriver=firefox
+```
 
 The test results will be recorded in the `target/site/serenity` directory.
 

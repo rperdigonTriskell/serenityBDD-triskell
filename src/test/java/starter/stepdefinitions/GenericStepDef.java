@@ -10,13 +10,14 @@ import net.serenitybdd.screenplay.actors.OnlineCast;
 
 import java.io.IOException;
 
-import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
+import static starter.Constants.*;
 import static starter.tasks.ElementInteraction.*;
-import static starter.tasks.ElementVisibilityVerifier.verifyElementTextIs;
+import static starter.tasks.ElementVisibilityVerifier.*;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.tasks.SendTextTo.*;
 import static starter.tasks.security.CredentialManager.getCredential;
+import static starter.selectors.factory.PageFactory.getDriverStatic;
 
 public class GenericStepDef {
     //Actor for scenario
@@ -38,6 +39,15 @@ public class GenericStepDef {
     @Given("go to web {string}")
     public void goToWeb(String url) {
         theWebSite(url, actor);
+    }
+
+    /**
+     * Navigates to system environment web page.
+     *
+     */
+    @Given("go to web Triskell")
+    public void goToTriskell() {
+        theEnviromentWebSite(actor);
     }
 
     /**
@@ -76,11 +86,11 @@ public class GenericStepDef {
     /**
      * Navigates to a web page with a XSS Atack.
      *
-     * @param url    the URL of the web page
+     * @param url the URL of the web page
      */
     @Given("go to wrong web {string} with XSS atack")
     public void goToWrongWebWithXSSAtack(String url) {
-        theWrongWebSite(url+"<script>alert('XSS')</script>", actor);
+        theWrongWebSite(url + "<script>alert('XSS')</script>", actor);
     }
 
     /**
@@ -92,7 +102,7 @@ public class GenericStepDef {
     @Given("go to wrong web {string} with domain {string} and XSS atack")
     public void goToWrongWebWithDomainAndXSSAtack(String url, String domain) {
         url = url.replace("domain", getCredential(domain, false));
-        theWrongWebSite(url+"<script>alert('XSS')</script>", actor);
+        theWrongWebSite(url + "<script>alert('XSS')</script>", actor);
     }
 
     /**
@@ -102,8 +112,40 @@ public class GenericStepDef {
      */
     @Then("check to {string} has loaded")
     public void checkToHasLoaded(String page) {
-        isLoadPage(page.toLowerCase());
+        isLoadPage(page);
     }
+
+
+    /**
+     * Checks if sidebar elements are visible or invisible.
+     *
+     * @param dataTable
+     */
+    @Then("check to the following sidebar elements are:")
+    public void checkFollowingSidebarElementsAre(DataTable dataTable) {
+        dataTableAreVisible(SIDEBAR_CONTEXT, dataTable);
+    }
+
+    /**
+     * Checks if heading elements are visible or invisible.
+     *
+     * @param dataTable
+     */
+    @Then("check to the following heading elements are:")
+    public void checkFollowingHeadingElementsAre(DataTable dataTable) {
+        dataTableAreVisible(HEADING_CONTEXT, dataTable);
+    }
+
+    /**
+     * Checks if dashboard elements are visible or invisible.
+     *
+     * @param dataTable
+     */
+    @Then("check to the following dashboard elements are:")
+    public void checkFollowingDashboardElementsAre(DataTable dataTable) {
+        dataTableAreVisible(DASHBOARD_CONTEXT, dataTable);
+    }
+
 
     /**
      * Checks if a page hasn't loaded.
@@ -112,7 +154,7 @@ public class GenericStepDef {
      */
     @Then("check to {string} hasn't loaded")
     public void checkToHasntLoaded(String page) {
-        isNotLoadPage(page.toLowerCase());
+        isNotLoadPage(page);
     }
 
     /**
@@ -175,8 +217,7 @@ public class GenericStepDef {
     public void finish() {
         try {
             if (Serenity.getDriver() != null) {
-                Serenity.getDriver().close();
-                Serenity.getDriver().quit();
+                getDriverStatic().quit();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -16,7 +16,7 @@
         <junit-platform-suite.version>1.10.2</junit-platform-suite.version>
         <cucumber-junit-platform-engine.version>7.14.0</cucumber-junit-platform-engine.version>
         <encoding>UTF-8</encoding>
-        <tags></tags>
+        <tags>@PROD</tags>
         <webdriver.base.url></webdriver.base.url>
     </properties>
 
@@ -121,6 +121,11 @@
                     </includes>
                     <systemPropertyVariables>
                         <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
+                        <cucumber.filter.tags>${tags}</cucumber.filter.tags>
+                        <aws.webdriver.base.url>${aws.webdriver.base.url}</aws.webdriver.base.url>
+                        <dev.webdriver.base.url>${dev.webdriver.base.url}</dev.webdriver.base.url>
+                        <nr.webdriver.base.url>${nr.webdriver.base.url}</nr.webdriver.base.url>
+                        <prod.webdriver.base.url>${prod.webdriver.base.url}</prod.webdriver.base.url>
                     </systemPropertyVariables>
                     <parallel>classes</parallel>
                     <parallel>methods</parallel>
