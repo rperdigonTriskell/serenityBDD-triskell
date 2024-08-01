@@ -9,7 +9,7 @@ Feature: Dashboard parts
     And click in "Validate"
     Then check to "Dashboard" has loaded
 
-  @AWS @DEV @NR @PROD
+  @PROD #@AWS @DEV @NR @PROD
   Scenario: See All components Dashboard
     Then check to the following sidebar elements are:
       | element             | visibility |

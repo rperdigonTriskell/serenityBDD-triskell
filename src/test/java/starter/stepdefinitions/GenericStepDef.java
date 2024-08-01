@@ -33,25 +33,25 @@ public class GenericStepDef {
     /**
      * Sets the stage before each scenario.
      */
-//    @Before
-//    public void setTheStage(Scenario scenario) {
-//        OnStage.setTheStage(new OnlineCast());
-//        Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
-//        for (String tag : scenarioTags) {
-//            try {
-//                baseUrl = getBaseUrl(tag);
-//                if (baseUrl != null) {
-//                    break;
-//                }
-//            } catch (RuntimeException e) {
-//                System.out.println("No URL found for tag: " + tag + ", checking next tag.");
-//            }
-//        }
-//
-//        if (baseUrl == null) {
-//            throw new RuntimeException("No matching environment URL found for scenario tags.");
-//        }
-//    }
+    @Before
+    public void setTheStage(Scenario scenario) {
+        OnStage.setTheStage(new OnlineCast());
+        Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
+        for (String tag : scenarioTags) {
+            try {
+                baseUrl = getBaseUrl(tag);
+                if (baseUrl != null) {
+                    break;
+                }
+            } catch (RuntimeException e) {
+                System.out.println("No URL found for tag: " + tag + ", checking next tag.");
+            }
+        }
+
+        if (baseUrl == null) {
+            throw new RuntimeException("No matching environment URL found for scenario tags.");
+        }
+    }
 
     /**
      * Navigates to a web page.
