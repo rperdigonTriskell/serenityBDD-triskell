@@ -1,3 +1,4 @@
+@Dashboard
 Feature: Dashboard parts
 
   Background:
@@ -54,6 +55,7 @@ Feature: Dashboard parts
       | Favorites board             | visible    |
       | My Alerts and Notifications | visible    |
       | My Calendar View            | visible    |
+
 
 
 #  Identificar las funcionalidades clave de la sección web:

@@ -3,33 +3,55 @@ package starter.stepdefinitions;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static starter.Constants.*;
-import static starter.tasks.ElementInteraction.*;
-import static starter.tasks.ElementVisibilityVerifier.*;
-import static starter.tasks.IsLoad.*;
+import static starter.tasks.ElementInteraction.clickOnTarget;
+import static starter.tasks.ElementVisibilityVerifier.dataTableAreVisible;
+import static starter.tasks.ElementVisibilityVerifier.verifyElementTextIs;
+import static starter.tasks.IsLoad.isLoadPage;
+import static starter.tasks.IsLoad.isNotLoadPage;
 import static starter.tasks.NavigateTo.*;
+import static starter.selectors.factory.PageFactory.getDriverStatic;
 import static starter.tasks.SendTextTo.*;
 import static starter.tasks.security.CredentialManager.getCredential;
-import static starter.selectors.factory.PageFactory.getDriverStatic;
+import static starter.tasks.security.EnvironmentManager.getBaseUrl;
 
 public class GenericStepDef {
-    //Actor for scenario
+    // Actor for scenario
     String actor = "user not logged";
+    String baseUrl;
 
     /**
      * Sets the stage before each scenario.
      */
-    @Before
-    public void setTheStage() {
-        OnStage.setTheStage(new OnlineCast());
-    }
+//    @Before
+//    public void setTheStage(Scenario scenario) {
+//        OnStage.setTheStage(new OnlineCast());
+//        Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
+//        for (String tag : scenarioTags) {
+//            try {
+//                baseUrl = getBaseUrl(tag);
+//                if (baseUrl != null) {
+//                    break;
+//                }
+//            } catch (RuntimeException e) {
+//                System.out.println("No URL found for tag: " + tag + ", checking next tag.");
+//            }
+//        }
+//
+//        if (baseUrl == null) {
+//            throw new RuntimeException("No matching environment URL found for scenario tags.");
+//        }
+//    }
 
     /**
      * Navigates to a web page.
@@ -47,8 +69,9 @@ public class GenericStepDef {
      */
     @Given("go to web Triskell")
     public void goToTriskell() {
-        theEnviromentWebSite(actor);
+        theWebSite(baseUrl, actor);
     }
+
 
     /**
      * Navigates to a web page.

@@ -6,9 +6,9 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import org.openqa.selenium.WebDriverException;
 
 import static starter.tasks.security.CredentialManager.getCredential;
-import static starter.tasks.security.EnvironmentManager.getBaseUrl;
 
 public class NavigateTo {
+
     /**
      * Navigates the specified actor to the given website URL.
      *
@@ -19,15 +19,6 @@ public class NavigateTo {
         OnStage.theActorCalled(actor).attemptsTo(Open.url(getCredential(url, false)));
     }
 
-    /**
-     * Navigates the specified actor to the given website URL.
-     *
-     * @param actor the name of the actor performing the navigation
-     */
-    public static void theEnviromentWebSite(String actor) {
-        String url = getBaseUrl();
-        OnStage.theActorCalled(actor).attemptsTo(Open.url(getCredential(url, false)));
-    }
 
     /**
      * Attempts to navigate the specified actor to an invalid URL to trigger an error.
