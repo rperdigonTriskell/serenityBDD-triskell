@@ -27,7 +27,7 @@ public class DashboardPage extends AbstractPage {
         mapSelectors.put(SIDEBAR_CONTEXT + "Sprint", By.cssSelector("a[data-qtip='Sprint']"));
         mapSelectors.put(SIDEBAR_CONTEXT + "Issue", By.cssSelector("a[data-qtip='Issue']"));
         mapSelectors.put(SIDEBAR_CONTEXT + "Department", By.cssSelector("a[data-qtip='Department']"));
-        mapSelectors.put(SIDEBAR_CONTEXT + "Timesheet", By.cssSelector("a[data-qtip='Timesheet']"));
+        mapSelectors.put(SIDEBAR_CONTEXT + TIMESHEET, By.cssSelector("a[data-qtip='Timesheet']"));
         mapSelectors.put(SIDEBAR_CONTEXT + "Reports", By.cssSelector("a[data-qtip='Reports']"));
         mapSelectors.put(SIDEBAR_CONTEXT + "Strategic Plan", By.cssSelector("a[data-qtip='Strategic Plan']"));
         mapSelectors.put(SIDEBAR_CONTEXT + "Strategic Objective", By.cssSelector("a[data-qtip='Strategic Objective']"));

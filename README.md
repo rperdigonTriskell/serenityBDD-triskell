@@ -30,6 +30,8 @@ Both variations of the sample project uses the sample Cucumber scenario. In this
 ```Gherkin
 Feature: Search by keyword
 
+
+  @PROD
   Scenario: Searching for a term
     Given Sergey is researching things on the internet
     When he looks up "Cucumber"

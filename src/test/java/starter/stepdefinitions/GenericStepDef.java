@@ -65,7 +65,6 @@ public class GenericStepDef {
 
     /**
      * Navigates to system environment web page.
-     *
      */
     @Given("go to web Triskell")
     public void goToTriskell() {
@@ -138,35 +137,15 @@ public class GenericStepDef {
         isLoadPage(page);
     }
 
-
     /**
-     * Checks if sidebar elements are visible or invisible.
+     * Checks if elements in the given context are visible or invisible.
      *
-     * @param dataTable
+     * @param context   the context in which to check the elements
+     * @param dataTable the DataTable containing the elements to check
      */
-    @Then("check to the following sidebar elements are:")
-    public void checkFollowingSidebarElementsAre(DataTable dataTable) {
-        dataTableAreVisible(SIDEBAR_CONTEXT, dataTable);
-    }
-
-    /**
-     * Checks if heading elements are visible or invisible.
-     *
-     * @param dataTable
-     */
-    @Then("check to the following heading elements are:")
-    public void checkFollowingHeadingElementsAre(DataTable dataTable) {
-        dataTableAreVisible(HEADING_CONTEXT, dataTable);
-    }
-
-    /**
-     * Checks if dashboard elements are visible or invisible.
-     *
-     * @param dataTable
-     */
-    @Then("check to the following dashboard elements are:")
-    public void checkFollowingDashboardElementsAre(DataTable dataTable) {
-        dataTableAreVisible(DASHBOARD_CONTEXT, dataTable);
+    @Then("check to the following {string} elements are:")
+    public void checkFollowingElementsAre(String context, DataTable dataTable) {
+        dataTableAreVisible(context + " ", dataTable);
     }
 
 

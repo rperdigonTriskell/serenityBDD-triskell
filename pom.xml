@@ -121,10 +121,6 @@
                     <systemPropertyVariables>
                         <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
                         <cucumber.filter.tags>${tags}</cucumber.filter.tags>
-                        <aws.webdriver.base.url>@AWS</aws.webdriver.base.url>
-                        <dev.webdriver.base.url>@DEV</dev.webdriver.base.url>
-                        <nr.webdriver.base.url>@NR</nr.webdriver.base.url>
-                        <prod.webdriver.base.url>@PROD</prod.webdriver.base.url>
                     </systemPropertyVariables>
                     <parallel>classes</parallel>
                     <parallel>methods</parallel>
