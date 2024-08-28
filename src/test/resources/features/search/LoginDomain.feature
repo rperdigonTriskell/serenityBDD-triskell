@@ -291,37 +291,37 @@
 #      #      | https://intnr.triskellsoftware.com/triskell/init/    |
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
-##
-##  @PROD
-##  Scenario Outline: XSS Injection
-##    Given go to wrong web "<webside>" with domain "domain" and XSS atack
-##    Then check to "Login" hasn't loaded
-##    Examples:
-##      | webside                                                     |
-####      | https://intaws.triskellsoftware.com/triskell/init/domain/ |
-###      #      | https://intdev.triskellsoftware.com/triskell/init/domain/ |
-###      #      | https://intnr.triskellsoftware.com/triskell/init/domain/ |
-##      | https://ondemand.triskellsoftware.com/triskell/init/domain/ |
-##
-##
-##  @PROD
-##  Scenario Outline: XSS Injection login
-##    Given go to web "<webside>" with domain "domain"
-##    Then check to "Login" has loaded
-##    When send credential "xss" to element "Username"
-##    And send credential "xss" to element "Password"
-##    And click in "Validate"
-##    And click in "X"
-##    And send credential "username" to element "Username"
-##    And send credential "spaced_password" to element "Password"
-##    And click in "Validate"
-##    Examples:
-##      | webside                                            |
-####      | https://intaws.triskellsoftware.com/triskell/init/ |
-###      #      | https://intdev.triskellsoftware.com/triskell/init/ |
-###      #      | https://intnr.triskellsoftware.com/triskell/init/  |
-##      | https://ondemand.triskellsoftware.com/triskell/init/ |
-##
+#
+#  @PROD
+#  Scenario Outline: XSS Injection
+#    Given go to wrong web "<webside>" with domain "domain" and XSS atack
+#    Then check to "Login" hasn't loaded
+#    Examples:
+#      | webside                                                     |
+###      | https://intaws.triskellsoftware.com/triskell/init/domain/ |
+##      #      | https://intdev.triskellsoftware.com/triskell/init/domain/ |
+##      #      | https://intnr.triskellsoftware.com/triskell/init/domain/ |
+#      | https://ondemand.triskellsoftware.com/triskell/init/domain/ |
+#
+#
+#  @PROD
+#  Scenario Outline: XSS Injection login
+#    Given go to web "<webside>" with domain "domain"
+#    Then check to "Login" has loaded
+#    When send credential "xss" to element "Username"
+#    And send credential "xss" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "username" to element "Username"
+#    And send credential "spaced_password" to element "Password"
+#    And click in "Validate"
+#    Examples:
+#      | webside                                            |
+###      | https://intaws.triskellsoftware.com/triskell/init/ |
+##      #      | https://intdev.triskellsoftware.com/triskell/init/ |
+##      #      | https://intnr.triskellsoftware.com/triskell/init/  |
+#      | https://ondemand.triskellsoftware.com/triskell/init/ |
+#
 #
 #  @PROD
 #  Scenario Outline: Force Attack

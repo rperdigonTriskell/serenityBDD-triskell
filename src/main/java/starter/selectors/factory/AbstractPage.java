@@ -1,11 +1,12 @@
 package starter.selectors.factory;
 
+import net.serenitybdd.core.pages.PageObject;
 import org.openqa.selenium.By;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractPage implements SelectorFactory {
+public abstract class AbstractPage extends PageObject implements SelectorFactory {
 
     /**
      * Map to hold selector names and their corresponding By objects.

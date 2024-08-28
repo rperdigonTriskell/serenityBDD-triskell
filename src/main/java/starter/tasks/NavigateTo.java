@@ -5,6 +5,7 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnStage;
 import org.openqa.selenium.WebDriverException;
 
+import static starter.selectors.factory.PageFactory.getStaticDriver;
 import static starter.tasks.security.CredentialManager.getCredential;
 
 public class NavigateTo {
@@ -29,7 +30,7 @@ public class NavigateTo {
     public static void theWrongWebSite(String url, String actor) {
         try {
             OnStage.theActor(actor);
-            Serenity.getDriver().get(url);
+            getStaticDriver().get(url);
         } catch (WebDriverException e) {
             if (e.getMessage().contains("ERR_NAME_NOT_RESOLVED")) {
                 Serenity.recordReportData()
@@ -39,6 +40,22 @@ public class NavigateTo {
                                 + ". Expected behavior: Name not resolved error.");
             } else {
                 // For other exceptions, re-throw to ensure they are recorded as errors
+                throw e;
+            }
+        }
+    }
+
+    public static void theWrongWebSiteWithoutRecording(String url, String actor) {
+        try {
+            getStaticDriver().get(url);  // Este paso no se registra en el reporte de Serenity
+
+        } catch (WebDriverException e) {
+            if (e.getMessage().contains("ERR_NAME_NOT_RESOLVED")) {
+                Serenity.recordReportData()
+                        .asEvidence()
+                        .withTitle("Expected Behavior")
+                        .andContents("Attempted to navigate to an invalid URL.");
+            } else {
                 throw e;
             }
         }

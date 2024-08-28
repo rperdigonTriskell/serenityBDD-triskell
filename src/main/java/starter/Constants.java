@@ -1,6 +1,7 @@
 package starter;
 
-import org.openqa.selenium.By;
+
+import java.time.Duration;
 
 public class Constants {
     public final static String LOGIN = "Login";
@@ -26,8 +27,9 @@ public class Constants {
             "enabled",
             "disabled",
             "present",
-            "absent",
+            "not present",
             "selected",
             "deselected",
     };
+    public static final Duration WAIT_DURATION = Duration.ofSeconds(5);
 }

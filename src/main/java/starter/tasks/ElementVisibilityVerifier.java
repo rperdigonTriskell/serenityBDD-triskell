@@ -2,18 +2,37 @@ package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
-import net.serenitybdd.screenplay.questions.Text;
+import net.serenitybdd.screenplay.questions.WebElementQuestion;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
 import static net.serenitybdd.screenplay.questions.WebElementQuestion.the;
-import static org.hamcrest.Matchers.equalTo;
 import static starter.Constants.*;
 import static starter.selectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
 
 public class ElementVisibilityVerifier {
+
+    /**
+     * Verifies if the given web element is visible or not.
+     *
+     * @param element    The element to be verified.
+     * @param visibility A boolean that determines if the element should be visible or not.
+     */
+    public static void verifyElementVisibility(String element, String visibility) {
+        if (visibility.equalsIgnoreCase(STATES[0])) {
+            verifyElementIsVisible(element);
+        } else if (visibility.equalsIgnoreCase(STATES[1])) {
+            verifyElementIsNotVisible(element);
+        } else if (visibility.equalsIgnoreCase(STATES[4])) {
+            verifyElementIsPresent(element);
+        }else if (visibility.equalsIgnoreCase(STATES[5])) {
+            verifyElementIsNotPresent(element);
+        } else {
+            throw new IllegalArgumentException("Unknown visibility state: " + visibility);
+        }
+    }
 
     /**
      * Verifies if the given web element is visible or not.
@@ -24,7 +43,7 @@ public class ElementVisibilityVerifier {
     public static void verifyElementVisibility(String element, boolean isVisible) {
         performShouldSeeThat(
                 "check that the element visibility is: " + isVisible + ", for element: " + element,
-                actor -> the(getCurrentPage().getSelector(element)).answeredBy(actor),
+                actor -> WebElementQuestion.stateOf(getCurrentPage().getSelector(element)).answeredBy(actor),
                 isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible()
         );
     }
@@ -47,19 +66,6 @@ public class ElementVisibilityVerifier {
         verifyElementVisibility(element, false);
     }
 
-    /**
-     * Verifies if the element text matches the expected text.
-     *
-     * @param element      The element to verify.
-     * @param expectedText The expected text to match.
-     */
-    public static void verifyElementTextIs(String element, String expectedText) {
-        performShouldSeeThat(
-                "check that the element text matches the expected text",
-                actor -> Text.of(getCurrentPage().getSelector(element)).answeredBy(actor),
-                equalTo(expectedText)
-        );
-    }
 
     /**
      * Verifies if the elements in the DataTable are visible according to their specified visibility.
@@ -70,15 +76,51 @@ public class ElementVisibilityVerifier {
         Consumer<Map<String, String>> elementProcessor = element -> {
             String elementName = element.get(ELEMENT);
             String visibility = element.get(VISIBILITY);
-            if (visibility.equalsIgnoreCase(STATES[0])) {
-                verifyElementIsVisible(context + elementName);
-            } else if (STATES[1].equalsIgnoreCase(visibility)) {
-                verifyElementIsNotVisible(context + elementName);
-            } else {
-                throw new IllegalArgumentException("Unknown visibility state: " + visibility);
-            }
+            verifyElementVisibility(context + elementName, visibility);
         };
 
         dataTableUtil(dataTable, elementProcessor);
+    }
+
+    /**
+     * Verifies if the given web element is visible.
+     *
+     * @param element The element to be verified.
+     */
+    public static void verifyElementIsPresent(String element) {
+        verifyElementPresence(element, true);
+    }
+
+    /**
+     * Verifies that the given element is not visible on the current page.
+     *
+     * @param element The element to be verified.
+     */
+    public static void verifyElementIsNotPresent(String element) {
+        verifyElementPresence(element, false);
+    }
+
+    /**
+     * Verifies if the given web element is present in the DOM or not.
+     *
+     * @param element    The element to be verified.
+     * @param isPresent  A boolean that determines if the element should be present or not.
+     */
+    public static void verifyElementPresence(String element, boolean isPresent) {
+        if (isPresent) {
+            // Verifica que el elemento esté presente en el DOM
+            performShouldSeeThat(
+                    "check that the element is present: " + element,
+                    actor -> the(getCurrentPage().getSelector(element)).answeredBy(actor),
+                    WebElementStateMatchers.isPresent()
+            );
+        } else {
+            // Verifica que el elemento NO esté presente en el DOM
+            performShouldSeeThat(
+                    "check that the element is NOT present: " + element,
+                    actor -> the(getCurrentPage().getSelector(element)).answeredBy(actor),
+                    WebElementStateMatchers.isNotPresent()
+            );
+        }
     }
 }

@@ -14,18 +14,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static starter.Constants.*;
+import static starter.tasks.ElementDataVerifier.verifyElementTextIs;
+import static starter.tasks.ElementDataVerifier.verifyTableElementsMatchData;
 import static starter.tasks.ElementInteraction.clickOnTarget;
 import static starter.tasks.ElementVisibilityVerifier.dataTableAreVisible;
-import static starter.tasks.ElementVisibilityVerifier.verifyElementTextIs;
+import static starter.tasks.ElementVisibilityVerifier.verifyElementVisibility;
 import static starter.tasks.IsLoad.isLoadPage;
 import static starter.tasks.IsLoad.isNotLoadPage;
 import static starter.tasks.NavigateTo.*;
-import static starter.selectors.factory.PageFactory.getDriverStatic;
+import static starter.selectors.factory.PageFactory.getStaticDriver;
 import static starter.tasks.SendTextTo.*;
 import static starter.tasks.security.CredentialManager.getCredential;
 import static starter.tasks.security.EnvironmentManager.getBaseUrl;
 
 public class GenericStepDef {
+    /**
+     * Other utilities
+     */
     // Actor for scenario
     String actor = "user not logged";
     String baseUrl;
@@ -52,6 +57,34 @@ public class GenericStepDef {
             throw new RuntimeException("No matching environment URL found for scenario tags.");
         }
     }
+
+    /**
+     * Sets the stage after each scenario.
+     */
+    @After
+    public void finish() {
+        try {
+            if (Serenity.getDriver() != null) {
+                getStaticDriver().quit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            Serenity.getWebdriverManager().closeAllDrivers();
+            try {
+                // Close chromedriver process
+                Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe"); // Windows
+                // Close chrome process
+                Runtime.getRuntime().exec("taskkill /F /IM chrome.exe"); // Windows
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Generic steps definitions
+     * */
 
     /**
      * Navigates to a web page.
@@ -138,6 +171,17 @@ public class GenericStepDef {
     }
 
     /**
+     * Verifies the visibility of an element.
+     *
+     * @param element the element to verify
+     * @param visibility the expected visibility of the element
+     */
+    @Then("verify the element {string} are {string}")
+    public void verifyTheElementAre(String element, String visibility) {
+        verifyElementVisibility(element, visibility);
+    }
+
+    /**
      * Checks if elements in the given context are visible or invisible.
      *
      * @param context   the context in which to check the elements
@@ -147,7 +191,6 @@ public class GenericStepDef {
     public void checkFollowingElementsAre(String context, DataTable dataTable) {
         dataTableAreVisible(context + " ", dataTable);
     }
-
 
     /**
      * Checks if a page hasn't loaded.
@@ -170,6 +213,11 @@ public class GenericStepDef {
         verifyElementTextIs(element, text);
     }
 
+    @Then("verify the following elements on the {string} should match the expected data:")
+    public void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
+        verifyTableElementsMatchData(context, dataTable);
+    }
+
     /**
      * Clicks on an element.
      *
@@ -178,6 +226,16 @@ public class GenericStepDef {
     @When("click in {string}")
     public void clickIn(String element) {
         clickOnTarget(element);
+    }
+
+    /**
+     * Clicks on an element.
+     *
+     * @param element the element to click on
+     */
+    @When("click in sidebar {string}")
+    public void clickInSidebar(String element) {
+        clickOnTarget(SIDEBAR_CONTEXT + element);
     }
 
     /**
@@ -212,27 +270,4 @@ public class GenericStepDef {
         table(table);
     }
 
-    /**
-     * Sets the stage after each scenario.
-     */
-    @After
-    public void finish() {
-        try {
-            if (Serenity.getDriver() != null) {
-                getDriverStatic().quit();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            Serenity.getWebdriverManager().closeAllDrivers();
-            try {
-                // Close chromedriver process
-                Runtime.getRuntime().exec("taskkill /F /IM chromedriver.exe"); // Windows
-                // Close chrome process
-                Runtime.getRuntime().exec("taskkill /F /IM chrome.exe"); // Windows
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

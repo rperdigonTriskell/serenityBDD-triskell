@@ -369,35 +369,35 @@
 #      | https://ondemand.triskellsoftware.com/triskell/ |
 #
 ##
-##  @PROD
-##  Scenario Outline: XSS Injection
-##    Given go to wrong web "<webside>" with XSS atack
-##    Then check to "Login" hasn't loaded
-##    Examples:
-##      | webside                                       |
-####      | https://intaws.triskellsoftware.com/triskell/ |
-###      #      | https://intdev.triskellsoftware.com/triskell/ |
-###      #      | https://intnr.triskellsoftware.com/triskell/  |
-##      | https://ondemand.triskellsoftware.com/triskell  |
-#
-##
-##  @PROD
-##  Scenario Outline: XSS Injection login
-##    Given go to web "<webside>"
-##    Then check to "Login" has loaded
-##    When send credential "xss" to element "Username"
-##    And send credential "xss" to element "Password"
-##    And click in "Validate"
-##    And click in "X"
-##    And send credential "username" to element "Username"
-##    And send credential "spaced_password" to element "Password"
-##    And click in "Validate"
-##    Examples:
-##      | webside                                       |
+#  @PROD
+#  Scenario Outline: XSS Injection
+#    Given go to wrong web "<webside>" with XSS atack
+#    Then check to "Login" hasn't loaded
+#    Examples:
+#      | webside                                       |
 ###      | https://intaws.triskellsoftware.com/triskell/ |
 ##      #      | https://intdev.triskellsoftware.com/triskell/ |
 ##      #      | https://intnr.triskellsoftware.com/triskell/  |
-##      | https://ondemand.triskellsoftware.com/triskell  |
+#      | https://ondemand.triskellsoftware.com/triskell  |
+#
+#
+#  @PROD
+#  Scenario Outline: XSS Injection login
+#    Given go to web "<webside>"
+#    Then check to "Login" has loaded
+#    When send credential "xss" to element "Username"
+#    And send credential "xss" to element "Password"
+#    And click in "Validate"
+#    And click in "X"
+#    And send credential "username" to element "Username"
+#    And send credential "spaced_password" to element "Password"
+#    And click in "Validate"
+#    Examples:
+#      | webside                                       |
+##      | https://intaws.triskellsoftware.com/triskell/ |
+#      #      | https://intdev.triskellsoftware.com/triskell/ |
+#      #      | https://intnr.triskellsoftware.com/triskell/  |
+#      | https://ondemand.triskellsoftware.com/triskell  |
 #
 #
 #  @PROD
@@ -433,15 +433,15 @@
 #    Then check to "bad url" has loaded
 #    Examples:
 #      | webside                                         |
-#      | https://intawss.triskellsoftware.com/triskell/  |
-#      | https://intdevs.triskellsoftware.com/triskell/  |
-#      | https://intnrs.triskellsoftware.com/triskell/   |
-#      | https://intaws.triskellsoftwaree.com/triskell/  |
-#      | https://intdev.triskellsoftwaree.com/triskell/  |
-#      | https://intnr.triskellsoftwareee.com/triskell/  |
-#      | https://intaws.triskellsoftware.como/triskell/  |
-#      | https://intdev.triskellsoftware.como/triskell/  |
-#      | https://intnr.triskellsoftware.como/triskell/   |
+##      | https://intawss.triskellsoftware.com/triskell/  |
+##      | https://intdevs.triskellsoftware.com/triskell/  |
+##      | https://intnrs.triskellsoftware.com/triskell/   |
+##      | https://intaws.triskellsoftwaree.com/triskell/  |
+##      | https://intdev.triskellsoftwaree.com/triskell/  |
+##      | https://intnr.triskellsoftwareee.com/triskell/  |
+##      | https://intaws.triskellsoftware.como/triskell/  |
+##      | https://intdev.triskellsoftware.como/triskell/  |
+##      | https://intnr.triskellsoftware.como/triskell/   |
 #      | https://ondemandr.triskellsoftware.com/triskell |
 #
 #

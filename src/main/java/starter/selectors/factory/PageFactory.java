@@ -19,10 +19,11 @@ public class PageFactory extends PageObject {
      * Map associating page names with their corresponding instances.
      */
     private static final Map<String, AbstractPage> map = new HashMap<String, AbstractPage>() {{
-        put(LOGIN, initElements(getDriverStatic(), LoginPage.class));
-        put(BAD_URL, initElements(getDriverStatic(), LoginPage.class));
-        put(BAD_URL_FOLDER, initElements(getDriverStatic(), LoginPage.class));
-        put(DASHBOARD, initElements(getDriverStatic(), DashboardPage.class));
+        put(LOGIN, initElements(getStaticDriver(), LoginPage.class));
+        put(BAD_URL, initElements(getStaticDriver(), LoginPage.class));
+        put(BAD_URL_FOLDER, initElements(getStaticDriver(), LoginPage.class));
+        put(DASHBOARD, initElements(getStaticDriver(), DashboardPage.class));
+        put(TIMESHEET, initElements(getStaticDriver(), TimesheetPage.class));
     }};
 
     /**
@@ -67,7 +68,7 @@ public class PageFactory extends PageObject {
      *
      * @return Static instance of WebDriver.
      */
-    public static WebDriver getDriverStatic() {
+    public static WebDriver getStaticDriver() {
         return new PageFactory().getDriver();
     }
 
