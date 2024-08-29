@@ -31,5 +31,5 @@ public class Constants {
             "selected",
             "deselected",
     };
-    public static final Duration WAIT_DURATION = Duration.ofSeconds(5);
+    public static final Duration WAIT_DURATION = Duration.ofSeconds(2);
 }

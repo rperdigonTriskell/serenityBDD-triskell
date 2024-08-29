@@ -3,9 +3,7 @@ package starter.tasks;
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
 import net.serenitybdd.screenplay.questions.Text;
-import net.serenitybdd.screenplay.questions.WebElementQuestion;
 import org.hamcrest.Matchers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -39,9 +37,15 @@ public class ElementDataVerifier extends PageObject {
         );
     }
 
+    /**
+     * Verifies if the table elements match the data in the provided DataTable.
+     *
+     * @param  context    the context used to find the web table
+     * @param  dataTable  the DataTable containing the expected data
+     */
     public static void verifyTableElementsMatchData(String context, DataTable dataTable) {
         // Find the web table based on the provided context
-        WebElementFacade table = waitElementVisible(getCurrentPage().$(getCurrentPage().getSelector(context)));
+        WebElementFacade table = waitElementVisible(getCurrentPage().$(getCurrentPage().getSelector(context)),true);
 
         // Find the table rows on the web
         List<WebElementFacade> rows = waitElementsVisible(getTableRows(table));
@@ -58,6 +62,13 @@ public class ElementDataVerifier extends PageObject {
         }
     }
 
+    /**
+     * Verifies the data in a row of a table by comparing it with the expected data.
+     *
+     * @param  row         the WebElement representing the row to verify
+     * @param  expectedRow a Map containing the expected data for each column in the row
+     * @throws AssertionError if the number of columns in the row does not match the expected number of columns
+     */
     private static void verifyRowData(WebElement row, Map<String, String> expectedRow) {
         // Find the columns within the row
         List<WebElement> columns = row.findElements(By.cssSelector("td"));

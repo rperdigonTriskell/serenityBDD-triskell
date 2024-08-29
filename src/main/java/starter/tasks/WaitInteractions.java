@@ -1,29 +1,30 @@
 package starter.tasks;
 
-import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.actors.OnStage;
-import net.serenitybdd.screenplay.waits.Wait;
-import org.hamcrest.Matcher;
-import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.function.Function;
 
-public class WaitInteractions extends PageObject {
+import static starter.Constants.WAIT_DURATION;
+import static starter.selectors.factory.PageFactory.getStaticDriver;
 
-    private static final Duration WAIT_DURATION = Duration.ofSeconds(10);
+public class WaitInteractions{
 
     /**
-     * Waits for a WebElement to be present on the page using its selector (using Serenity's WebElementFacade).
+     * Waits for the given WebElementFacade to become present or not present, depending on the value of the 'present' parameter.
      *
-     * @param by the By selector to locate the WebElement
-     * @return the WebElementFacade that was found
+     * @param element the WebElementFacade to wait for
+     * @param present a boolean indicating whether the element should be present or not present
+     * @return the WebElementFacade if it is present and 'present' is true, or null if it is not present and 'present' is true, or null if it is present and 'present' is false, or the WebElementFacade if it is not present and 'present' is false
+     * @throws TimeoutException if the element does not become present within the specified timeout duration
      */
-    public static WebElementFacade waitElementIsPresent(By by) {
-        return new WaitInteractions().$(by).waitUntilPresent();
+    public static WebElementFacade waitElementPresent(WebElementFacade element, boolean present) {
+        if (present) {
+            return element.withTimeoutOf(WAIT_DURATION).waitUntilPresent();
+        } else {
+            return waitUntilElementNotPresent(element);
+        }
     }
 
     /**
@@ -32,8 +33,12 @@ public class WaitInteractions extends PageObject {
      * @param element the WebElementFacade to wait for
      * @return the WebElementFacade that was found
      */
-    public static WebElementFacade waitElementVisible(WebElementFacade element) {
-        return element.waitUntilVisible();
+    public static WebElementFacade waitElementVisible(WebElementFacade element, boolean visibility) {
+        if (visibility) {
+            return element.withTimeoutOf(WAIT_DURATION).waitUntilVisible();
+        } else {
+            return element.withTimeoutOf(WAIT_DURATION).waitUntilNotVisible();
+        }
     }
 
     /**
@@ -43,23 +48,19 @@ public class WaitInteractions extends PageObject {
      * @return the list of WebElementFacades that were found and are visible
      */
     public static List<WebElementFacade> waitElementsVisible(List<WebElementFacade> elements) {
-        // Recorremos cada elemento para aplicar la espera de visibilidad
-        for (WebElementFacade element : elements) {
-            element.waitUntilVisible();
-        }
+        elements.forEach(WebElementFacade::waitUntilVisible);
         return elements;
     }
 
-    /**
-     * Waits for the result of a function applied to the actor to match a given matcher.
-     *
-     * @param questionFunction a function that takes an actor and returns a value of type T
-     * @param matcher          a matcher that checks if a value of type T matches a certain condition
-     * @param <T>              the type of the value returned by the questionFunction
-     */
-    public static <T> void waitPerformShouldSeeThat(Function<Actor, T> questionFunction, Matcher<T> matcher) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                Wait.until(actor -> questionFunction.apply(actor), matcher).forNoMoreThan(10).seconds()
-        );
+    public static WebElementFacade waitUntilElementNotPresent(WebElementFacade element) {
+        WebDriverWait wait = new WebDriverWait(getStaticDriver(), WAIT_DURATION);
+        wait.until(driver -> {
+            try {
+                return !element.isPresent();
+            } catch (Exception e) {
+                return true;
+            }
+        });
+        return element;
     }
 }

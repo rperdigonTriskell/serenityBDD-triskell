@@ -29,9 +29,6 @@ public class GenericTasks {
      * @param <T>              The type of the question result.
      */
     public static  <T> void performShouldSeeThat(String description, Function<Actor, T> questionFunction, Matcher<T> matcher) {
-        // Espera a que la condición sea adecuada usando WaitInteractions
-        waitPerformShouldSeeThat(questionFunction, matcher);
-
         // Luego se realiza la verificación usando el matcher después de la espera
         OnStage.theActorInTheSpotlight().should(
                 seeThat(description, questionFunction::apply, matcher)
@@ -68,19 +65,13 @@ public class GenericTasks {
      * @return        a list of WebElements representing the table rows
      */
     public static List<WebElementFacade> getTableRows(WebElementFacade table) {
-        List<WebElement> elements;
-
-        // Verifica si el elemento table contiene otra tabla
+        List<WebElementFacade> elements;
         if (table.findElements(By.cssSelector("table")).size() > 0) {
-            elements = table.findElements(By.cssSelector("tr table > tbody > tr"));
+            elements = table.thenFindAll(By.cssSelector("table table tbody tr"));
         } else {
-            elements = table.findElements(By.cssSelector("tr"));
+            elements = table.thenFindAll(By.cssSelector("tr"));
         }
-
-        // Convierte la lista de WebElements a WebElementFacade
-        return elements.stream()
-                .map(element -> (WebElementFacade) element) // Necesario para Serenity BDD
-                .collect(Collectors.toList());
+        return elements;
     }
 
     /**

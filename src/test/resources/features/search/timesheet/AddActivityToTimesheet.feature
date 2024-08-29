@@ -16,7 +16,7 @@ Feature: Add Activity to Timesheet
   @PROD
   Scenario: Add a New Activity
     When click in timesheet "Timesheet"
-    Then verify the element "Timesheet board activity board" are "visible"
+    Then verify the element "Timesheet board Add Activities" are "visible"
     Then verify the text element timesheet board "activity board" is ""
     When click in timesheet board "Add Activities"
     Then verify the element "Add Object To Timesheet" are "visible"
@@ -24,7 +24,7 @@ Feature: Add Activity to Timesheet
     And click in "Search icon"
     And click in "MAPRE Portfolio Task 1 Checkbox"
     And click in "Add & Close"
-#    Then verify the element "Add Object To Timesheet" are "not present"
+    Then verify the element "Add Object To Timesheet" are "not present"
     Then verify the element "Timesheet board activity board" are "visible"
     Then verify the following elements on the "Timesheet board activity board" should match the expected data:
       | Check | WORK APP | RES. APP | PATH                                                | PARENT           | OBJECT | OBJECT TYPE | PLANNED | TOTAL |
