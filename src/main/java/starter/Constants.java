@@ -15,6 +15,7 @@ public class Constants {
     public final static String HEADING_CONTEXT = "Heading ";
     public final static String DASHBOARD_CONTEXT = DASHBOARD + " ";
     public final static String TIMESHEET_CONTEXT = TIMESHEET + " ";
+    public final static String ACTIVITY = "activity";
     public final static String BOARD_SUFFIX = " board";
     public final static String FAVORITES = "Favorites";
     public final static String LAST_MODIFIED = "Last Modified";

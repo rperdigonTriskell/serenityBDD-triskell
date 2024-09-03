@@ -2,6 +2,7 @@ package starter.tasks;
 
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -52,6 +53,12 @@ public class WaitInteractions{
         return elements;
     }
 
+    /**
+     * Waits until the given WebElementFacade is no longer present on the page.
+     *
+     * @param  element the WebElementFacade to wait for
+     * @return         the WebElementFacade that was found
+     */
     public static WebElementFacade waitUntilElementNotPresent(WebElementFacade element) {
         WebDriverWait wait = new WebDriverWait(getStaticDriver(), WAIT_DURATION);
         wait.until(driver -> {

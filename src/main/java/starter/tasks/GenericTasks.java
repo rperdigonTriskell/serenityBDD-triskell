@@ -6,17 +6,14 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.OnStage;
 import org.hamcrest.Matcher;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
-import static starter.tasks.WaitInteractions.*;
 
 public class GenericTasks {
 
@@ -66,7 +63,7 @@ public class GenericTasks {
      */
     public static List<WebElementFacade> getTableRows(WebElementFacade table) {
         List<WebElementFacade> elements;
-        if (table.findElements(By.cssSelector("table")).size() > 0) {
+        if (!table.findElements(By.cssSelector("table")).isEmpty()) {
             elements = table.thenFindAll(By.cssSelector("table table tbody tr"));
         } else {
             elements = table.thenFindAll(By.cssSelector("tr"));

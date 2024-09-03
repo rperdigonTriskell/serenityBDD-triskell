@@ -46,7 +46,17 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put("Search", By.name("search"));
         mapSelectors.put("Search icon", By.xpath("//a[.//span[@class='x-btn-icon-el fas fa-search ']]"));
         mapSelectors.put("MAPRE Portfolio Task 1 Checkbox", By.xpath("(//span[contains(text(), 'Task 1')]/preceding-sibling::input)[1]"));
+        mapSelectors.put("Integration_Triskell Task 2 Checkbox", By.xpath("(//span[contains(text(), 'Task 2')]/preceding-sibling::input)[1]"));
+        mapSelectors.put("Integration_Triskell Task 6 Checkbox", By.xpath("(//span[contains(text(), 'Task 6')]/preceding-sibling::input)[1]"));
         mapSelectors.put("Add & Close", By.xpath("(//a[.//span[text()='Add & Close']])[1]"));
+        mapSelectors.put("Close", By.xpath("(//a[.//span[text()='Close']])[1]"));
+        //options
+        mapSelectors.put(TIMESHEET_CONTEXT + "Yes", By.xpath("//a[.//span[text()='Yes']]"));
+        mapSelectors.put("OK", By.xpath("//a[.//span[text()='OK']]"));
+        mapSelectors.put(TIMESHEET_CONTEXT + "all activities checkbox", By.xpath("//div[contains(@id, 'gridcolumn-') and contains(@id, '-titleEl') and @role='presentation' and contains(@class, 'x-column-header-inner') and contains(@class, 'x-column-header-inner-empty')]"));
+        mapSelectors.put(TIMESHEET_CONTEXT + "Delete", By.cssSelector("a[data-qtip='Remove from Timesheet']"));
+        mapSelectors.put("Failed message", By.cssSelector("div[role='textbox'][id*='messagebox']"));
+
         return mapSelectors;
     }
 }

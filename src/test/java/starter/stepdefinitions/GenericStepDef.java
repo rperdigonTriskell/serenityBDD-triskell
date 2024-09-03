@@ -1,13 +1,14 @@
 package starter.stepdefinitions;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
+import org.junit.AfterClass;
+import starter.tasks.security.GlobalState;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -40,12 +41,15 @@ public class GenericStepDef {
      */
     @Before
     public void setTheStage(Scenario scenario) {
-        OnStage.setTheStage(new OnlineCast());
         Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
+        baseUrl = null;
         for (String tag : scenarioTags) {
             try {
-                baseUrl = getBaseUrl(tag);
-                if (baseUrl != null) {
+                if (!GlobalState.isTagProcessed(tag)) {
+                    baseUrl = getBaseUrl(tag);
+                    GlobalState.markTagAsProcessed(tag);
+                    GlobalState.increaseExecutionCount();
+                    System.out.println("Executing scenario #" + GlobalState.getExecutionCount() + " in tag: " + tag);
                     break;
                 }
             } catch (RuntimeException e) {
@@ -56,13 +60,14 @@ public class GenericStepDef {
         if (baseUrl == null) {
             throw new RuntimeException("No matching environment URL found for scenario tags.");
         }
+        OnStage.setTheStage(new OnlineCast());
     }
 
     /**
      * Sets the stage after each scenario.
      */
-    @After
-    public void finish() {
+    @AfterClass
+    public static void finish() {
         try {
             if (Serenity.getDriver() != null) {
                 getStaticDriver().quit();
