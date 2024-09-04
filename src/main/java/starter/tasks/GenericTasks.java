@@ -14,8 +14,19 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
+import static starter.selectors.factory.PageFactory.getCurrentPage;
 
 public class GenericTasks {
+
+    /**
+     * Retrieves the WebElementFacade for the given element on the current page.
+     *
+     * @param element The name of the element to retrieve the WebElementFacade for.
+     * @return The WebElementFacade for the given element.
+     */
+    public static WebElementFacade getWebelementFacade(String element) {
+        return getCurrentPage().$(getCurrentPage().getSelector(element));
+    }
 
     /**
      * Executes a task using the given actor and action function.
@@ -69,6 +80,16 @@ public class GenericTasks {
             elements = table.thenFindAll(By.cssSelector("tr"));
         }
         return elements;
+    }
+
+    /**
+     * Retrieves the list of table rows from the given WebElement table.
+     *
+     * @param  table  the WebElement representing the table
+     * @return        a list of WebElements representing the table rows
+     */
+    public static List<WebElementFacade> getTableColumns(WebElementFacade table) {
+        return table.thenFindAll(By.cssSelector("td"));
     }
 
     /**

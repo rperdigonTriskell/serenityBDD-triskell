@@ -37,7 +37,7 @@ public class ElementDataVerifier extends PageObject {
      * @param expectedText The expected text to match.
      */
     public static void verifyElementTextIs(String element, String expectedText) {
-        waitElementVisible(getCurrentPage().$(getCurrentPage().getSelector(element)), true);
+        waitElementVisible(getWebelementFacade(element), true);
         performShouldSeeThat(
                 "check that the element" + element + " text is: " + expectedText,
                 actor -> Text.of(getCurrentPage().getSelector(element)).answeredBy(actor),
@@ -53,7 +53,7 @@ public class ElementDataVerifier extends PageObject {
      */
     public static void verifyTableElementsMatchData(String context, DataTable dataTable) {
         // Find the web table based on the provided context
-        WebElementFacade table = waitElementVisible(getCurrentPage().$(getCurrentPage().getSelector(context)),true);
+        WebElementFacade table = waitElementVisible(getWebelementFacade(context),true);
 
         // Find the table rows on the web
         List<WebElementFacade> rows = waitElementsVisible(getTableRows(table));
@@ -77,9 +77,9 @@ public class ElementDataVerifier extends PageObject {
      * @param  expectedRow a Map containing the expected data for each column in the row
      * @throws AssertionError if the number of columns in the row does not match the expected number of columns
      */
-    public static void verifyRowData(WebElement row, Map<String, String> expectedRow) {
+    public static void verifyRowData(WebElementFacade row, Map<String, String> expectedRow) {
         // Find the columns within the row
-        List<WebElement> columns = row.findElements(By.cssSelector("td"));
+        List<WebElementFacade> columns = getTableColumns(row);
 
         // Verificar que el número de columnas coincida
         if (columns.size() != expectedRow.size()) {

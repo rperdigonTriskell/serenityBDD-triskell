@@ -9,7 +9,7 @@ import static starter.Constants.*;
 
 public class DashboardPage extends AbstractPage {
     /**
-     * Returns a Home map of selectors for different elements on the page.
+     * Returns a Dashboard map of selectors for different elements on the page.
      *
      * @return a map containing selectors for various elements
      */

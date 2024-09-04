@@ -8,7 +8,6 @@ import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import org.junit.AfterClass;
-import starter.tasks.security.GlobalState;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -41,15 +40,12 @@ public class GenericStepDef {
      */
     @Before
     public void setTheStage(Scenario scenario) {
+        OnStage.setTheStage(new OnlineCast());
         Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
-        baseUrl = null;
         for (String tag : scenarioTags) {
             try {
-                if (!GlobalState.isTagProcessed(tag)) {
-                    baseUrl = getBaseUrl(tag);
-                    GlobalState.markTagAsProcessed(tag);
-                    GlobalState.increaseExecutionCount();
-                    System.out.println("Executing scenario #" + GlobalState.getExecutionCount() + " in tag: " + tag);
+                baseUrl = getBaseUrl(tag);
+                if (baseUrl != null) {
                     break;
                 }
             } catch (RuntimeException e) {
@@ -60,7 +56,6 @@ public class GenericStepDef {
         if (baseUrl == null) {
             throw new RuntimeException("No matching environment URL found for scenario tags.");
         }
-        OnStage.setTheStage(new OnlineCast());
     }
 
     /**
@@ -182,7 +177,7 @@ public class GenericStepDef {
      * @param visibility the expected visibility of the element
      */
     @Then("verify the element {string} are {string}")
-    public void verifyTheElementAre(String element, String visibility) {
+    public static void verifyTheElementAre(String element, String visibility) {
         verifyElementVisibility(element, visibility);
     }
 
@@ -218,6 +213,12 @@ public class GenericStepDef {
         verifyElementTextIs(element, text);
     }
 
+    /**
+     * Verifies that the elements on the specified context match the expected data.
+     *
+     * @param  context   the context in which to verify the elements
+     * @param  dataTable the DataTable containing the expected data for the elements
+     */
     @Then("verify the following elements on the {string} should match the expected data:")
     public void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
         verifyTableElementsMatchData(context, dataTable);
@@ -229,7 +230,7 @@ public class GenericStepDef {
      * @param element the element to click on
      */
     @When("click in {string}")
-    public void clickIn(String element) {
+    public static void clickIn(String element) {
         clickOnTarget(element);
     }
 
@@ -250,7 +251,7 @@ public class GenericStepDef {
      * @param element the element to send the text to
      */
     @When("send text {string} to element {string}")
-    public void sendTextToElement(String text, String element) {
+    public static void sendTextToElement(String text, String element) {
         input(text, element);
     }
 

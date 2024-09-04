@@ -7,10 +7,10 @@ import java.util.Optional;
 public class SelectorFactoryProvider {
 
     private static final Map<String, SelectorFactory> FACTORIES = new HashMap<>();
+
     /**
      * A map of SelectorFactory instances, keyed by the type of factory.
      */
-
     static {
         FACTORIES.put("yaml", new YamlFactory());
         //FACTORIES.put("page", new PageFactory());

@@ -42,7 +42,7 @@ public class ElementVisibilityVerifier {
      * @param isVisible A boolean that determines if the element should be visible or not.
      */
     public static void verifyElementVisibility(String element, boolean isVisible) {
-        waitElementVisible(getCurrentPage().$(getCurrentPage().getSelector(element)), isVisible);
+        waitElementVisible(getWebelementFacade(element), isVisible);
         performShouldSeeThat(
                 "check that the element visibility is: " + isVisible + ", for element: " + element,
                 actor -> WebElementQuestion.stateOf(getCurrentPage().getSelector(element)).answeredBy(actor),
@@ -109,7 +109,7 @@ public class ElementVisibilityVerifier {
      * @param isPresent A boolean that determines if the element should be present or not.
      */
     public static void verifyElementPresence(String element, boolean isPresent) {
-        waitElementPresent(getCurrentPage().$(getCurrentPage().getSelector(element)),isPresent);
+        waitElementPresent(getWebelementFacade(element),isPresent);
         performShouldSeeThat(
                 "check that the element is present: " + element,
                 actor -> WebElementQuestion.stateOf(getCurrentPage().getSelector(element)).answeredBy(actor),

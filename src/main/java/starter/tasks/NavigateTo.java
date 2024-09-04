@@ -45,6 +45,13 @@ public class NavigateTo {
         }
     }
 
+    /**
+     * Attempts to navigate the specified actor to an invalid URL to trigger an error.
+     * This method does not record the navigation in the Serenity report.
+     *
+     * @param  url   the invalid URL to navigate to
+     * @param  actor the name of the actor performing the navigation
+     */
     public static void theWrongWebSiteWithoutRecording(String url, String actor) {
         try {
             getStaticDriver().get(url);  // Este paso no se registra en el reporte de Serenity
