@@ -1,6 +1,7 @@
 package starter.selectors.factory;
 
 import net.serenitybdd.core.pages.PageObject;
+import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -79,32 +80,50 @@ public class PageFactory extends PageObject {
      * @return By object corresponding to the WebElement's selector.
      * @throws IllegalArgumentException If the toString() format is not recognized.
      */
-    public static By getWebElementSelector(WebElement element) {
-        // Get the string representation of the WebElement
+    public static By getWebElementSelector(WebElementFacade element) {
+        if (element == null) {
+            throw new IllegalArgumentException("WebElementFacade cannot be null.");
+        }
+
+        // Obtener la representación en string del WebElementFacade
         String elementToString = element.toString();
-        String[] parts = elementToString.split(" -> ");
+        // Extraer el tipo y el valor del selector del string
+        String[] parts = elementToString.split(": ", 2);
 
-        if (parts.length > 1) {
-            // Extract information about the WebElement's selector
-            String selectorInfo = parts[1].replace("]", "");
-            String[] selectorParts = selectorInfo.split(": ");
+        if (parts.length == 2) {
+            String selectorType = parts[0].trim().toLowerCase(); // Convertir a minúsculas para la comparación
+            String selectorValue = parts[1].trim();
 
-            if (selectorParts.length == 2) {
-                // Get selector type and value, and return the corresponding By object
-                String selectorType = selectorParts[0].trim();
-                String selectorValue = selectorParts[1].trim();
+            // Eliminar el prefijo "by." si está presente
+            if (selectorType.startsWith("by.")) {
+                selectorType = selectorType.substring(3); // Eliminar "by."
+            }
 
-                Function<String, By> byFunction = LOCATOR_MAP.get(selectorType);
-                if (byFunction != null) {
-                    return byFunction.apply(selectorValue);
-                } else {
-                    throw new IllegalArgumentException("Unsupported locator type: " + selectorType);
-                }
+            Function<String, By> byFunction = LOCATOR_MAP.get(selectorType);
+            if (byFunction != null) {
+                return byFunction.apply(selectorValue);
+            } else {
+                throw new IllegalArgumentException("Unsupported locator type: " + selectorType);
             }
         }
 
-        // If the format is not recognized, throw an exception
-        throw new IllegalArgumentException("Unrecognized format of WebElement.toString()");
+        throw new IllegalArgumentException("Unrecognized format of WebElementFacade.toString(): " + elementToString);
+    }
+    public static String getWebElementSelectorValue(WebElementFacade element) {
+        if (element == null) {
+            throw new IllegalArgumentException("WebElementFacade cannot be null.");
+        }
+
+        // Obtener la representación en string del WebElementFacade
+        String elementToString = element.toString();
+        // Extraer el tipo y el valor del selector del string
+        String[] parts = elementToString.split(": ", 2);
+
+        if (parts.length == 2) {
+            return parts[1].trim();
+        }
+
+        throw new IllegalArgumentException("Unrecognized format of WebElementFacade.toString(): " + elementToString);
     }
 
     /**

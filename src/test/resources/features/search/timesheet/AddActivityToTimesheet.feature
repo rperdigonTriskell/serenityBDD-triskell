@@ -15,8 +15,8 @@
 #    Then verify the element timesheet board "Add Activities" are "visible"
 #    When if the table is "not empty", "delete" an activity
 #    Then verify the text element timesheet board "activity board" is ""
-
-
+#
+#
 #  @PROD
 #  Scenario: Add a New Activity
 #    When click in timesheet board "Add Activities"
@@ -81,15 +81,15 @@
 #      | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
 #      | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
 #      | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
-
+#
 #  @PROD
 #  Scenario: Attempting to add an activity without providing details
 #    When click in timesheet board "Add Activities"
 #    Then verify the element "Add Object To Timesheet" are "visible"
 #    When click in "Add & Close"
 #    Then verify the text element "Failed message" is "Select one or more items from list"
-#    When click in "OK"
-#    When click in "Close"
+#    When click in timesheet "OK"
+#    When click in timesheet "Close"
 #    Then verify the element "Add Object To Timesheet" are "not present"
 #    And verify the text element timesheet board "activity board" is ""
 #

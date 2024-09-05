@@ -13,17 +13,21 @@ Feature: Delete an Activity
     Then check to "Timesheet" has loaded
     When click in timesheet "Timesheet"
     Then verify the element timesheet board "Add Activities" are "visible"
-    When if the table is "empty", "add" an activity
 
   @PROD
   Scenario: Delete an Activity
+    Given if the table is "empty", "add" an activity
     When click in activity board checkbox "Task 1"
-#    When the user selects an activity and clicks on the delete icon (trash can)
-#    Then a confirmation dialog should appear
-#    And after confirming, the activity should be removed from the grid
-##
-##  Scenario: Attempting to delete an activity that does not exist
-##    Given the user is on the timesheet page
-##    When the user attempts to delete an activity that is not listed in the grid
-##    Then the system should display an error message indicating that the selected activity cannot be found
-##    And no activities should be removed from the grid
+    And click in timesheet "Delete"
+    Then verify the text element "Question message" is "Are you sure remove these items?"
+    When click in timesheet "Yes"
+    Then verify the element "Question message" are "invisible"
+    Then verify the text element timesheet board "activity board" is ""
+
+  @PROD
+  Scenario: Attempting to delete an activity that does not exist
+    When click in timesheet "Delete"
+    Then verify the text element "Question message" is "Are you sure remove these items?"
+    When click in timesheet "Yes"
+    Then verify the text element "Warning message" is "No selected record"
+    When click in timesheet "OK"

@@ -18,6 +18,7 @@ public class Constants {
     public final static String ACTIVITY = "activity";
     public final static String BOARD_SUFFIX = " board";
     public final static String ACTIVITY_BOARD = ACTIVITY + BOARD_SUFFIX;
+    public final static String TIMESHEET_BOARD = TIMESHEET + BOARD_SUFFIX;
     public final static String FAVORITES = "Favorites";
     public final static String LAST_MODIFIED = "Last Modified";
     public final static String SUBSCRIPTIONS = "Subscriptions";

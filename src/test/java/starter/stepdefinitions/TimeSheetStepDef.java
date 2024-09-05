@@ -2,20 +2,13 @@ package starter.stepdefinitions;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.serenitybdd.core.pages.WebElementFacade;
-
-import java.util.List;
 
 import static starter.Constants.*;
-import static starter.selectors.factory.PageFactory.getCurrentPage;
-import static starter.stepdefinitions.GenericStepDef.clickIn;
-import static starter.stepdefinitions.GenericStepDef.sendTextToElement;
 import static starter.tasks.ElementDataVerifier.verifyElementTextIs;
 import static starter.tasks.ElementInteraction.clickOnBard;
 import static starter.tasks.ElementInteraction.clickOnTarget;
 import static starter.tasks.ElementVisibilityVerifier.verifyElementVisibility;
-import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitInteractions.*;
+import static starter.stepdefinitions.TimesheetTasks.*;
 
 public class TimeSheetStepDef {
     /**
@@ -24,7 +17,7 @@ public class TimeSheetStepDef {
      * @param element the element to click on
      */
     @When("click in timesheet {string}")
-    public void clickInTimesheet(String element) {
+    public static void clickInTimesheet(String element) {
         clickOnTarget(TIMESHEET_CONTEXT + element);
     }
 
@@ -67,30 +60,8 @@ public class TimeSheetStepDef {
      * @param action     the action to perform ("add" or "delete")
      */
     @When("if the table is {string}, {string} an activity")
-    public void handleTableState(String tableState, String action) {
-        WebElementFacade table = waitElementPresent(getCurrentPage().$(getCurrentPage().getSelector(TIMESHEET + BOARD_SUFFIX + " " + ACTIVITY + BOARD_SUFFIX)), true);
-        List<WebElementFacade> rows = getTableRows(table);
-        WebElementFacade addActivities = waitElementPresent(getCurrentPage().$(getCurrentPage().getSelector(TIMESHEET + BOARD_SUFFIX + " Add Activities")), true);
-        if ("empty".equals(tableState)) {
-            if (rows.isEmpty() && "add".equals(action)) {
-                clickIn("Add Activities");
-                waitElementVisible(getWebelementFacade("Add Object To Timesheet"), true);
-                sendTextToElement("Task 1", "Search");
-                clickInTimesheet("Search icon");
-                waitElementVisible(getWebelementFacade("MAPRE Portfolio Task 1 Checkbox"), true);
-                clickInTimesheet("MAPRE Portfolio Task 1 Checkbox");
-                clickInTimesheet("Add & Close");
-                waitElementVisible(getWebelementFacade("Add Object To Timesheet"), false);
-            }
-        } else if ("not empty".equals(tableState)) {
-            if (!rows.isEmpty() && "delete".equals(action)) {
-                clickInTimesheet("all activities checkbox");
-                clickInTimesheet("Delete");
-                clickInTimesheet("Yes");
-                waitElementVisible(addActivities, true);
-                waitElementVisible(table, false);
-            }
-        }
+    public void ifTheTableIsAnActivity(String tableState, String action) {
+        handleTimesheetTable(tableState, action);
     }
 
     /**
@@ -113,4 +84,5 @@ public class TimeSheetStepDef {
     public void clickInActivityBoard(String element) {
         clickOnBard(TIMESHEET + BOARD_SUFFIX + " " + ACTIVITY_BOARD, CHECKBOX , element);
     }
+
 }
