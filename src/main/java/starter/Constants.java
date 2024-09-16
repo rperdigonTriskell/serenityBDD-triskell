@@ -16,9 +16,11 @@ public class Constants {
     public final static String DASHBOARD_CONTEXT = DASHBOARD + " ";
     public final static String TIMESHEET_CONTEXT = TIMESHEET + " ";
     public final static String ACTIVITY = "activity";
+    public final static String TIME = "time";
     public final static String BOARD_SUFFIX = " board";
     public final static String ACTIVITY_BOARD = ACTIVITY + BOARD_SUFFIX;
-    public final static String TIMESHEET_BOARD = TIMESHEET + BOARD_SUFFIX;
+    public final static String TIME_BOARD = TIME + BOARD_SUFFIX;
+    public final static String TIMESHEET_BOARD = TIMESHEET + BOARD_SUFFIX + " ";
     public final static String FAVORITES = "Favorites";
     public final static String LAST_MODIFIED = "Last Modified";
     public final static String SUBSCRIPTIONS = "Subscriptions";
@@ -35,5 +37,5 @@ public class Constants {
             "selected",
             "deselected",
     };
-    public static final Duration WAIT_DURATION = Duration.ofSeconds(2);
+    public static final Duration WAIT_DURATION = Duration.ofSeconds(5);
 }

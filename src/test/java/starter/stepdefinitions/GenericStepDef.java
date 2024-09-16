@@ -13,19 +13,18 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+
 import static starter.Constants.*;
-import static starter.tasks.ElementDataVerifier.verifyElementTextIs;
-import static starter.tasks.ElementDataVerifier.verifyTableElementsMatchData;
-import static starter.tasks.ElementInteraction.clickOnTarget;
-import static starter.tasks.ElementVisibilityVerifier.dataTableAreVisible;
-import static starter.tasks.ElementVisibilityVerifier.verifyElementVisibility;
-import static starter.tasks.IsLoad.isLoadPage;
-import static starter.tasks.IsLoad.isNotLoadPage;
+import static starter.stepdefinitions.TimesheetTasks.*;
+import static starter.tasks.ElementDataVerifier.*;
+import static starter.tasks.ElementInteraction.*;
+import static starter.tasks.ElementVisibilityVerifier.*;
+import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
-import static starter.selectors.factory.PageFactory.getStaticDriver;
+import static starter.selectors.factory.PageFactory.*;
 import static starter.tasks.SendTextTo.*;
-import static starter.tasks.security.CredentialManager.getCredential;
-import static starter.tasks.security.EnvironmentManager.getBaseUrl;
+import static starter.tasks.security.CredentialManager.*;
+import static starter.tasks.security.EnvironmentManager.*;
 
 public class GenericStepDef {
     /**
@@ -272,8 +271,19 @@ public class GenericStepDef {
      * @param table the table to send the text to
      */
     @When("send text to:")
-    public void sentTextToTable(DataTable table) {
+    public void sentTextTo(DataTable table) {
         table(table);
+    }
+
+    /**
+     * Sends text to a table.
+     *
+     * @param webTable  the name of the table to send the text to
+     * @param dataTable the data table containing the text to send
+     */
+    @When("send text to table {string}:")
+    public void sentTextToTable(String webTable, DataTable dataTable) {
+        fillTimesheetTableWithValues(webTable, dataTable);
     }
 
 }

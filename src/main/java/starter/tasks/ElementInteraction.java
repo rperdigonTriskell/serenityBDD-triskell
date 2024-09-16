@@ -23,7 +23,10 @@ public class ElementInteraction {
      * @param target The target element to click on.
      */
     public static void clickOnTarget(Object target) {
-        OnStage.theActorInTheSpotlight().attemptsTo(createClickActionFor(target));
+        waitForClickVisibility(target);
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                createClickActionFor(target)
+        );
     }
 
     /**

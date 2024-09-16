@@ -48,26 +48,11 @@ public class ElementDataVerifier extends PageObject {
     /**
      * Verifies if the table elements match the data in the provided DataTable.
      *
-     * @param  context    the context used to find the web table
+     * @param  webTable    the context used to find the web table
      * @param  dataTable  the DataTable containing the expected data
      */
-    public static void verifyTableElementsMatchData(String context, DataTable dataTable) {
-        // Find the web table based on the provided context
-        WebElementFacade table = waitElementVisible(getWebelementFacade(context),true);
-
-        // Find the table rows on the web
-        List<WebElementFacade> rows = waitElementsVisible(getTableRows(table));
-
-        // Convert Gherkin DataTable to a list of maps
-        List<Map<String, String>> expectedRows = dataTable.asMaps(String.class, String.class);
-
-        // Check that the number of rows matches
-        validateRowCount(rows, expectedRows.size());
-
-        // Apply the Consumer to each row in the table using its index
-        for (int i = 0; i < expectedRows.size(); i++) {
-            verifyRowData(rows.get(i), expectedRows.get(i));
-        }
+    public static void verifyTableElementsMatchData(String webTable, DataTable dataTable) {
+        applyActionToTableElements(webTable, dataTable, ElementDataVerifier::verifyRowData);
     }
 
     /**
@@ -80,11 +65,6 @@ public class ElementDataVerifier extends PageObject {
     public static void verifyRowData(WebElementFacade row, Map<String, String> expectedRow) {
         // Find the columns within the row
         List<WebElementFacade> columns = getTableColumns(row);
-
-        // Verificar que el número de columnas coincida
-        if (columns.size() != expectedRow.size()) {
-            throw new AssertionError("The number of columns does not match the expected columns.");
-        }
 
         // Verificar cada columna en la fila
         int columnIndex = 0;

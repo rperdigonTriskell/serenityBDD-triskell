@@ -1,14 +1,20 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actions.Clear;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
+import org.openqa.selenium.By;
 import starter.selectors.factory.PageFactory;
 
 import java.util.List;
+import java.util.Map;
 
-import static starter.tasks.security.CredentialManager.getCredential;
+import static starter.tasks.ElementInteraction.clickOnTarget;
+import static starter.tasks.GenericTasks.*;
+import static starter.tasks.WaitInteractions.*;
+import static starter.tasks.security.CredentialManager.*;
 
 public class SendTextTo {
     /**
@@ -27,6 +33,21 @@ public class SendTextTo {
     }
 
     /**
+     * Input the given text into the specified element.
+     *
+     * @param text    the text to input
+     * @param element the element to input the text into
+     */
+    public static void input(String text, WebElementFacade element) {
+        // Clear the specified element
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                Clear.field(element),
+                // Enter the given text into the specified element
+                Enter.theValue(text).into(element)
+        );
+    }
+
+    /**
      * Input the given credential into the specified element.
      *
      * @param text    the text to input
@@ -34,7 +55,7 @@ public class SendTextTo {
      */
     public static void credential(String text, String element) {
         // Retrieve the credential value and send the credential value into the specified element
-        input(getCredential(text, false),element);
+        input(getCredential(text, false), element);
     }
 
     /**

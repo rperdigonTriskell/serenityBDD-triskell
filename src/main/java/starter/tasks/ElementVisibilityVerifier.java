@@ -1,13 +1,16 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
+import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
 import net.serenitybdd.screenplay.questions.WebElementQuestion;
+import net.serenitybdd.screenplay.waits.WaitUntil;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static net.serenitybdd.screenplay.questions.WebElementQuestion.the;
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 import static starter.Constants.*;
 import static starter.selectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
@@ -42,11 +45,15 @@ public class ElementVisibilityVerifier {
      * @param isVisible A boolean that determines if the element should be visible or not.
      */
     public static void verifyElementVisibility(String element, boolean isVisible) {
-        waitElementVisible(getWebelementFacade(element), isVisible);
+        WebElementFacade elementFacade = getWebelementFacade(element);
+//        waitElementVisible(elementFacade, isVisible);
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                WaitUntil.the(element, isVisible ? isVisible() : isNotVisible()).forNoMoreThan(WAIT_DURATION)
+        );
         performShouldSeeThat(
                 "check that the element visibility is: " + isVisible + ", for element: " + element,
-                actor -> WebElementQuestion.stateOf(getCurrentPage().getSelector(element)).answeredBy(actor),
-                isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible()
+                actor -> elementFacade.withTimeoutOf(WAIT_DURATION).waitUntilVisible(),
+                isVisible ? WebElementStateMatchers.isVisible() : isNotVisible()
         );
     }
 
@@ -109,7 +116,7 @@ public class ElementVisibilityVerifier {
      * @param isPresent A boolean that determines if the element should be present or not.
      */
     public static void verifyElementPresence(String element, boolean isPresent) {
-        waitElementPresent(getWebelementFacade(element),isPresent);
+        waitElementPresent(getWebelementFacade(element), isPresent);
         performShouldSeeThat(
                 "check that the element is present: " + element,
                 actor -> WebElementQuestion.stateOf(getCurrentPage().getSelector(element)).answeredBy(actor),

@@ -10,11 +10,13 @@ import org.openqa.selenium.By;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
-import static starter.selectors.factory.PageFactory.getCurrentPage;
+import static net.serenitybdd.screenplay.GivenWhenThen.*;
+import static starter.selectors.factory.PageFactory.*;
+import static starter.tasks.WaitInteractions.*;
 
 public class GenericTasks {
 
@@ -29,6 +31,26 @@ public class GenericTasks {
     }
 
     /**
+     * Retrieves the WebElementFacade for the given selector on the current page.
+     *
+     * @param selector The By selector to locate the WebElementFacade.
+     * @return The WebElementFacade for the given selector.
+     */
+    public static WebElementFacade getWebElementFacadeBySelector(By selector) {
+        return getCurrentPage().$(selector);
+    }
+
+    /**
+     * Retrieves a list of WebElementFacade for elements matching the given selector on the current page.
+     *
+     * @param selector The By selector to locate the elements.
+     * @return A list of WebElementFacade for the elements matching the selector.
+     */
+    public static List<WebElementFacade> getWebElementsFacadeBySelector(By selector) {
+        return getCurrentPage().$$(selector);
+    }
+
+    /**
      * Executes a task using the given actor and action function.
      *
      * @param description      A description of the task for reporting purposes.
@@ -37,7 +59,6 @@ public class GenericTasks {
      * @param <T>              The type of the question result.
      */
     public static  <T> void performShouldSeeThat(String description, Function<Actor, T> questionFunction, Matcher<T> matcher) {
-        // Luego se realiza la verificación usando el matcher después de la espera
         OnStage.theActorInTheSpotlight().should(
                 seeThat(description, questionFunction::apply, matcher)
         );
@@ -51,7 +72,7 @@ public class GenericTasks {
      */
     public static void dataTableUtil(DataTable dataTable, Consumer<Map<String, String>> elementProcessor) {
         // Convert the DataTable into a list of maps, where each map represents a row of data.
-        List<Map<String, String>> elements = dataTable.asMaps(String.class, String.class);
+        List<Map<String, String>> elements = getExpectedRows(dataTable);
 
         // Iterate over each map (representing a row) and apply the elementProcessor function to it.
         for (Map<String, String> element : elements) {
@@ -74,10 +95,10 @@ public class GenericTasks {
      */
     public static List<WebElementFacade> getTableRows(WebElementFacade table) {
         List<WebElementFacade> elements;
-        if (!table.findElements(By.cssSelector("table")).isEmpty()) {
-            elements = table.thenFindAll(By.cssSelector("table table tbody tr"));
+        if (!table.findElements(By.xpath(".//table")).isEmpty()) {
+            elements = table.thenFindAll(By.xpath(".//table//tbody//tr"));
         } else {
-            elements = table.thenFindAll(By.cssSelector("tr"));
+            elements = table.thenFindAll(By.xpath(".//tr"));
         }
         return elements;
     }
@@ -89,7 +110,7 @@ public class GenericTasks {
      * @return        a list of WebElements representing the table rows
      */
     public static List<WebElementFacade> getTableColumns(WebElementFacade table) {
-        return table.thenFindAll(By.cssSelector("td"));
+        return table.thenFindAll(By.xpath(".//td"));
     }
 
     /**
@@ -105,4 +126,41 @@ public class GenericTasks {
         }
     }
 
+    /**
+     * Retrieves the expected rows from the given DataTable as a list of maps with String keys and values.
+     *
+     * @param  dataTable  the DataTable containing the expected rows
+     * @return            a list of maps representing the expected rows, with String keys and values
+     */
+    public static List<Map<String, String>> getExpectedRows(DataTable dataTable) {
+        return dataTable.asMaps(String.class, String.class);
+    }
+
+
+    /**
+     * Applies the given action to each element in the web table based on the provided context.
+     *
+     * @param  webTable           the context of the web table
+     * @param  dataTable          the DataTable containing the expected rows
+     * @param  action             the BiConsumer that will be applied to each element in the table
+     * @throws AssertionError     if the number of rows in the table does not match the number of expected rows
+     */
+    public static void applyActionToTableElements(String webTable, DataTable dataTable, BiConsumer<WebElementFacade, Map<String, String>> action) {
+        // Find the web table based on the provided context
+        WebElementFacade table = waitElementVisible(getWebelementFacade(webTable),true);
+
+        // Find the table rows on the web
+        List<WebElementFacade> rows = waitElementsVisible(getTableRows(table));
+
+        // Convert Gherkin DataTable to a list of maps
+        List<Map<String, String>> expectedRows = getExpectedRows(dataTable);
+
+        // Check that the number of rows matches
+        validateRowCount(rows, expectedRows.size());
+
+        // Apply the Consumer to each row in the table using its index
+        for (int i = 0; i < expectedRows.size(); i++) {
+            action.accept(rows.get(i), expectedRows.get(i));
+        }
+    }
 }

@@ -7,7 +7,7 @@ import static starter.Constants.*;
 import static starter.tasks.ElementDataVerifier.verifyElementTextIs;
 import static starter.tasks.ElementInteraction.clickOnBard;
 import static starter.tasks.ElementInteraction.clickOnTarget;
-import static starter.tasks.ElementVisibilityVerifier.verifyElementVisibility;
+import static starter.tasks.ElementVisibilityVerifier.*;
 import static starter.stepdefinitions.TimesheetTasks.*;
 
 public class TimeSheetStepDef {
@@ -28,7 +28,7 @@ public class TimeSheetStepDef {
      */
     @When("click in timesheet board {string}")
     public void clickInTimesheetBoard(String element) {
-        clickOnTarget(TIMESHEET + BOARD_SUFFIX + " " + element);
+        clickOnTarget(TIMESHEET_BOARD + element);
     }
 
     /**
@@ -50,7 +50,7 @@ public class TimeSheetStepDef {
      */
     @Then("verify the text element timesheet board {string} is {string}")
     public void verifyTheTextElementIs(String element, String text) {
-        verifyElementTextIs(TIMESHEET + BOARD_SUFFIX + " " + element, text);
+        verifyElementTextIs(TIMESHEET_BOARD + element, text);
     }
 
     /**
@@ -61,7 +61,18 @@ public class TimeSheetStepDef {
      */
     @When("if the table is {string}, {string} an activity")
     public void ifTheTableIsAnActivity(String tableState, String action) {
-        handleTimesheetTable(tableState, action);
+        manageTimesheetTable(tableState, action);
+    }
+
+    /**
+     * Verifies the visibility of an element on the timesheet board.
+     *
+     * @param  element  the element to verify the visibility of
+     * @param  visibility  the expected visibility of the element (either "visible" or "not visible")
+     */
+    @Then("verify the element timesheet {string} are {string}")
+    public static void verifyTheElementTimesheetAre(String element, String visibility) {
+        verifyElementVisibility(TIMESHEET_CONTEXT + element, visibility);
     }
 
     /**
@@ -71,8 +82,8 @@ public class TimeSheetStepDef {
      * @param  visibility  the expected visibility of the element (either "visible" or "not visible")
      */
     @Then("verify the element timesheet board {string} are {string}")
-    public static void verifyTheElementAre(String element, String visibility) {
-        verifyElementVisibility(TIMESHEET + BOARD_SUFFIX + " " + element, visibility);
+    public static void verifyTheElementTimesheetBoardAre(String element, String visibility) {
+        verifyElementVisibility(TIMESHEET_BOARD + element, visibility);
     }
 
     /**
@@ -82,7 +93,7 @@ public class TimeSheetStepDef {
      */
     @When("click in activity board checkbox {string}")
     public void clickInActivityBoard(String element) {
-        clickOnBard(TIMESHEET + BOARD_SUFFIX + " " + ACTIVITY_BOARD, CHECKBOX , element);
+        clickOnBard(TIMESHEET_BOARD + ACTIVITY_BOARD, CHECKBOX , element);
     }
 
 }
