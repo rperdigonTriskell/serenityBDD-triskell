@@ -1,18 +1,17 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
-import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
 import net.serenitybdd.screenplay.questions.WebElementQuestion;
 import net.serenitybdd.screenplay.waits.WaitUntil;
+import org.openqa.selenium.By;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 import static starter.Constants.*;
-import static starter.selectors.factory.PageFactory.getCurrentPage;
+import static starter.selectors.factory.PageFactory.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitInteractions.*;
 
@@ -45,15 +44,16 @@ public class ElementVisibilityVerifier {
      * @param isVisible A boolean that determines if the element should be visible or not.
      */
     public static void verifyElementVisibility(String element, boolean isVisible) {
-        WebElementFacade elementFacade = getWebelementFacade(element);
-//        waitElementVisible(elementFacade, isVisible);
+        By selector = getCurrentPage().getSelector(element);
+        waitElementVisible(getWebelementFacade(element), isVisible);
         OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitUntil.the(element, isVisible ? isVisible() : isNotVisible()).forNoMoreThan(WAIT_DURATION)
+                WaitUntil.the(selector, isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible())
+                        .forNoMoreThan(WAIT_DURATION)
         );
         performShouldSeeThat(
                 "check that the element visibility is: " + isVisible + ", for element: " + element,
-                actor -> elementFacade.withTimeoutOf(WAIT_DURATION).waitUntilVisible(),
-                isVisible ? WebElementStateMatchers.isVisible() : isNotVisible()
+                actor -> WebElementQuestion.stateOf(selector).answeredBy(actor),
+                isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible()
         );
     }
 
