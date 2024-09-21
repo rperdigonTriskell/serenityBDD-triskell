@@ -14,33 +14,79 @@ Feature: Generate Report
     Then verify the element timesheet board "Add Activities" are "visible"
     When if the table is "empty", "add" an activity
     And verify the following elements on the "Timesheet board activity board" should match the expected data:
-      | Check | WORK APP | RES. APP | PATH                                                | PARENT           | OBJECT | OBJECT TYPE | PLANNED | TOTAL |
-      |       |          |          | Project Management/MAPRE Portfolio/Development Plan | Development Plan | Task 1 | Task        |         |       |
+      | Check | WORK APP | RES. APP | OBJECT               | DESCRIPTION | PLANNED | TOTAL |
+      |       |          |          | Automation Test Task |             |         |       |
     And verify the following elements on the "Timesheet board time board" should match the expected data:
-      | MON   | TUE   | WED   | THU   | FRI   | SAT   | SUN   |
-      | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
+      | MON | TUE | WED | THU | FRI | SAT | SUN |
+      |     |     |     |     |     |     |     |
 
   @PROD
   Scenario: Generating a Report with All Correct Data
+#  te comento un metodo serenity bdd screenplay que implementar
     When send text to table "Timesheet board time board":
       | MON | TUE | WED | THU | FRI |
       | 8   | 8   | 8   | 8   | 8   |
-  And click in timesheet board "Submit Timesheet"
-  Then verify the element timesheet "Timesheet Submit" are "visible"
-  When click in timesheet "Submit"
-  Then verify the element timesheet "Submit" are "invisible"
-  And verify the following elements on the "Timesheet board time board" should match the expected data:
-    | MON   | TUE   | WED   | THU   | FRI   |
-    | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
-#    Given that the user is on the timesheet page
-#    When the user clicks the "Generate" button
-#    And selects "Units"
-#    And enters a valid value in the "Units" field
-#    And selects a valid date range in "From period" and "To period"
-#    And clicks "Generate"
-#    Then the system should generate the report correctly and display a success message
+#  "Timesheet board time board" es un target y su selector lo recoje este metodo:
+#  /**
+#    * Retrieves the Target for the given element on the current page.
+#  */
+#  public static Target getTarget(String element) {
+#  return Target.the(element).located(getCurrentPage().getSelector(element));
+#  }
+#    El selector de "Timesheet board time board"  es este:
+#  mapSelectors.put(TIMESHEET_BOARD + "time board", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[2]"));
 #
+#    Tambien he de aclarar que esta tabla es un table dentro de otro table:
+#  if (!table.findElements(By.xpath(".//table")).isEmpty()) {
+#  rows = table.thenFindAll(By.xpath(".//table//tbody//tr"));
+#  } else {
+#  rows = table.thenFindAll(By.xpath(".//tr"));
+#  }
+#
+#    este es un condicional mal escrito ya que quiero un enfoque screenplay.
+#
+#    tambien añadir esta mecanica de rellenar:
+#  // click on the cell to activate DOM event to create imput to inmput text
+#
+#  // wait for the input to be visible, DOM refresh and need update
+#
+#  // input the text into the input field
+
+    And click in timesheet board "Submit Timesheet"
+    Then verify the element timesheet "Timesheet Submit" are "visible"
+    When click in timesheet "Submit"
+    Then verify the element timesheet "Submit" are "invisible"
+    And verify the following elements on the "Timesheet board time board" should match the expected data:
+      | MON   | TUE   | WED   | THU   | FRI   |
+      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
+
+#    durante la eliminación de actividades hay un error que impide eliminar bien la actividad y es un posible bug
+
+#
+#  @PROD
 #  Scenario: Generating a Report with Data Replacement
+#    When send text to table "Timesheet board time board":
+#      | MON | TUE | WED | THU | FRI |
+#      | 8   | 8   | 8   | 8   | 8   |
+#  And click in timesheet board "Submit Timesheet"
+#  Then verify the element timesheet "Timesheet Submit" are "visible"
+#  When click in timesheet "Submit"
+#  Then verify the element timesheet "Submit" are "invisible"
+#  And verify the following elements on the "Timesheet board time board" should match the expected data:
+#    | MON   | TUE   | WED   | THU   | FRI   |
+#    | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
+#  When send text to table "Timesheet board time board":
+#    | MON | TUE | WED | THU | FRI |
+#    | 5   | 5   | 5   | 5   | 5   |
+#  And click in timesheet board "Submit Timesheet"
+#  Then verify the element timesheet "Timesheet Submit" are "visible"
+#  When click in timesheet "Submit"
+#  Then verify the element timesheet "Submit" are "invisible"
+#  And verify the following elements on the "Timesheet board time board" should match the expected data:
+#    | MON   | TUE   | WED   | THU   | FRI   |
+#    | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
+
+
 #    Given that the user is on the timesheet page
 #    When the user clicks the "Generate" button
 #    And selects "Planned"

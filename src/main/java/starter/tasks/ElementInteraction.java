@@ -1,17 +1,17 @@
 package starter.tasks;
 
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
-import net.serenitybdd.screenplay.actions.ClickInteraction;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import starter.selectors.factory.PageFactory;
 
 import java.util.List;
 
 import static starter.Constants.CHECKBOX;
+import static starter.selectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitInteractions.*;
 
@@ -23,7 +23,6 @@ public class ElementInteraction {
      * @param target The target element to click on.
      */
     public static void clickOnTarget(Object target) {
-        waitForClickVisibility(target);
         OnStage.theActorInTheSpotlight().attemptsTo(
                 createClickActionFor(target)
         );
@@ -54,7 +53,7 @@ public class ElementInteraction {
      */
     public static List<WebElementFacade> getWebElementsWithTitleContaining(String repeatedText) {
         return Target.the("option with title field")
-                .located(PageFactory.getCurrentPage().getSelector(repeatedText))
+                .located(getCurrentPage().getSelector(repeatedText))
                 .resolveAllFor(OnStage.theActorInTheSpotlight()); //resolveAllFor uses implicit wait
     }
 
@@ -64,58 +63,37 @@ public class ElementInteraction {
      * @param target The target to create the ClickInteraction for.
      * @return The ClickInteraction object.
      */
-    private static ClickInteraction createClickActionFor(Object target) {
-        int attempts = 0;
-        while (attempts < 3) { // Try the action up to 3 times
-            try {
-                if (target instanceof By) {
-                    return createClickOnByAction((By) target);
-                }
-                if (target instanceof WebElementFacade) {
-                    return createClickOnWebElementFacadeAction((WebElementFacade) target);
-                }
-                if (target instanceof String) {
-                    return createClickOnStringAction((String) target);
-                }
-                // Throw an IllegalArgumentException if the target type is invalid
-                throw new IllegalArgumentException("Invalid target type: " + target.getClass().getSimpleName());
-            } catch (StaleElementReferenceException e) {
-                // If a StaleElementReferenceException is caught, increment the attempts counter and try again
-                attempts++;
-            }
+    public static Task createClickActionFor(Object target) {
+        if (target instanceof By) {
+            return Task.where("{0} waits for and clicks on By locator",
+                    WaitInteractions.waitVisible((By) target),
+                    WaitInteractions.waitClickable((By) target),
+                    Click.on((By) target)
+            );
         }
-        // If the action still fails after 3 attempts, throw a StaleElementReferenceException
-        throw new StaleElementReferenceException("Element is stale after 3 attempts.");
-    }
-
-    /**
-     * Creates a ClickInteraction object for a By locator.
-     *
-     * @param locator The By locator to click on.
-     * @return The ClickInteraction object.
-     */
-    private static ClickInteraction createClickOnByAction(By locator) {
-        return Click.on(locator);
-    }
-
-    /**
-     * Creates a ClickInteraction object for a WebElementFacade.
-     *
-     * @param elementFacade The WebElementFacade to click on.
-     * @return The ClickInteraction object.
-     */
-    private static ClickInteraction createClickOnWebElementFacadeAction(WebElementFacade elementFacade) {
-        return Click.on(elementFacade);
-    }
-
-    /**
-     * Creates a ClickInteraction object for a string selector.
-     *
-     * @param selector The string selector to click on.
-     * @return The ClickInteraction object.
-     */
-    private static ClickInteraction createClickOnStringAction(String selector) {
-        return Click.on(PageFactory.getCurrentPage().getSelector(selector));
+        if (target instanceof WebElementFacade) {
+            ((WebElementFacade) target).waitUntilVisible();
+            ((WebElementFacade) target).waitUntilClickable();
+            return Task.where("{0} waits for and clicks on WebElementFacade",
+                    Click.on((WebElementFacade) target)
+            );
+        }
+        if (target instanceof Target) {
+            return Task.where("{0} waits for and clicks on Target",
+                    WaitInteractions.waitVisible((Target) target),
+                    WaitInteractions.waitClickable((Target) target),
+                    Click.on((Target) target)
+            );
+        }
+        if (target instanceof String) {
+            Target targetElement = getTarget((String) target);
+            return Task.where("{0} waits for and clicks on selector",
+                    WaitInteractions.waitVisible(targetElement),
+                    WaitInteractions.waitClickable(targetElement),
+                    Click.on(targetElement)
+            );
+        }
+        throw new IllegalArgumentException("Invalid target type: " + target.getClass().getSimpleName());
     }
 
     /**
@@ -127,10 +105,13 @@ public class ElementInteraction {
      */
     public static void clickOnBard(String board, String context, String target) {
         // Find the web table based on the provided context
-        WebElementFacade table = waitElementVisible(getWebelementFacade(board), true);
+        Target table = getTarget(board);
+
+        performAttemptsTo("{0} waits for table to be visible", waitVisible(table));
+
 
         // Find the table rows on the web
-        List<WebElementFacade> rows = waitElementsVisible(getTableRows(table));
+        List<WebElementFacade> rows = getTableRows(table);
 
         // Iterate through each row to find the one containing the target text
         for (WebElementFacade row : rows) {

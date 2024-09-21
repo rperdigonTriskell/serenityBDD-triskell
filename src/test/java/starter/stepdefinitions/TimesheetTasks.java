@@ -2,14 +2,18 @@ package starter.stepdefinitions;
 
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.actors.OnStage;
+import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
+import starter.tasks.FillTableWithValues;
 
 import java.util.*;
 
 import static starter.Constants.*;
-import static starter.selectors.factory.PageFactory.getWebElementSelector;
+import static starter.selectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
+import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.SendTextTo.*;
 import static starter.tasks.WaitInteractions.*;
 
@@ -22,8 +26,13 @@ public class TimesheetTasks {
      * @param action     the action to perform ("add" or "delete")
      */
     public static void manageTimesheetTable(String tableState, String action) {
-        WebElementFacade table = waitElementPresent(getWebelementFacade(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX), true);
-        List<WebElementFacade> rows = getTableRows(table);
+        Target targetTable = getTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX);
+        performAttemptsTo(
+                "{0} waits for table to be visible",
+                waitVisible(targetTable)
+        );
+
+        List<WebElementFacade> rows = getTableRows(targetTable);
 
         ifBlueColorThenEmptyTimesheetTimeTable();
 
@@ -44,13 +53,13 @@ public class TimesheetTasks {
 
     /**
      * Deletes all activities by clicking on the "all activities checkbox", "Delete" button, and "Yes" button.
-     *
      */
     public static void deleteAllTimesheetActivities() {
         clickOnTarget(TIMESHEET_CONTEXT + "all activities checkbox");
         clickOnTarget(TIMESHEET_BOARD + "Delete");
         clickOnTarget(TIMESHEET_CONTEXT + "Yes");
-        waitElementVisible(getWebelementFacade(TIMESHEET_CONTEXT + "Yes"), false);
+        performAttemptsTo("",waitNotVisible(getTarget(TIMESHEET_CONTEXT + "Yes")));
+        performAttemptsTo("",waitNotPresent(getTarget(TIMESHEET_CONTEXT + "Yes")));
     }
 
     /**
@@ -59,14 +68,21 @@ public class TimesheetTasks {
      * element to disappear.
      */
     public static void addTimesheetActivity() {
+        performAttemptsTo("{0}",waitVisible(getTarget(TIMESHEET_BOARD + "Add Activities")));
         clickOnTarget(TIMESHEET_BOARD + "Add Activities");
-        waitElementVisible(getWebelementFacade("Add Object To Timesheet"), true);
-        input("Task 1", "Search");
+        performAttemptsTo("{0}",waitVisible(getTarget("Search")));
+        input("Automation Test Task", "Search");
+        performAttemptsTo("{0}",waitVisible(getTarget("Search icon")));
         clickOnTarget("Search icon");
-        waitElementVisible(getWebelementFacade("MAPRE Portfolio Task 1 Checkbox"), true);
-        clickOnTarget("MAPRE Portfolio Task 1 Checkbox");
+        performAttemptsTo("{0}",waitVisible(getTarget("MAPRE Portfolio Automation Test Task Checkbox")));
+        clickOnTarget("MAPRE Portfolio Automation Test Task Checkbox");
+        performAttemptsTo("{0}",waitVisible(getTarget("Add & Close")));
         clickOnTarget("Add & Close");
-        waitElementPresent(getWebelementFacade("Add Object To Timesheet"), false);
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -77,34 +93,52 @@ public class TimesheetTasks {
      * @param dataTable the DataTable containing the values to fill the table
      */
     public static void fillTimesheetTableWithValues(String tableName, DataTable dataTable) {
-        // Convertir el DataTable de Gherkin a una lista de mapas
-        List<Map<String, String>> rowsData = getExpectedRows(dataTable);
+        // Convert the DataTable from Gherkin to a list of maps
+        List<Map<String, String>> rowsData = getListFromDatatable(dataTable);
 
-        // Obtener la tabla usando getWebelementFacade y esperar a que sea visible
-        WebElementFacade table = waitElementVisible(getWebelementFacade(tableName), true);
+        // Get the table's selector
+        By tableSelector = getCurrentPage().getSelector(tableName);
 
-        // Iterar sobre las filas del DataTable y sus datos correspondientes
-        fillTableWithValues(table, rowsData);
+        // Wait for the table to be visible
+        performAttemptsTo(
+                "{0} waits for table to be visible",
+                waitVisible(tableSelector)
+        );
+
+        // Fill the table with the provided values
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                FillTableWithValues.inTable(tableSelector, rowsData)
+        );
+
+//        fillTableWithValues(tableSelector, rowsData);
     }
 
-    public static void fillTableWithValues(WebElementFacade table, List<Map<String, String>> rowsData) {
-        By tableSelector = getWebElementSelector(table);
+    /**
+     * Fills the web table identified by the given By selector with values provided in the DataTable.
+     *
+     * @param tableSelector the By selector used to find the web table
+     * @param rowsData       the DataTable containing the values to fill the table
+     */
+    public static void fillTableWithValues(By tableSelector, List<Map<String, String>> rowsData) {
+        // wait for the table to be visible
+        performAttemptsTo("{0} waits for table to be visible", waitVisible(tableSelector));
         for (int rowIndex = 0; rowIndex < rowsData.size(); rowIndex++) {
             Map<String, String> rowData = rowsData.get(rowIndex);
 
-            // Iterar sobre las columnas del DataTable
+            // iterate through each column in the row
             int colIndex = 0;
             for (String columnName : rowData.keySet()) {
+
                 String cellValue = rowData.get(columnName);
 
-                // Reubicar la tabla antes de interactuar con la celda
-                WebElementFacade updatedTable = waitElementVisible(getWebElementFacadeBySelector(tableSelector), true);
-//                WebElementFacade updatedTable = waitElementVisible(table, true);
+                //  wait and re ubicate the table before interacting with the cell
+                Target updatedTable = getTarget(tableSelector);
+                performAttemptsTo("{0} waits for table to be visible", waitVisible(updatedTable));
 
-                // Localizar la celda correspondiente
-                WebElementFacade cell = waitElementVisible(getTimesheetTableCell(updatedTable, rowIndex, colIndex),true);
+                // locate the cell
+                WebElementFacade cell = getTimesheetTableCell(updatedTable, rowIndex, colIndex);
 
-                // Ingresar el texto en la celda correspondiente
+                // enter text into the cell
                 enterTimesheetTextInCell(cell, cellValue);
 
                 colIndex++;
@@ -114,16 +148,16 @@ public class TimesheetTasks {
 
 
     /**
-     * Gets the table cell at the specified row and column index.
+     * Retrieves the WebElementFacade for a cell in a table based on the given target,
+     * row index, and column index.
      *
-     * @param table    the WebElementFacade representing the web table
-     * @param rowIndex the index of the row where the cell is located
-     * @param colIndex the index of the column where the cell is located
-     * @return the WebElementFacade representing the table cell
+     * @param target   the target used to find the table
+     * @param rowIndex the row index of the cell
+     * @param colIndex the column index of the cell
+     * @return the WebElementFacade for the cell
      */
-    public static WebElementFacade getTimesheetTableCell(WebElementFacade table, int rowIndex, int colIndex) {
-        // Localiza la fila y columna basadas en los índices
-        List<WebElementFacade> rows = getTableRows(table);
+    public static WebElementFacade getTimesheetTableCell(Target target, int rowIndex, int colIndex) {
+        List<WebElementFacade> rows = getTableRows(target);
         WebElementFacade row = rows.get(rowIndex);
         List<WebElementFacade> columns = getTableColumns(row);
         return columns.get(colIndex);
@@ -136,14 +170,21 @@ public class TimesheetTasks {
      * @param text the text to enter in the table cell
      */
     public static void enterTimesheetTextInCell(WebElementFacade cell, String text) {
-        // Hacer clic en la celda para disparar el evento y refrescar el DOM
+        // click on the cell to refresh the DOM
         clickOnTarget(cell);
 
-        // Esperar a que el input dentro del div esté disponible antes de interactuar
-        List<WebElementFacade> inputField = waitElementsPresent(getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']")));
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
-        // Ingresar el texto en el input correspondiente
-        input(text, inputField.get(inputField.size() -1));
+        // wait for the input to be visible
+        List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
+
+        // input the text into the input field
+        input(text, inputField.get(inputField.size() - 1));
+
     }
 
     /**
@@ -151,23 +192,35 @@ public class TimesheetTasks {
      * fills the table with default values.
      */
     public static void ifBlueColorThenEmptyTimesheetTimeTable() {
-        WebElementFacade timetable = waitElementPresent(getWebelementFacade(TIMESHEET_BOARD + TIME + BOARD_SUFFIX), true);
+        Target timetable = getTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX);
+        performAttemptsTo(
+                "{0} waits for table to be present",
+                waitPresent(timetable)
+        );
+
+
         List<Map<String, String>> rowsData = new ArrayList<>();
         Map<String, String> rowData = new HashMap<>();
-        rowData.put("MON", "0");
-        rowData.put("TUE", "0");
-        rowData.put("WED", "0");
-        rowData.put("THU", "0");
-        rowData.put("FRI", "0");
+        rowData.put("MON", "");
+        rowData.put("TUE", "");
+        rowData.put("WED", "");
+        rowData.put("THU", "");
+        rowData.put("FRI", "");
         rowsData.add(rowData);
         if (!getTableRows(timetable).isEmpty()) {
-            waitElementVisible(getTableRows(timetable).get(0), true);
             String timerows = getTableRows(timetable).get(0).thenFindAll(By.cssSelector("td > div")).get(0).getCssValue("color");
             if (timerows.equals("rgba(33, 150, 243, 1)")) {
-                fillTableWithValues(timetable, rowsData);
-                clickOnTarget(TIMESHEET_BOARD + "Submit Timesheet");
-                waitElementVisible(getWebelementFacade(TIMESHEET_CONTEXT + "Timesheet Submit"), true);
-                clickOnTarget(TIMESHEET_CONTEXT + "Submit");
+
+                OnStage.theActorInTheSpotlight().attemptsTo(
+                        FillTableWithValues.inTable(getCurrentPage().getSelector(TIMESHEET_BOARD + TIME + BOARD_SUFFIX), rowsData)
+                );
+                Target submit = getTarget(TIMESHEET_CONTEXT + TIMESHEET_CONTEXT + "Submit");
+                clickOnTarget(submit);
+                submit = getTarget(TIMESHEET_CONTEXT + "Submit");
+                clickOnTarget(submit);
+                waitNotVisible(submit);
+                clickOnTarget(TIMESHEET_CONTEXT + "all activities checkbox");
+                deleteAllTimesheetActivities();
             }
         }
     }

@@ -1,10 +1,8 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
-import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
 import net.serenitybdd.screenplay.questions.WebElementQuestion;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
 
 import java.util.Map;
@@ -44,17 +42,12 @@ public class ElementVisibilityVerifier {
      * @param isVisible A boolean that determines if the element should be visible or not.
      */
     public static void verifyElementVisibility(String element, boolean isVisible) {
-        By selector = getCurrentPage().getSelector(element);
-        waitElementVisible(getWebelementFacade(element), isVisible);
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitUntil.the(selector, isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible())
-                        .forNoMoreThan(WAIT_DURATION)
-        );
-        performShouldSeeThat(
-                "check that the element visibility is: " + isVisible + ", for element: " + element,
-                actor -> WebElementQuestion.stateOf(selector).answeredBy(actor),
-                isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible()
-        );
+        By locator = getCurrentPage().getSelector(element);
+        if (isVisible) {
+            performAttemptsTo("{0} waits for element to be visible", waitVisible(locator));
+        } else {
+            performAttemptsTo("{0} waits for element to be present", waitPresent(locator));
+        }
     }
 
     /**
@@ -88,7 +81,7 @@ public class ElementVisibilityVerifier {
             verifyElementVisibility(context + elementName, visibility);
         };
 
-        dataTableUtil(dataTable, elementProcessor);
+        processDataTable(dataTable, elementProcessor);
     }
 
     /**
@@ -110,13 +103,12 @@ public class ElementVisibilityVerifier {
     }
 
     /**
-     * Verifies if the given web element is present in the DOM or not.
+     * Wait verifies if the given web element is present in the DOM or not.
      *
      * @param element   The element to be verified.
      * @param isPresent A boolean that determines if the element should be present or not.
      */
     public static void verifyElementPresence(String element, boolean isPresent) {
-        waitElementPresent(getWebelementFacade(element), isPresent);
         performShouldSeeThat(
                 "check that the element is present: " + element,
                 actor -> WebElementQuestion.stateOf(getCurrentPage().getSelector(element)).answeredBy(actor),

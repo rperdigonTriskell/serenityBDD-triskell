@@ -1,5 +1,6 @@
 package starter.stepdefinitions;
 
+
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
@@ -8,17 +9,20 @@ import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import org.junit.AfterClass;
+import starter.tasks.FillTableWithValues;
+import starter.tasks.VerifyTableElements;
+import starter.tasks.WaitInteractions;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-
 
 import static starter.Constants.*;
 import static starter.stepdefinitions.TimesheetTasks.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.ElementVisibilityVerifier.*;
+import static starter.tasks.GenericTasks.getTarget;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.selectors.factory.PageFactory.*;
@@ -220,7 +224,10 @@ public class GenericStepDef {
      */
     @Then("verify the following elements on the {string} should match the expected data:")
     public void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
-        verifyTableElementsMatchData(context, dataTable);
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                WaitInteractions.waitVisible(getCurrentPage().getSelector(context)),
+                VerifyTableElements.forTable(context, dataTable)
+        );
     }
 
     /**

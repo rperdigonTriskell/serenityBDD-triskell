@@ -5,13 +5,11 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actions.Clear;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
-import org.openqa.selenium.By;
-import starter.selectors.factory.PageFactory;
+import net.serenitybdd.screenplay.targets.Target;
 
 import java.util.List;
-import java.util.Map;
 
-import static starter.tasks.ElementInteraction.clickOnTarget;
+import static starter.selectors.factory.PageFactory.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitInteractions.*;
 import static starter.tasks.security.CredentialManager.*;
@@ -24,11 +22,13 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void input(String text, String element) {
+        Target target = getTarget(element);
         // Clear the specified element
         OnStage.theActorInTheSpotlight().attemptsTo(
-                Clear.field(PageFactory.getCurrentPage().getSelector(element)),
+                waitVisible(target),
+                Clear.field(getCurrentPage().getSelector(element)),
                 // Enter the given text into the specified element
-                Enter.theValue(text).into(PageFactory.getCurrentPage().getSelector(element))
+                Enter.theValue(text).into(getCurrentPage().getSelector(element))
         );
     }
 
@@ -39,6 +39,10 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void input(String text, WebElementFacade element) {
+        element.waitUntilPresent();
+        element.waitUntilClickable();
+        element.waitUntilVisible();
+
         // Clear the specified element
         OnStage.theActorInTheSpotlight().attemptsTo(
                 Clear.field(element),

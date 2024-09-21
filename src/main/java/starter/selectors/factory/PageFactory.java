@@ -80,49 +80,39 @@ public class PageFactory extends PageObject {
      * @throws IllegalArgumentException If the toString() format is not recognized.
      */
     public static By getWebElementSelector(WebElementFacade element) {
-        if (element == null) {
-            throw new IllegalArgumentException("WebElementFacade cannot be null.");
-        }
-
-        // Obtener la representación en string del WebElementFacade
         String elementToString = element.toString();
-        // Extraer el tipo y el valor del selector del string
-        String[] parts = elementToString.split(": ", 2);
 
-        if (parts.length == 2) {
-            String selectorType = parts[0].trim().toLowerCase(); // Convertir a minúsculas para la comparación
-            String selectorValue = parts[1].trim();
-
-            // Eliminar el prefijo "by." si está presente
-            if (selectorType.startsWith("by.")) {
-                selectorType = selectorType.substring(3); // Eliminar "by."
-            }
-
-            Function<String, By> byFunction = LOCATOR_MAP.get(selectorType);
-            if (byFunction != null) {
-                return byFunction.apply(selectorValue);
-            } else {
-                throw new IllegalArgumentException("Unsupported locator type: " + selectorType);
-            }
+        // Sample toString() output: "By.cssSelector: div.classname"
+        if (elementToString.contains("By.cssSelector")) {
+            String selector = extractSelector(elementToString, "By.cssSelector:");
+            return By.cssSelector(selector);
         }
-
-        throw new IllegalArgumentException("Unrecognized format of WebElementFacade.toString(): " + elementToString);
+        // Sample toString() output: "By.id: elementId"
+        else if (elementToString.contains("By.id")) {
+            String selector = extractSelector(elementToString, "By.id:");
+            return By.id(selector);
+        }
+        // Sample toString() output: "By.xpath: //div[@class='classname']"
+        else if (elementToString.contains("By.xpath")) {
+            String selector = extractSelector(elementToString, "By.xpath:");
+            return By.xpath(selector);
+        }
+        // Add more cases for other locator strategies as needed
+        else {
+            throw new IllegalArgumentException("Unrecognized WebElementFacade toString() format: " + elementToString);
+        }
     }
-    public static String getWebElementSelectorValue(WebElementFacade element) {
-        if (element == null) {
-            throw new IllegalArgumentException("WebElementFacade cannot be null.");
-        }
 
-        // Obtener la representación en string del WebElementFacade
-        String elementToString = element.toString();
-        // Extraer el tipo y el valor del selector del string
-        String[] parts = elementToString.split(": ", 2);
-
-        if (parts.length == 2) {
-            return parts[1].trim();
-        }
-
-        throw new IllegalArgumentException("Unrecognized format of WebElementFacade.toString(): " + elementToString);
+    /**
+     * Extracts the selector part from the toString() output of a WebElementFacade.
+     *
+     * @param toStringOutput The toString() output of a WebElementFacade.
+     * @param prefix The prefix identifying the locator strategy.
+     * @return The extracted selector string.
+     */
+    private static String extractSelector(String toStringOutput, String prefix) {
+        int startIndex = toStringOutput.indexOf(prefix) + prefix.length();
+        return toStringOutput.substring(startIndex).trim();
     }
 
     /**

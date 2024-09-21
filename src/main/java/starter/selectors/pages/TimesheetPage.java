@@ -45,7 +45,7 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put("Add Object To Timesheet", By.xpath("(//div[span[text()='Add object to timesheet']])[1]"));
         mapSelectors.put("Search", By.name("search"));
         mapSelectors.put("Search icon", By.xpath("//a[.//span[@class='x-btn-icon-el fas fa-search ']]"));
-        mapSelectors.put("MAPRE Portfolio Task 1 Checkbox", By.xpath("(//span[contains(text(), 'Task 1')]/preceding-sibling::input)[1]"));
+        mapSelectors.put("MAPRE Portfolio Automation Test Task Checkbox", By.xpath("(//input[@class=' x-tree-checkbox'])[1]"));
         mapSelectors.put("Integration_Triskell Task 2 Checkbox", By.xpath("(//span[contains(text(), 'Task 2')]/preceding-sibling::input)[1]"));
         mapSelectors.put("Integration_Triskell Task 6 Checkbox", By.xpath("(//span[contains(text(), 'Task 6')]/preceding-sibling::input)[1]"));
         mapSelectors.put("Add & Close", By.xpath("(//a[.//span[text()='Add & Close']])[1]"));
@@ -53,7 +53,7 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put(TIMESHEET_CONTEXT + "Yes", By.xpath("//a[.//span[text()='Yes']]"));
         mapSelectors.put(TIMESHEET_CONTEXT + "OK", By.xpath("//a[.//span[text()='OK']]"));
         mapSelectors.put(TIMESHEET_CONTEXT + "Close", By.xpath("(//a[.//span[text()='Close']])[1]"));
-        mapSelectors.put(TIMESHEET_CONTEXT + "all activities checkbox", By.xpath("//div[contains(@id, 'gridcolumn-') and contains(@id, '-titleEl') and @role='presentation' and contains(@class, 'x-column-header-inner') and contains(@class, 'x-column-header-inner-empty')]"));
+        mapSelectors.put(TIMESHEET_CONTEXT + "all activities checkbox", By.xpath("//div[@class='x-column-header-inner x-column-header-inner-empty']"));
         mapSelectors.put("Failed message", By.cssSelector("div[role='textbox'][id*='messagebox']"));
         mapSelectors.put("Question message", By.cssSelector("div[role='textbox'][id*='messagebox']"));
         mapSelectors.put("Warning message", By.cssSelector("div[role='textbox'][id*='messagebox']"));
@@ -61,6 +61,7 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put(TIMESHEET_CONTEXT + TIMESHEET_CONTEXT + "Submit", By.xpath("(//div[contains(@id, 'tkBodyWindow')])[1]"));
         mapSelectors.put(TIMESHEET_CONTEXT + "Submit", By.xpath("//a[.//span[text()='Submit']]"));
 
+        mapSelectors.put("loading", By.id("loading-container"));
 
         return mapSelectors;
     }
