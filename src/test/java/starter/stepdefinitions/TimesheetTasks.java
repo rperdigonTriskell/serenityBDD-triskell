@@ -36,6 +36,13 @@ public class TimesheetTasks {
 
         ifBlueColorThenEmptyTimesheetTimeTable();
 
+        performAttemptsTo(
+                "{0} waits for table to be visible",
+                waitVisible(targetTable)
+        );
+
+        rows = getTableRows(targetTable);
+
         if ("empty".equals(tableState)) {
             if (rows.isEmpty() && "add".equals(action)) {
                 addTimesheetActivity();
@@ -210,17 +217,18 @@ public class TimesheetTasks {
         if (!getTableRows(timetable).isEmpty()) {
             String timerows = getTableRows(timetable).get(0).thenFindAll(By.cssSelector("td > div")).get(0).getCssValue("color");
             if (timerows.equals("rgba(33, 150, 243, 1)")) {
-
                 OnStage.theActorInTheSpotlight().attemptsTo(
                         FillTableWithValues.inTable(getCurrentPage().getSelector(TIMESHEET_BOARD + TIME + BOARD_SUFFIX), rowsData)
                 );
-                Target submit = getTarget(TIMESHEET_CONTEXT + TIMESHEET_CONTEXT + "Submit");
+                Target submit = getTarget(TIMESHEET_BOARD + "Submit Timesheet");
                 clickOnTarget(submit);
                 submit = getTarget(TIMESHEET_CONTEXT + "Submit");
                 clickOnTarget(submit);
                 waitNotVisible(submit);
-                clickOnTarget(TIMESHEET_CONTEXT + "all activities checkbox");
-                deleteAllTimesheetActivities();
+                clickOnTarget(TIMESHEET_BOARD + "Delete");
+                clickOnTarget(TIMESHEET_CONTEXT + "Yes");
+                performAttemptsTo("",waitNotVisible(getTarget(TIMESHEET_CONTEXT + "Yes")));
+                performAttemptsTo("",waitNotPresent(getTarget(TIMESHEET_CONTEXT + "Yes")));
             }
         }
     }

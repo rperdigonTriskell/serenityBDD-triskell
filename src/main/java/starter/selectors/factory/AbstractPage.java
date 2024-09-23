@@ -27,4 +27,6 @@ public abstract class AbstractPage extends PageObject implements SelectorFactory
     public By getSelector(String selector) {
         return mapSelectors().get(selector);
     }
+
+
 }
