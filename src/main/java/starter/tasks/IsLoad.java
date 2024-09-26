@@ -3,7 +3,9 @@ package starter.tasks;
 
 import net.serenitybdd.core.Serenity;
 import net.thucydides.core.pages.PageObject;
-import starter.selectors.factory.PageFactory;
+import starter.pageselectors.factory.PageFactory;
+
+import static starter.tasks.GenericTasks.performAttemptsTo;
 
 public class IsLoad extends PageObject {
     /**

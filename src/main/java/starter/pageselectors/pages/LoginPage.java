@@ -1,7 +1,7 @@
-package starter.selectors.pages;
+package starter.pageselectors.pages;
 
 import org.openqa.selenium.By;
-import starter.selectors.factory.AbstractPage;
+import starter.pageselectors.factory.AbstractPage;
 
 import java.util.Map;
 

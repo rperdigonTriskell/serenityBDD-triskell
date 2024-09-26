@@ -20,48 +20,19 @@ Feature: Generate Report
       | MON | TUE | WED | THU | FRI | SAT | SUN |
       |     |     |     |     |     |     |     |
 
-  @PROD
-  Scenario: Generating a Report with All Correct Data
-#  te comento un metodo serenity bdd screenplay que implementar
-    When send text to table "Timesheet board time board":
-      | MON | TUE | WED | THU | FRI |
-      | 8   | 8   | 8   | 8   | 8   |
-#  "Timesheet board time board" es un target y su selector lo recoje este metodo:
-#  /**
-#    * Retrieves the Target for the given element on the current page.
-#  */
-#  public static Target getTarget(String element) {
-#  return Target.the(element).located(getCurrentPage().getSelector(element));
-#  }
-#    El selector de "Timesheet board time board"  es este:
-#  mapSelectors.put(TIMESHEET_BOARD + "time board", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[2]"));
+#  @PROD
+#  Scenario: Generating a Report with All Correct Data
+#    When send text to table "Timesheet board time board":
+#      | MON | TUE | WED | THU | FRI |
+#      | 8   | 8   | 8   | 8   | 8   |
+#    And click in timesheet board "Submit Timesheet"
+#    Then verify the element timesheet "Timesheet Submit" are "visible"
+#    When click in timesheet "Submit"
+#    Then verify the element timesheet "Submit" are "invisible"
+#    And verify the following elements on the "Timesheet board time board" should match the expected data:
+#      | MON   | TUE   | WED   | THU   | FRI   |
+#      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
 #
-#    Tambien he de aclarar que esta tabla es un table dentro de otro table:
-#  if (!table.findElements(By.xpath(".//table")).isEmpty()) {
-#  rows = table.thenFindAll(By.xpath(".//table//tbody//tr"));
-#  } else {
-#  rows = table.thenFindAll(By.xpath(".//tr"));
-#  }
-#
-#    este es un condicional mal escrito ya que quiero un enfoque screenplay.
-#
-#    tambien añadir esta mecanica de rellenar:
-#  // click on the cell to activate DOM event to create imput to inmput text
-#
-#  // wait for the input to be visible, DOM refresh and need update
-#
-#  // input the text into the input field
-
-    And click in timesheet board "Submit Timesheet"
-    Then verify the element timesheet "Timesheet Submit" are "visible"
-    When click in timesheet "Submit"
-    Then verify the element timesheet "Submit" are "invisible"
-    And verify the following elements on the "Timesheet board time board" should match the expected data:
-      | MON   | TUE   | WED   | THU   | FRI   |
-      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
-
-#    durante la eliminación de actividades hay un error que impide eliminar bien la actividad y es un posible bug
-
 #
 #  @PROD
 #  Scenario: Generating a Report with Data Replacement
@@ -84,7 +55,7 @@ Feature: Generate Report
 #  Then verify the element timesheet "Submit" are "invisible"
 #  And verify the following elements on the "Timesheet board time board" should match the expected data:
 #    | MON   | TUE   | WED   | THU   | FRI   |
-#    | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
+#    | 5.00h | 5.00h | 5.00h | 5.00h | 5.00h |
 
 
 #    Given that the user is on the timesheet page

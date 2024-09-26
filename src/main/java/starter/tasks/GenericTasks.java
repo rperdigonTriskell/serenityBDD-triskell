@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.*;
-import static starter.selectors.factory.PageFactory.*;
+import static starter.pageselectors.factory.PageFactory.*;
 
 public class GenericTasks {
 
@@ -27,7 +27,7 @@ public class GenericTasks {
      * @return The WebElementFacade for the given element.
      */
     public static WebElementFacade getWebelementFacade(String element) {
-        Target target = Target.the(element).located(getCurrentPage().getSelector(element));
+        Target target = getTarget(element);
         Actor actor = OnStage.theActorInTheSpotlight();
         return target.resolveFor(actor);
     }

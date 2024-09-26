@@ -1,4 +1,4 @@
-package starter.selectors.factory;
+package starter.pageselectors.factory;
 
 import org.openqa.selenium.By;
 

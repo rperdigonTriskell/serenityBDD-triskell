@@ -1,10 +1,10 @@
-package starter.selectors.factory;
+package starter.pageselectors.factory;
 
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import starter.selectors.pages.*;
+import starter.pageselectors.pages.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +24,8 @@ public class PageFactory extends PageObject {
         put(BAD_URL_FOLDER, initElements(getStaticDriver(), LoginPage.class));
         put(DASHBOARD, initElements(getStaticDriver(), DashboardPage.class));
         put(TIMESHEET, initElements(getStaticDriver(), TimesheetPage.class));
+        put(PROJECT, initElements(getStaticDriver(), ProjectPage.class));
+        put(AUTOMATION_TESTING_PROJECT, initElements(getStaticDriver(), AutomationTestingProjectPage.class));
     }};
 
     /**

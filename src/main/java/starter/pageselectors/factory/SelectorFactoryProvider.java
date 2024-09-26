@@ -1,4 +1,4 @@
-package starter.selectors.factory;
+package starter.pageselectors.factory;
 
 import java.util.HashMap;
 import java.util.Map;

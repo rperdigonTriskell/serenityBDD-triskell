@@ -9,7 +9,6 @@ import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import org.junit.AfterClass;
-import starter.tasks.FillTableWithValues;
 import starter.tasks.VerifyTableElements;
 import starter.tasks.WaitInteractions;
 
@@ -25,7 +24,7 @@ import static starter.tasks.ElementVisibilityVerifier.*;
 import static starter.tasks.GenericTasks.getTarget;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
-import static starter.selectors.factory.PageFactory.*;
+import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.SendTextTo.*;
 import static starter.tasks.security.CredentialManager.*;
 import static starter.tasks.security.EnvironmentManager.*;
@@ -225,7 +224,7 @@ public class GenericStepDef {
     @Then("verify the following elements on the {string} should match the expected data:")
     public void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
         OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitInteractions.waitVisible(getCurrentPage().getSelector(context)),
+                WaitInteractions.waitVisible(getTarget(context)),
                 VerifyTableElements.forTable(context, dataTable)
         );
     }
@@ -259,6 +258,17 @@ public class GenericStepDef {
     @When("send text {string} to element {string}")
     public static void sendTextToElement(String text, String element) {
         input(text, element);
+    }
+
+
+    /**
+     * Sends text to an element.
+     *
+     * @param element the element to send the text to
+     */
+    @When("send enter to element {string}")
+    public static void sendEnterToElement(String element) {
+        enter(element);
     }
 
     /**

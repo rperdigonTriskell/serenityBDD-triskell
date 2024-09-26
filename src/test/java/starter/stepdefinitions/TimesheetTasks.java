@@ -10,7 +10,7 @@ import starter.tasks.FillTableWithValues;
 import java.util.*;
 
 import static starter.Constants.*;
-import static starter.selectors.factory.PageFactory.getCurrentPage;
+import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.GenericTasks.performAttemptsTo;

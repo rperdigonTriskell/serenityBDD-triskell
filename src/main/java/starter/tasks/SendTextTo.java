@@ -6,10 +6,11 @@ import net.serenitybdd.screenplay.actions.Clear;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.Keys;
 
 import java.util.List;
 
-import static starter.selectors.factory.PageFactory.*;
+import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitInteractions.*;
 import static starter.tasks.security.CredentialManager.*;
@@ -26,9 +27,22 @@ public class SendTextTo {
         // Clear the specified element
         OnStage.theActorInTheSpotlight().attemptsTo(
                 waitVisible(target),
-                Clear.field(getCurrentPage().getSelector(element)),
+                Clear.field(target),
                 // Enter the given text into the specified element
-                Enter.theValue(text).into(getCurrentPage().getSelector(element))
+                Enter.theValue(text).into(target)
+        );
+    }
+
+    /**
+     * Input the given enter into the specified element.
+     *
+     * @param element the element to input the text into
+     */
+    public static void enter(String element) {
+        Target target = getTarget(element);
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                waitVisible(target),
+                Enter.theValue(Keys.ENTER).into(target)
         );
     }
 

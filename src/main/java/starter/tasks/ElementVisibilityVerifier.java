@@ -3,13 +3,14 @@ package starter.tasks;
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.screenplay.matchers.WebElementStateMatchers;
 import net.serenitybdd.screenplay.questions.WebElementQuestion;
+import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
 import static starter.Constants.*;
-import static starter.selectors.factory.PageFactory.*;
+import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitInteractions.*;
 
@@ -42,11 +43,11 @@ public class ElementVisibilityVerifier {
      * @param isVisible A boolean that determines if the element should be visible or not.
      */
     public static void verifyElementVisibility(String element, boolean isVisible) {
-        By locator = getCurrentPage().getSelector(element);
+        Target locator = getTarget(element);
         if (isVisible) {
             performAttemptsTo("{0} waits for element to be visible", waitVisible(locator));
         } else {
-            performAttemptsTo("{0} waits for element to be present", waitPresent(locator));
+            performAttemptsTo("{0} waits for element to be present", waitNotVisible(locator));
         }
     }
 
@@ -111,7 +112,7 @@ public class ElementVisibilityVerifier {
     public static void verifyElementPresence(String element, boolean isPresent) {
         performShouldSeeThat(
                 "check that the element is present: " + element,
-                actor -> WebElementQuestion.stateOf(getCurrentPage().getSelector(element)).answeredBy(actor),
+                actor -> WebElementQuestion.stateOf(getTarget(element)).answeredBy(actor),
                 isPresent ? WebElementStateMatchers.isPresent() : WebElementStateMatchers.isNotPresent()
         );
     }

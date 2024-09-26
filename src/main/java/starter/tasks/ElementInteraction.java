@@ -6,12 +6,11 @@ import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
-import starter.selectors.factory.PageFactory;
 
 import java.util.List;
 
 import static starter.Constants.CHECKBOX;
-import static starter.selectors.factory.PageFactory.getCurrentPage;
+import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitInteractions.*;
 

@@ -9,12 +9,16 @@ public class Constants {
     public final static String BAD_URL_FOLDER = "bad url folder";
     public final static String DASHBOARD = "Dashboard";
     public final static String TIMESHEET = "Timesheet";
+    public final static String PROJECT = "Project";
     public final static String TIMESHEET_SUMMARY = "Timesheet Summary";
     public final static String HOME_PAGE = "Home Page";
+    public final static String AUTOMATION_TESTING_PROJECT = "Automation Testing Project";
     public final static String SIDEBAR_CONTEXT = "Sidebar ";
     public final static String HEADING_CONTEXT = "Heading ";
     public final static String DASHBOARD_CONTEXT = DASHBOARD + " ";
     public final static String TIMESHEET_CONTEXT = TIMESHEET + " ";
+    public final static String PROJECT_CONTEXT = PROJECT + " ";
+    public final static String AUTOMATION_TESTING_PROJECT_CONTEXT = AUTOMATION_TESTING_PROJECT + " ";
     public final static String ACTIVITY = "activity";
     public final static String TIME = "time";
     public final static String BOARD_SUFFIX = " board";

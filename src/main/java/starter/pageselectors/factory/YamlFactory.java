@@ -1,4 +1,4 @@
-package starter.selectors.factory;
+package starter.pageselectors.factory;
 
 import org.openqa.selenium.By;
 import org.yaml.snakeyaml.Yaml;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static starter.selectors.factory.PageFactory.LOCATOR_MAP;
+import static starter.pageselectors.factory.PageFactory.LOCATOR_MAP;
 
 public class YamlFactory implements SelectorFactory {
 

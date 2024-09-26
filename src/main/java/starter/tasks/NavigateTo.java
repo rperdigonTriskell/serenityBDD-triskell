@@ -5,7 +5,7 @@ import net.serenitybdd.screenplay.actions.Open;
 import net.serenitybdd.screenplay.actors.OnStage;
 import org.openqa.selenium.WebDriverException;
 
-import static starter.selectors.factory.PageFactory.getStaticDriver;
+import static starter.pageselectors.factory.PageFactory.getStaticDriver;
 import static starter.tasks.security.CredentialManager.getCredential;
 
 public class NavigateTo {
