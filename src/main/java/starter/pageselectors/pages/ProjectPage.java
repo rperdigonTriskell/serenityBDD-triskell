@@ -18,7 +18,7 @@ public class ProjectPage extends AbstractPage {
         mapSelectors.put(PROJECT, By.cssSelector("table[id*='gridview']"));
         mapSelectors.put(PROJECT_CONTEXT + "add Project", By.xpath("(//a[.//span[text()='Project']])[2]"));
         mapSelectors.put(PROJECT_CONTEXT + "Create New Project", By.xpath("(//div[contains(@id, 'tkBodyWindow')])[1]"));
-       //
+        //
         mapSelectors.put(PROJECT_CONTEXT + "Name input", By.name("ppname"));
         mapSelectors.put(PROJECT_CONTEXT + "parent imput", By.name("pp_par"));
         mapSelectors.put(PROJECT_CONTEXT + "Choose Parent button", By.xpath("//a[.//span[contains(text(), 'Choose parent ...')]]"));
@@ -29,6 +29,16 @@ public class ProjectPage extends AbstractPage {
         mapSelectors.put(PROJECT_CONTEXT + "Automation Testing Project", By.xpath(".//span[text()=' Automation Testing Project' and @class='tk-object-title']"));
         //
         mapSelectors.put(PROJECT_CONTEXT + "Search in Grid", By.name("search"));
+
+        mapSelectors.put(PROJECT_CONTEXT + "project board", By.xpath("(//tr[.//strong[contains(text(), 'Automation Testing Project')]])[2]"));
+        mapSelectors.put(PROJECT_CONTEXT + "empty project board", By.xpath("(//div[contains(@id, 'grid-')])[2]"));
+
+        //
+        mapSelectors.put("loading", By.id("loading-container"));
+        mapSelectors.put(PROJECT_CONTEXT + "all activities checkbox", By.xpath("(//span[contains(@id, 'gridcolumn')])[1]"));
+        mapSelectors.put(PROJECT_CONTEXT + "delete", By.cssSelector("a[data-qtip='Remove']"));
+        mapSelectors.put(PROJECT_CONTEXT + "delete anwser", By.xpath("(//div[contains(@id, 'messagebox')])[1]"));
+        mapSelectors.put(PROJECT_CONTEXT + "yes", By.xpath("//a[.//span[text()='Yes']]"));
         return mapSelectors;
     }
 }

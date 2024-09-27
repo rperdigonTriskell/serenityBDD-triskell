@@ -1,5 +1,6 @@
 package starter.stepdefinitions;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -16,7 +17,7 @@ public class ProjectStepDef {
      *
      * @param element the element to click on
      */
-    @When("click in project {string}")
+    @When("click in Project {string}")
     public static void clickInProject(String element) {
         clickOnTarget(PROJECT_CONTEXT + element);
     }
@@ -28,7 +29,7 @@ public class ProjectStepDef {
      * @param element    the element to verify the visibility of
      * @param visibility the expected visibility of the element (either "visible" or "not visible")
      */
-    @Then("verify the element project {string} are {string}")
+    @Then("verify the element Project {string} are {string}")
     public static void verifyTheElementProjectAre(String element, String visibility) {
         verifyElementVisibility(PROJECT_CONTEXT + element, visibility);
     }
@@ -39,7 +40,7 @@ public class ProjectStepDef {
      * @param text    the text to send
      * @param element the element to send the text to
      */
-    @When("send text project {string} to element {string}")
+    @When("send text Project {string} to element {string}")
     public static void sendTextToProjectElement(String text, String element) {
         sendTextToElement(text, PROJECT_CONTEXT + element);
     }
@@ -49,9 +50,9 @@ public class ProjectStepDef {
      *
      * @param element the element to send the text to
      */
-    @When("send enter project to element {string}")
-    public static void sendEnterToProjectElement(String element) {
-        sendEnterToElement(PROJECT_CONTEXT + element);
+    @When("send text and enter Project {string} to element {string}")
+    public static void sendTextAndEnterToProjectElement(String text, String element) {
+        inputAndEnter(text, PROJECT_CONTEXT + element);
     }
 
     /**
@@ -60,10 +61,19 @@ public class ProjectStepDef {
      * @param element the element to verify
      * @param text    the expected text of the element
      */
-    @Then("verify the text element project board {string} is {string}")
+    @Then("verify the text element Project board {string} is {string}")
     public void verifyTheTextElementIs(String element, String text) {
         verifyElementTextIs(PROJECT_CONTEXT + element, text);
     }
 
-
+    /**
+     * Verifies that the elements on the specified context match the expected data.
+     *
+     * @param context   the context in which to verify the elements
+     * @param dataTable the DataTable containing the expected data for the elements
+     */
+    @Then("verify the following Project elements on the {string} should match the expected data:")
+    public void verifyFollowingProjectElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
+        verifyFollowingElementsOnTheShouldMatchTheExpectedData(PROJECT_CONTEXT + context, dataTable);
+    }
 }

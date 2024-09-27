@@ -49,6 +49,11 @@ public class ElementVisibilityVerifier {
         } else {
             performAttemptsTo("{0} waits for element to be present", waitNotVisible(locator));
         }
+        performShouldSeeThat(
+                "check that the element is present: " + element,
+                actor -> WebElementQuestion.stateOf(getTarget(element)).answeredBy(actor),
+                isVisible ? WebElementStateMatchers.isVisible() : WebElementStateMatchers.isNotVisible()
+        );
     }
 
     /**
@@ -110,6 +115,14 @@ public class ElementVisibilityVerifier {
      * @param isPresent A boolean that determines if the element should be present or not.
      */
     public static void verifyElementPresence(String element, boolean isPresent) {
+       if (isPresent){
+           getWebelementFacade(element).waitForCondition().until(driver -> getWebelementFacade(element).isPresent());
+           performAttemptsTo("{0} waits to present", waitPresent(getTarget(element)));
+       }else{
+           getWebelementFacade(element).waitForCondition().until(driver -> !getWebelementFacade(element).isPresent());
+           performAttemptsTo("{0} waits to not present", waitNotPresent(getTarget(element)));
+       }
+
         performShouldSeeThat(
                 "check that the element is present: " + element,
                 actor -> WebElementQuestion.stateOf(getTarget(element)).answeredBy(actor),

@@ -58,6 +58,7 @@ public class GenericTasks {
         Actor actor = OnStage.theActorInTheSpotlight();
         return element.resolveFor(actor);
     }
+
     /**
      * Retrieves the WebElementFacade for the given element on the current page.
      *

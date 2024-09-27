@@ -5,7 +5,8 @@ import net.serenitybdd.core.Serenity;
 import net.thucydides.core.pages.PageObject;
 import starter.pageselectors.factory.PageFactory;
 
-import static starter.tasks.GenericTasks.performAttemptsTo;
+import static starter.tasks.GenericTasks.*;
+import static starter.tasks.WaitInteractions.waitVisible;
 
 public class IsLoad extends PageObject {
     /**
@@ -17,6 +18,8 @@ public class IsLoad extends PageObject {
     public static void isLoadPage(String pageName) {
         PageFactory.setCurrentPage(pageName);
         Serenity.recordReportData().withTitle("visible page: ").andContents(pageName);
+        getWebelementFacade(pageName).waitForCondition().until(driver -> getWebelementFacade(pageName).isVisible());
+        performAttemptsTo("{0} waits to loading page", waitVisible(getTarget(pageName)));
         ElementVisibilityVerifier.verifyElementIsVisible(pageName);
     }
 

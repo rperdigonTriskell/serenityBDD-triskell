@@ -38,11 +38,14 @@ public class SendTextTo {
      *
      * @param element the element to input the text into
      */
-    public static void enter(String element) {
+    public static void inputAndEnter(String text, String element) {
         Target target = getTarget(element);
+        // Clear the specified element
         OnStage.theActorInTheSpotlight().attemptsTo(
                 waitVisible(target),
-                Enter.theValue(Keys.ENTER).into(target)
+                Clear.field(target),
+                // Enter the given text into the specified element
+                Enter.theValue(text).into(target).thenHit(Keys.ENTER)
         );
     }
 

@@ -6,6 +6,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 import net.serenitybdd.core.Serenity;
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import org.junit.AfterClass;
@@ -21,11 +22,12 @@ import static starter.stepdefinitions.TimesheetTasks.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.ElementVisibilityVerifier.*;
-import static starter.tasks.GenericTasks.getTarget;
+import static starter.tasks.GenericTasks.*;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.SendTextTo.*;
+import static starter.tasks.WaitInteractions.waitNotVisible;
 import static starter.tasks.security.CredentialManager.*;
 import static starter.tasks.security.EnvironmentManager.*;
 
@@ -222,7 +224,9 @@ public class GenericStepDef {
      * @param  dataTable the DataTable containing the expected data for the elements
      */
     @Then("verify the following elements on the {string} should match the expected data:")
-    public void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
+    public static void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
+        WebElementFacade element = getWebelementFacade(context);
+        element.waitForCondition().until(driver -> element.isVisible());
         OnStage.theActorInTheSpotlight().attemptsTo(
                 WaitInteractions.waitVisible(getTarget(context)),
                 VerifyTableElements.forTable(context, dataTable)
@@ -245,7 +249,7 @@ public class GenericStepDef {
      * @param element the element to click on
      */
     @When("click in sidebar {string}")
-    public void clickInSidebar(String element) {
+    public static void clickInSidebar(String element) {
         clickOnTarget(SIDEBAR_CONTEXT + element);
     }
 
@@ -266,10 +270,11 @@ public class GenericStepDef {
      *
      * @param element the element to send the text to
      */
-    @When("send enter to element {string}")
-    public static void sendEnterToElement(String element) {
-        enter(element);
+    @When("send text and enter {string} to element {string}")
+    public static void sendTextAndEnterToElement(String text, String element) {
+        inputAndEnter(text, element);
     }
+
 
     /**
      * Sends a credential to an element.
@@ -278,7 +283,7 @@ public class GenericStepDef {
      * @param element the element to send the credential to
      */
     @When("send credential {string} to element {string}")
-    public void sendCredentialToElement(String text, String element) {
+    public static void sendCredentialToElement(String text, String element) {
         credential(text, element);
     }
 
@@ -288,7 +293,7 @@ public class GenericStepDef {
      * @param table the table to send the text to
      */
     @When("send text to:")
-    public void sentTextTo(DataTable table) {
+    public static void sentTextTo(DataTable table) {
         table(table);
     }
 
@@ -299,8 +304,18 @@ public class GenericStepDef {
      * @param dataTable the data table containing the text to send
      */
     @When("send text to table {string}:")
-    public void sentTextToTable(String webTable, DataTable dataTable) {
+    public static void sentTextToTable(String webTable, DataTable dataTable) {
         fillTimesheetTableWithValues(webTable, dataTable);
+    }
+
+    /**
+     * Waits for an loadig.
+     */
+    @Then("wait for loading")
+    public static void waitLoading() {
+        WebElementFacade element = getWebelementFacade("loading");
+        element.waitForCondition().until(driver -> !element.isVisible());
+        performAttemptsTo("{0} wait for loading", waitNotVisible(getTarget("loading")));
     }
 
 }

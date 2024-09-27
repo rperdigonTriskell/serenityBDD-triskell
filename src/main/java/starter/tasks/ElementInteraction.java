@@ -108,7 +108,6 @@ public class ElementInteraction {
 
         performAttemptsTo("{0} waits for table to be visible", waitVisible(table));
 
-
         // Find the table rows on the web
         List<WebElementFacade> rows = getTableRows(table);
 

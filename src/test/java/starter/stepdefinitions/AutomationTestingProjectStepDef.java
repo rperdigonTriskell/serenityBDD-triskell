@@ -28,15 +28,4 @@ public class AutomationTestingProjectStepDef {
     public static void verifyTheElementProjectAre(String element, String visibility) {
         verifyElementVisibility(AUTOMATION_TESTING_PROJECT_CONTEXT + element, visibility);
     }
-
-    /**
-     * Verifies the text of an element.
-     *
-     * @param element the element to verify
-     * @param text    the expected text of the element
-     */
-    @Then("verify the text element Automation Testing Project board {string} is {string}")
-    public void verifyTheTextElementIs(String element, String text) {
-        verifyElementTextIs(AUTOMATION_TESTING_PROJECT_CONTEXT + element, text);
-    }
 }
