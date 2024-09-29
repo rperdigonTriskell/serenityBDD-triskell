@@ -1,4 +1,4 @@
-version: "3.8"  # Usa una versión más reciente
+version: "3"
 services:
   hub:
     image: selenium/hub:latest
@@ -14,12 +14,12 @@ services:
       - hub
     environment:
       - HUB_HOST=selenium-hub
-      - CHROME_OPTIONS="--disable-dev-shm-usage --no-sandbox --headless"
+      - CHROME_OPTIONS="--disable-dev-shm-usage --no-sandbox"  # Opcional para ejecución en segundo plano
     networks:
       - selenium-grid
     volumes:
-      - ./videos:/videos
-      - ~/SeleniumDownloads:/home/seluser/Downloads
+      - ./videos:/videos  # Directorio para grabar vídeos
+      - C:/SeleniumDownloads:/home/seluser/Downloads  # Monta el volumen para descargas en Windows
 
   firefox:
     image: selenium/node-firefox:latest
@@ -30,8 +30,8 @@ services:
     networks:
       - selenium-grid
     volumes:
-      - ./videos:/videos
-      - ~/SeleniumDownloads:/home/seluser/Downloads
+      - ./videos:/videos  # Directorio para grabar vídeos
+      - C:/SeleniumDownloads:/home/seluser/Downloads  # Monta el volumen para descargas en Windows
 
 networks:
   selenium-grid:
