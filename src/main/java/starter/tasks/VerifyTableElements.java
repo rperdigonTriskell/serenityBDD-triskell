@@ -54,7 +54,7 @@ public class VerifyTableElements implements Task {
             for (Map.Entry<String, String> entry : expectedRow.entrySet()) {
                 // Check if the expected value is "[empty]" or "[actual date]"
                 String expectedValue = entry.getValue();
-                if (expectedValue.equals(EMPTY)) {
+                if (expectedValue.equals(EMPTY_DATA)) {
                     expectedValue = ""; // Set expected value to empty string
                 } else if (expectedValue.equals(ACTUAL_DATE)) {
                     expectedValue = getCurrentDate(); // Set expected value to current date

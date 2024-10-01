@@ -41,7 +41,12 @@ public class Constants {
             "selected",
             "deselected",
     };
-    public static final Duration WAIT_DURATION = Duration.ofSeconds(5);
-    public static final String  EMPTY = "[empty]";
+    public static final String EMPTY_DATA = "[empty]";
     public static final String  ACTUAL_DATE = "[actual date]";
+    public static final String  EMPTY = "empty";
+    public static final String  ADD = "add";
+    public static final String  NOT_EMPTY = "not empty";
+    public static final String  DELETE = "delete";
+    //wait time
+    public static final Duration WAIT_DURATION = Duration.ofSeconds(10);
 }

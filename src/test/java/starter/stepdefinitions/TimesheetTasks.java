@@ -43,15 +43,15 @@ public class TimesheetTasks {
 
         rows = getTableRows(targetTable);
 
-        if ("empty".equals(tableState)) {
-            if (rows.isEmpty() && "add".equals(action)) {
+        if (tableState.equals(EMPTY)) {
+            if (rows.isEmpty() && ADD.equals(action)) {
                 addTimesheetActivity();
             } else {
                 deleteAllTimesheetActivities();
                 addTimesheetActivity();
             }
-        } else if ("not empty".equals(tableState)) {
-            if (!rows.isEmpty() && "delete".equals(action)) {
+        } else if (tableState.equals(NOT_EMPTY)) {
+            if (!rows.isEmpty() && DELETE.equals(action)) {
                 deleteAllTimesheetActivities();
             }
         }

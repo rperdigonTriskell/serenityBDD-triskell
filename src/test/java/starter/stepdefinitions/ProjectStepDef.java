@@ -3,13 +3,20 @@ package starter.stepdefinitions;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.targets.Target;
+
+import java.util.List;
 
 import static starter.Constants.*;
+import static starter.stepdefinitions.AutomationTestingProjectStepDef.*;
 import static starter.stepdefinitions.GenericStepDef.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.ElementVisibilityVerifier.*;
+import static starter.tasks.GenericTasks.*;
 import static starter.tasks.SendTextTo.*;
+import static starter.tasks.WaitInteractions.*;
 
 public class ProjectStepDef {
     /**
@@ -73,7 +80,64 @@ public class ProjectStepDef {
      * @param dataTable the DataTable containing the expected data for the elements
      */
     @Then("verify the following Project elements on the {string} should match the expected data:")
-    public void verifyFollowingProjectElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
+    public static void verifyFollowingProjectElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
         verifyFollowingElementsOnTheShouldMatchTheExpectedData(PROJECT_CONTEXT + context, dataTable);
+    }
+
+    /**
+     * Handles the table state based on the given table state and action.
+     *
+     * @param tableState the state of the table ("empty" or "not empty")
+     * @param action     the action to perform ("add" or "delete")
+     */
+    @When("if the table Project {string}, {string} an Project")
+    public void ifTheTableIsAnProject(String tableState, String action) {
+        inputAndEnter("Automation Testing Project", PROJECT_CONTEXT + "search parent");
+
+        WebElementFacade element = getWebelementFacade("loading");
+        element.waitForCondition().until(driver -> !element.isVisible());
+        performAttemptsTo("{0} wait for loading", waitNotVisible(getTarget("loading")));
+
+        Target projectTable = getTarget(PROJECT_CONTEXT + "empty project board");
+        waitPresent(projectTable);
+        List<WebElementFacade> rows = getTableRows(projectTable);
+
+        if (tableState.equals(EMPTY)) {
+            if (rows.isEmpty() && ADD.equals(action)) {
+                addProject();
+            } else {
+                deleteAllProject();
+                addProject();
+            }
+        } else if (tableState.equals(NOT_EMPTY)) {
+            if (!rows.isEmpty() && DELETE.equals(action)) {
+                deleteAllProject();
+            }
+        }
+    }
+
+    public static void addProject() {
+        clickInProject("add Project");
+        verifyTheElementProjectAre("Create New Project", "visible");
+        sendTextAndEnterToProjectElement("Automation Testing Project", "Name input");
+        clickInProject("Choose Parent button");
+        verifyTheElementProjectAre("Add Object as New Parent", "visible");
+        sendTextAndEnterToProjectElement("testing", "search parent");
+        clickInProject("testing");
+        verifyTheElementProjectAre("Create New Project", "visible");
+        clickInProject("save");
+        checkToHasLoaded("Automation Testing Project");
+        clickInAutomationTestingProjectSidebar("Main Menu");
+        verifyTheElementAutomationTestingProjectAre("Project", "visible");
+        clickInAutomationTestingProjectSidebar("Project");
+        checkToHasLoaded("Project");
+        sendTextAndEnterToProjectElement("Automation Testing Project", "search parent");
+    }
+
+    public static void deleteAllProject() {
+        clickInProject("all activities checkbox");
+        clickInProject("delete");
+        verifyTheElementProjectAre("delete anwser", "visible");
+        clickInProject("yes");
     }
 }

@@ -172,7 +172,7 @@ public class GenericStepDef {
      * @param page the name of the page to check
      */
     @Then("check to {string} has loaded")
-    public void checkToHasLoaded(String page) {
+    public static void checkToHasLoaded(String page) {
         isLoadPage(page);
     }
 
