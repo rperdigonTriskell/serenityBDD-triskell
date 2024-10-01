@@ -1,79 +1,71 @@
 package starter.tasks;
 
-import net.serenitybdd.core.pages.WebElementFacade;
-import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.questions.WebElementQuestion;
-import net.serenitybdd.screenplay.targets.Target;
-import io.cucumber.datatable.DataTable;
-import org.openqa.selenium.By;
+import net.serenitybdd.screenplay.Actor;
 
+import org.openqa.selenium.By;
+import net.serenitybdd.core.pages.WebElementFacade;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-import static starter.tasks.GenericTasks.getTarget;
-import static starter.tasks.GenericTasks.getWebelementFacade;
-
+import static starter.Constants.*;
+import static starter.tasks.ElementDataVerifier.*;
+import static starter.tasks.GenericTasks.*;
 
 public class VerifyTableElements implements Task {
 
     private final String tableName;
-    private final DataTable dataTable;
+    private final List<Map<String, String>> expectedData;
 
-    public VerifyTableElements(String tableName, DataTable dataTable) {
+    public VerifyTableElements(String tableName, List<Map<String, String>> expectedData) {
         this.tableName = tableName;
-        this.dataTable = dataTable;
+        this.expectedData = expectedData;
     }
 
-    public static VerifyTableElements forTable(String tableName, DataTable dataTable) {
-        return new VerifyTableElements(tableName, dataTable);
+    /**
+     * Returns the current date in the format "dd/MM/yyyy".
+     *
+     * @return a string representing the current date.
+     */
+    public static String getCurrentDate() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.now().format(dateFormatter);
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        // Obtener el selector para la tabla
-        Target tableTarget = getTarget(tableName);
-
-        // Encuentra la tabla
-        List<WebElementFacade> rows = getTableRows(actor, tableTarget);
-
-        // Procesar el DataTable
-        List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
-
-        for (int i = 1; i < expectedData.size(); i++) { // Comienza desde 1 para ignorar el encabezado
-            Map<String, String> rowData = expectedData.get(i);
-            // Comprobar cada campo
-            verifyRowData(actor, rowData, rows.get(i - 1));
-        }
-    }
-
-    private List<WebElementFacade> getTableRows(Actor actor, Target tableTarget) {
-        // Obtenemos la tabla como WebElementFacade
+        // Locate the table
         WebElementFacade table = getWebelementFacade(tableName);
+        List<WebElementFacade> rows = table.thenFindAll(By.xpath("tr"));
 
-        // Verifica si hay un table dentro
-        if (!table.findElements(By.xpath(".//table")).isEmpty()) {
-            return table.thenFindAll(By.xpath(".//table//tbody//tr"));
-        } else {
-            return table.thenFindAll(By.xpath(".//tr"));
-        }
-    }
+        // Iterate over each row of the expected data
+        for (int i = 0; i < expectedData.size(); i++) {
+            Map<String, String> expectedRow = expectedData.get(i);
+            WebElementFacade currentRow = rows.get(i).findBy(By.xpath(".//table//tbody//tr"));
 
-    private <T extends Actor> void verifyRowData(T actor, Map<String, String> rowData, WebElementFacade row) {
-        // Comparar cada celda con los valores esperados
-        for (String key : rowData.keySet()) {
-            String expectedValue = rowData.get(key);
+            // Get the actual columns in the row
+            List<WebElementFacade> columns = currentRow.thenFindAll(By.xpath(".//td"));
 
-            // Crear un Target para la celda
-            Target cellTarget = Target.the("cell with key: " + key)
-                    .located(By.xpath(".//td[contains(@class, '" + key + "')]"));
+            // Validate each field in the row based on the expected data
+            int columnIndex = 0; // Start from the first column
+            for (Map.Entry<String, String> entry : expectedRow.entrySet()) {
+                // Check if the expected value is "[empty]" or "[actual date]"
+                String expectedValue = entry.getValue();
+                if (expectedValue.equals(EMPTY)) {
+                    expectedValue = ""; // Set expected value to empty string
+                } else if (expectedValue.equals(ACTUAL_DATE)) {
+                    expectedValue = getCurrentDate(); // Set expected value to current date
+                }
 
-            // Obtener el valor actual de la celda
-            String actualValue = WebElementQuestion.the(cellTarget).answeredBy(actor).getText();
+                // Get the actual value from the table cell
+                String actualValue = columns.get(columnIndex).getText().trim();
 
-            // Lógica de comparación
-            if (!actualValue.equals(expectedValue)) {
-                actor.remember("verificationError", "Mismatch for " + key + ": expected " + expectedValue + " but found " + actualValue);
+                // Perform the comparison
+                verifyTextsAreEqual(actualValue, expectedValue);
+                columnIndex++; // Move to the next column for the next entry
             }
         }
     }

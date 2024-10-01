@@ -26,8 +26,10 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put(TIMESHEET_SUMMARY + BOARD_SUFFIX + " Supersede a User", By.cssSelector("div[id*='toolbar'] > a[data-qtip='Supersede a User']"));
         mapSelectors.put(TIMESHEET_SUMMARY + BOARD_SUFFIX + " Save as Default View", By.xpath("//a[.//span[text()='Save as Default View']]"));
         //boards inside
-        mapSelectors.put(TIMESHEET_BOARD + "activity board", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[1]"));
-        mapSelectors.put(TIMESHEET_BOARD + "time board", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[2]"));
+        mapSelectors.put(TIMESHEET_BOARD + "activity board", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[1]//tbody"));
+        mapSelectors.put(TIMESHEET_BOARD + "activity board empty", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[1]"));
+        mapSelectors.put(TIMESHEET_BOARD + "time board", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[2]//tbody"));
+        mapSelectors.put(TIMESHEET_BOARD + "time board empty", By.xpath("(//*[contains(@id, 'gridview-') and contains(@id, '-table')])[2]"));
         //board timesheet
         mapSelectors.put(TIMESHEET_BOARD + "title", By.xpath("//div[span[contains(text(),'My Timesheet from') and (@class ='x-panel-header-text-container-default timeTitleDefault')]]"));
         mapSelectors.put(TIMESHEET_BOARD + "Add Activities", By.cssSelector("a[data-qtip='Add activities']"));

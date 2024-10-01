@@ -30,7 +30,7 @@ public class ProjectPage extends AbstractPage {
         //
         mapSelectors.put(PROJECT_CONTEXT + "Search in Grid", By.name("search"));
 
-        mapSelectors.put(PROJECT_CONTEXT + "project board", By.xpath("(//tr[.//strong[contains(text(), 'Automation Testing Project')]])[2]"));
+        mapSelectors.put(PROJECT_CONTEXT + "project board", By.xpath("(//table[.//strong[contains(text(), 'Automation Testing Project')]])[1]//tbody"));
         mapSelectors.put(PROJECT_CONTEXT + "empty project board", By.xpath("(//div[contains(@id, 'grid-')])[2]"));
 
         //

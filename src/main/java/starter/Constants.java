@@ -42,4 +42,6 @@ public class Constants {
             "deselected",
     };
     public static final Duration WAIT_DURATION = Duration.ofSeconds(5);
+    public static final String  EMPTY = "[empty]";
+    public static final String  ACTUAL_DATE = "[actual date]";
 }

@@ -15,6 +15,8 @@ import starter.tasks.WaitInteractions;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static starter.Constants.*;
@@ -225,11 +227,15 @@ public class GenericStepDef {
      */
     @Then("verify the following elements on the {string} should match the expected data:")
     public static void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
+        // Process the DataTable into a list of maps
+        List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
+
         WebElementFacade element = getWebelementFacade(context);
         element.waitForCondition().until(driver -> element.isVisible());
+
         OnStage.theActorInTheSpotlight().attemptsTo(
                 WaitInteractions.waitVisible(getTarget(context)),
-                VerifyTableElements.forTable(context, dataTable)
+                 new VerifyTableElements(context, expectedData)
         );
     }
 

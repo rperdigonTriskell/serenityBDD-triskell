@@ -26,7 +26,7 @@ public class TimesheetTasks {
      * @param action     the action to perform ("add" or "delete")
      */
     public static void manageTimesheetTable(String tableState, String action) {
-        Target targetTable = getTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX);
+        Target targetTable = getTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX + " empty");
         performAttemptsTo(
                 "{0} waits for table to be visible",
                 waitVisible(targetTable)
@@ -199,7 +199,7 @@ public class TimesheetTasks {
      * fills the table with default values.
      */
     public static void ifBlueColorThenEmptyTimesheetTimeTable() {
-        Target timetable = getTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX);
+        Target timetable = getTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX + " empty");
         performAttemptsTo(
                 "{0} waits for table to be present",
                 waitPresent(timetable)
