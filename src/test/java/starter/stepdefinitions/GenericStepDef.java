@@ -47,6 +47,7 @@ public class GenericStepDef {
     @Before
     public void setTheStage(Scenario scenario) {
         OnStage.setTheStage(new OnlineCast());
+        OnStage.theActorCalled(actor);
         Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
         for (String tag : scenarioTags) {
             try {
@@ -99,7 +100,7 @@ public class GenericStepDef {
      */
     @Given("go to web {string}")
     public void goToWeb(String url) {
-        theWebSite(url, actor);
+        performAttemptsTo("{0} attempts navigate to ",theWebSite(url));
     }
 
     /**
@@ -107,7 +108,7 @@ public class GenericStepDef {
      */
     @Given("go to web Triskell")
     public void goToTriskell() {
-        theWebSite(baseUrl, actor);
+        performAttemptsTo("{0} attempts navigate to ",theWebSite(baseUrl));
     }
 
 
@@ -118,7 +119,7 @@ public class GenericStepDef {
      */
     @Given("go to wrong web {string}")
     public void goToWrongWeb(String url) {
-        theWrongWebSite(url, actor);
+        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url));
     }
 
     /**
@@ -129,7 +130,7 @@ public class GenericStepDef {
      */
     @Given("go to web {string} with domain {string}")
     public void goToWebWithDomain(String url, String domain) {
-        theWebSite(url + getCredential(domain, false), actor);
+        performAttemptsTo("{0} attempts navigate to ",theWebSite(url + getCredential(domain, false)));
     }
 
     /**
@@ -141,7 +142,7 @@ public class GenericStepDef {
     @Given("go to wrong web {string} with domain {string}")
     public void goToWrongWebWithDomain(String url, String domain) {
         url = url.replace("domain", getCredential(domain, false));
-        theWrongWebSite(url, actor);
+        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url));
     }
 
     /**
@@ -151,7 +152,7 @@ public class GenericStepDef {
      */
     @Given("go to wrong web {string} with XSS atack")
     public void goToWrongWebWithXSSAtack(String url) {
-        theWrongWebSite(url + "<script>alert('XSS')</script>", actor);
+        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url + "<script>alert('XSS')</script>"));
     }
 
     /**
@@ -163,7 +164,7 @@ public class GenericStepDef {
     @Given("go to wrong web {string} with domain {string} and XSS atack")
     public void goToWrongWebWithDomainAndXSSAtack(String url, String domain) {
         url = url.replace("domain", getCredential(domain, false));
-        theWrongWebSite(url + "<script>alert('XSS')</script>", actor);
+        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url + "<script>alert('XSS')</script>"));
     }
 
     /**

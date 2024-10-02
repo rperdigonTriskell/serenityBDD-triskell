@@ -3,6 +3,7 @@ package starter.tasks;
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
@@ -118,6 +119,18 @@ public class GenericTasks {
     public static void performAttemptsTo (String description, Task task) {
         OnStage.theActorInTheSpotlight().attemptsTo(
                 Task.where(description, task)
+        );
+    }
+
+    /**
+     * Executes a task as the actor in the spotlight.
+     *
+     * @param description a description of the task
+     * @param performable        the task to be executed
+     */
+    public static void performAttemptsTo (String description, Performable performable) {
+        OnStage.theActorInTheSpotlight().attemptsTo(
+                Task.where(description, performable)
         );
     }
 

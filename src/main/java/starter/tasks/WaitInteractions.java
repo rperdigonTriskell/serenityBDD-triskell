@@ -1,7 +1,7 @@
 package starter.tasks;
 
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.serenitybdd.screenplay.Task;
+import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
@@ -11,31 +11,25 @@ import static starter.Constants.WAIT_DURATION;
 
 public class WaitInteractions {
 
-    public static Task waitPresent(By locator) {
-        return Task.where("{0} waits for element to be present",
-                WaitUntil.the(locator, isPresent()).forNoMoreThan(WAIT_DURATION));
+    public static Performable waitPresent(By locator) {
+        return WaitUntil.the(locator, isPresent()).forNoMoreThan(WAIT_DURATION);
     }
 
-    public static Task waitPresent(Target target) {
-        return Task.where("{0} waits for element to be present",
-                WaitUntil.the(target, isPresent()).forNoMoreThan(WAIT_DURATION));
+    public static Performable waitPresent(Target target) {
+        return WaitUntil.the(target, isPresent()).forNoMoreThan(WAIT_DURATION);
     }
 
-    public static Task waitVisible(By locator) {
-        return Task.where("{0} waits for element to be visible",
-                WaitUntil.the(locator, isVisible()).forNoMoreThan(WAIT_DURATION));
+    public static Performable waitVisible(By locator) {
+        return WaitUntil.the(locator, isVisible()).forNoMoreThan(WAIT_DURATION);
     }
 
-    public static Task waitVisible(Target target) {
-        return Task.where("{0} waits for target to be present and visible",
-                WaitUntil.the(target, isPresent()).forNoMoreThan(WAIT_DURATION),
-                WaitUntil.the(target, isVisible()).forNoMoreThan(WAIT_DURATION)
-        );
+    public static Performable waitVisible(Target target) {
+        return WaitUntil.the(target, isPresent()).forNoMoreThan(WAIT_DURATION)
+                .then(WaitUntil.the(target, isVisible()).forNoMoreThan(WAIT_DURATION));
     }
 
-    public static Task waitNotVisible(Target target) {
-        return Task.where("{0} waits for target to be visible",
-                WaitUntil.the(target, isNotVisible()).forNoMoreThan(WAIT_DURATION));
+    public static Performable waitNotVisible(Target target) {
+        return WaitUntil.the(target, isNotVisible()).forNoMoreThan(WAIT_DURATION);
     }
 
     public static WebElementFacade waitNotVisible(WebElementFacade target) {
@@ -43,18 +37,15 @@ public class WaitInteractions {
         return target;
     }
 
-    public static Task waitNotPresent(Target target) {
-        return Task.where("{0} waits for target to be visible",
-                WaitUntil.the(target, isNotPresent()).forNoMoreThan(WAIT_DURATION));
+    public static Performable waitNotPresent(Target target) {
+        return WaitUntil.the(target, isNotPresent()).forNoMoreThan(WAIT_DURATION);
     }
 
-    public static Task waitClickable(By locator) {
-        return Task.where("{0} waits for element to be clickable",
-                WaitUntil.the(locator, isClickable()).forNoMoreThan(WAIT_DURATION));
+    public static Performable waitClickable(By locator) {
+        return WaitUntil.the(locator, isClickable()).forNoMoreThan(WAIT_DURATION);
     }
 
-    public static Task waitClickable(Target target) {
-        return Task.where("{0} waits for target to be clickable",
-                WaitUntil.the(target, isClickable()).forNoMoreThan(WAIT_DURATION));
+    public static Performable waitClickable(Target target) {
+        return WaitUntil.the(target, isClickable()).forNoMoreThan(WAIT_DURATION);
     }
 }
