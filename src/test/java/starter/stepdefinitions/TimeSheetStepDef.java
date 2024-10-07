@@ -2,13 +2,14 @@ package starter.stepdefinitions;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import starter.tasks.VerifyElementVisibility;
 
 import static starter.Constants.*;
 import static starter.tasks.ElementDataVerifier.verifyElementTextIs;
 import static starter.tasks.ElementInteraction.clickOnBard;
 import static starter.tasks.ElementInteraction.clickOnTarget;
-import static starter.tasks.ElementVisibilityVerifier.*;
 import static starter.stepdefinitions.TimesheetTasks.*;
+import static starter.tasks.GenericTasks.performAttemptsTo;
 
 public class TimeSheetStepDef {
     /**
@@ -72,7 +73,7 @@ public class TimeSheetStepDef {
      */
     @Then("verify the element timesheet {string} are {string}")
     public static void verifyTheElementTimesheetAre(String element, String visibility) {
-        verifyElementVisibility(TIMESHEET_CONTEXT + element, visibility);
+        performAttemptsTo("{0} verify the element timesheet {1} are {2}",new VerifyElementVisibility(TIMESHEET_CONTEXT + element,visibility));
     }
 
     /**
@@ -83,7 +84,7 @@ public class TimeSheetStepDef {
      */
     @Then("verify the element timesheet board {string} are {string}")
     public static void verifyTheElementTimesheetBoardAre(String element, String visibility) {
-        verifyElementVisibility(TIMESHEET_BOARD + element, visibility);
+        performAttemptsTo("{0} verify the element timesheet board {1} are {2}",new VerifyElementVisibility(TIMESHEET_BOARD + element,visibility));
     }
 
     /**

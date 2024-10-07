@@ -4,12 +4,11 @@ import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.screenplay.questions.Text;
 import net.serenitybdd.screenplay.targets.Target;
 import org.hamcrest.Matchers;
+import starter.Constants;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitInteractions.*;
 
 public class ElementDataVerifier extends PageObject {
     /**
@@ -34,7 +33,7 @@ public class ElementDataVerifier extends PageObject {
         Target target = getTarget(element);
         performAttemptsTo(
                 "wait until the element " + element + " text is: " + expectedText,
-                waitVisible(target)
+                WaitFor.waitUntil(element, Constants.STATES.VISIBLE.getState())
         );
         performShouldSeeThat(
                 "check that the element" + element + " text is: " + expectedText,

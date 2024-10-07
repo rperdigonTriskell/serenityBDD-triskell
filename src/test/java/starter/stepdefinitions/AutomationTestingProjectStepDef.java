@@ -1,10 +1,12 @@
 package starter.stepdefinitions;
 
 import io.cucumber.java.en.*;
+import starter.tasks.VerifyElementVisibility;
 
 import static starter.Constants.*;
+import static starter.stepdefinitions.GenericStepDef.verifyTheElementAre;
 import static starter.tasks.ElementInteraction.clickOnTarget;
-import static starter.tasks.ElementVisibilityVerifier.verifyElementVisibility;
+import static starter.tasks.GenericTasks.*;
 
 public class AutomationTestingProjectStepDef {
     /**
@@ -25,6 +27,6 @@ public class AutomationTestingProjectStepDef {
      */
     @Then("verify the element Automation Testing Project {string} are {string}")
     public static void verifyTheElementAutomationTestingProjectAre(String element, String visibility) {
-        verifyElementVisibility(AUTOMATION_TESTING_PROJECT_CONTEXT + element, visibility);
+        verifyTheElementAre(AUTOMATION_TESTING_PROJECT_CONTEXT + element, visibility);
     }
 }

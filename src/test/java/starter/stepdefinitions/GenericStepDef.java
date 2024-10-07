@@ -10,8 +10,11 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import org.junit.AfterClass;
+import starter.Constants;
+import starter.tasks.VerifyElementVisibility;
 import starter.tasks.VerifyTableElements;
-import starter.tasks.WaitInteractions;
+import starter.tasks.VerifyTableElementsVisibility;
+import starter.tasks.WaitFor;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -23,13 +26,11 @@ import static starter.Constants.*;
 import static starter.stepdefinitions.TimesheetTasks.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
-import static starter.tasks.ElementVisibilityVerifier.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.SendTextTo.*;
-import static starter.tasks.WaitInteractions.waitNotVisible;
 import static starter.tasks.security.CredentialManager.*;
 import static starter.tasks.security.EnvironmentManager.*;
 
@@ -71,7 +72,7 @@ public class GenericStepDef {
     @AfterClass
     public static void finish() {
         try {
-            if (Serenity.getDriver() != null) {
+            if (getStaticDriver() != null) {
                 getStaticDriver().quit();
             }
         } catch (Exception e) {
@@ -185,7 +186,7 @@ public class GenericStepDef {
      */
     @Then("verify the element {string} are {string}")
     public static void verifyTheElementAre(String element, String visibility) {
-        verifyElementVisibility(element, visibility);
+        performAttemptsTo("{0} verify the element {1} are {2}", WaitFor.waitUntil(element, visibility),new VerifyElementVisibility(element,visibility));
     }
 
     /**
@@ -196,7 +197,7 @@ public class GenericStepDef {
      */
     @Then("check to the following {string} elements are:")
     public void checkFollowingElementsAre(String context, DataTable dataTable) {
-        dataTableAreVisible(context + " ", dataTable);
+        performAttemptsTo("{0} check to the following {1} elements are:",VerifyTableElementsVisibility.verifyElementsVisibility(context,dataTable));
     }
 
     /**
@@ -235,7 +236,7 @@ public class GenericStepDef {
         element.waitForCondition().until(driver -> element.isVisible());
 
         OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitInteractions.waitVisible(getTarget(context)),
+                WaitFor.waitUntil(context, Constants.STATES.VISIBLE.getState()),
                  new VerifyTableElements(context, expectedData)
         );
     }
@@ -322,7 +323,7 @@ public class GenericStepDef {
     public static void waitLoading() {
         WebElementFacade element = getWebelementFacade("loading");
         element.waitForCondition().until(driver -> !element.isVisible());
-        performAttemptsTo("{0} wait for loading", waitNotVisible(getTarget("loading")));
+        performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
     }
 
 }

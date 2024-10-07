@@ -31,22 +31,47 @@ public class Constants {
     public final static String ELEMENT = "element";
     public final static String VISIBILITY = "visibility";
     public final static String CHECKBOX = "checkbox";
-    public final static String[] STATES = {
-            "visible",
-            "invisible",
-            "enabled",
-            "disabled",
-            "present",
-            "not present",
-            "selected",
-            "deselected",
-    };
+//    public final static String[] STATES = {
+//            "visible",
+//            "invisible",
+//            "enabled",
+//            "disabled",
+//            "present",
+//            "not present",
+//            "selected",
+//            "deselected",
+//    };
     public static final String EMPTY_DATA = "[empty]";
     public static final String  ACTUAL_DATE = "[actual date]";
     public static final String  EMPTY = "empty";
     public static final String  ADD = "add";
     public static final String  NOT_EMPTY = "not empty";
     public static final String  DELETE = "delete";
+
+    // Enum para estados con su valor de texto asociado
+    public enum STATES {
+        VISIBLE("visible"),
+        INVISIBLE("invisible"),
+        CLICKABLE("clickable"),
+        DISABLED("disabled"),
+        PRESENT("present"),
+        NOT_PRESENT("not present"),
+        SELECTED("selected"),
+        DESELECTED("deselected");
+
+        private final String state;
+
+        // Constructor para asociar el valor de texto al enum
+        STATES(String state) {
+            this.state = state;
+        }
+
+        // Método para obtener el valor de texto
+        public String getState() {
+            return state;
+        }
+    }
+
     //wait time
-    public static final Duration WAIT_DURATION = Duration.ofSeconds(10);
+    public static final Duration WAIT_DURATION = Duration.ofSeconds(5);
 }

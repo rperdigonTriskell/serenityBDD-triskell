@@ -5,6 +5,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.targets.Target;
+import starter.tasks.VerifyElementVisibility;
+import starter.tasks.WaitFor;
 
 import java.util.List;
 
@@ -13,10 +15,8 @@ import static starter.stepdefinitions.AutomationTestingProjectStepDef.*;
 import static starter.stepdefinitions.GenericStepDef.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
-import static starter.tasks.ElementVisibilityVerifier.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.SendTextTo.*;
-import static starter.tasks.WaitInteractions.*;
 
 public class ProjectStepDef {
     /**
@@ -38,7 +38,7 @@ public class ProjectStepDef {
      */
     @Then("verify the element Project {string} are {string}")
     public static void verifyTheElementProjectAre(String element, String visibility) {
-        verifyElementVisibility(PROJECT_CONTEXT + element, visibility);
+        verifyTheElementAre(PROJECT_CONTEXT + element,visibility);
     }
 
     /**
@@ -96,10 +96,11 @@ public class ProjectStepDef {
 
         WebElementFacade element = getWebelementFacade("loading");
         element.waitForCondition().until(driver -> !element.isVisible());
-        performAttemptsTo("{0} wait for loading", waitNotVisible(getTarget("loading")));
+        performAttemptsTo("{0}", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
 
         Target projectTable = getTarget(PROJECT_CONTEXT + "empty project board");
-        waitPresent(projectTable);
+        performAttemptsTo("{0}", WaitFor.waitUntil(projectTable, STATES.PRESENT.getState()));
+
         List<WebElementFacade> rows = getTableRows(projectTable);
 
         if (tableState.equals(EMPTY)) {
@@ -135,7 +136,7 @@ public class ProjectStepDef {
     }
 
     public static void deleteAllProject() {
-        clickInProject("all activities checkbox");
+        clickInProject("Automation Testing Project checkbox");
         clickInProject("delete");
         verifyTheElementProjectAre("delete anwser", "visible");
         clickInProject("yes");

@@ -6,13 +6,13 @@ import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
+import starter.Constants;
 
 import java.util.List;
 
 import static starter.Constants.CHECKBOX;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitInteractions.*;
 
 
 public class ElementInteraction {
@@ -22,9 +22,7 @@ public class ElementInteraction {
      * @param target The target element to click on.
      */
     public static void clickOnTarget(Object target) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                createClickActionFor(target)
-        );
+        performAttemptsTo("{0} attempts to click on target", createClickActionFor(target));
     }
 
     /**
@@ -65,30 +63,32 @@ public class ElementInteraction {
     public static Task createClickActionFor(Object target) {
         if (target instanceof By) {
             return Task.where("{0} waits for and clicks on By locator",
-                    WaitInteractions.waitVisible((By) target),
-                    WaitInteractions.waitClickable((By) target),
+                    WaitFor.waitUntil((By) target, Constants.STATES.VISIBLE.getState()),
+                    WaitFor.waitUntil((By) target, Constants.STATES.CLICKABLE.getState()),
                     Click.on((By) target)
             );
         }
         if (target instanceof WebElementFacade) {
-            ((WebElementFacade) target).waitUntilVisible();
-            ((WebElementFacade) target).waitUntilClickable();
+            WebElementFacade element = (WebElementFacade) target;
             return Task.where("{0} waits for and clicks on WebElementFacade",
-                    Click.on((WebElementFacade) target)
+                    ((WebElementFacade) target).waitUntilVisible(),
+                    ((WebElementFacade) target).waitUntilClickable(),
+                    Click.on(element)
             );
         }
         if (target instanceof Target) {
+            Target targetElement = (Target) target;
             return Task.where("{0} waits for and clicks on Target",
-                    WaitInteractions.waitVisible((Target) target),
-                    WaitInteractions.waitClickable((Target) target),
-                    Click.on((Target) target)
+                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+                    Click.on(targetElement)
             );
         }
         if (target instanceof String) {
             Target targetElement = getTarget((String) target);
             return Task.where("{0} waits for and clicks on selector",
-                    WaitInteractions.waitVisible(targetElement),
-                    WaitInteractions.waitClickable(targetElement),
+                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                     Click.on(targetElement)
             );
         }
@@ -106,7 +106,7 @@ public class ElementInteraction {
         // Find the web table based on the provided context
         Target table = getTarget(board);
 
-        performAttemptsTo("{0} waits for table to be visible", waitVisible(table));
+        performAttemptsTo("{0} waits for table to be visible", WaitFor.waitUntil(board,Constants.STATES.VISIBLE.getState()));
 
         // Find the table rows on the web
         List<WebElementFacade> rows = getTableRows(table);

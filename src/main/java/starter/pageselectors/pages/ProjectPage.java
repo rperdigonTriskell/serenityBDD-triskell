@@ -36,6 +36,7 @@ public class ProjectPage extends AbstractPage {
         //
         mapSelectors.put("loading", By.id("loading-container"));
         mapSelectors.put(PROJECT_CONTEXT + "all activities checkbox", By.xpath("(//span[contains(@id, 'gridcolumn')])[1]"));
+        mapSelectors.put(PROJECT_CONTEXT + "Automation Testing Project checkbox", By.xpath("(//tr[.//strong[text()='Automation Testing Project']])[2]//td[1]//div//div"));
         mapSelectors.put(PROJECT_CONTEXT + "delete", By.cssSelector("a[data-qtip='Remove']"));
         mapSelectors.put(PROJECT_CONTEXT + "delete anwser", By.xpath("(//div[contains(@id, 'messagebox')])[1]"));
         mapSelectors.put(PROJECT_CONTEXT + "yes", By.xpath("//a[.//span[text()='Yes']]"));

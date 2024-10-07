@@ -7,12 +7,11 @@ import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.Keys;
+import starter.Constants;
 
 import java.util.List;
 
-import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitInteractions.*;
 import static starter.tasks.security.CredentialManager.*;
 
 public class SendTextTo {
@@ -26,7 +25,7 @@ public class SendTextTo {
         Target target = getTarget(element);
         // Clear the specified element
         OnStage.theActorInTheSpotlight().attemptsTo(
-                waitVisible(target),
+                WaitFor.waitUntil(element, Constants.STATES.VISIBLE.getState()),
                 Clear.field(target),
                 // Enter the given text into the specified element
                 Enter.theValue(text).into(target)
@@ -42,7 +41,7 @@ public class SendTextTo {
         Target target = getTarget(element);
         // Clear the specified element
         OnStage.theActorInTheSpotlight().attemptsTo(
-                waitVisible(target),
+                WaitFor.waitUntil(element, Constants.STATES.VISIBLE.getState()),
                 Clear.field(target),
                 // Enter the given text into the specified element
                 Enter.theValue(text).into(target).thenHit(Keys.ENTER)

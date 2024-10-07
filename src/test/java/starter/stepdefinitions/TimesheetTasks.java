@@ -5,7 +5,9 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
+import starter.Constants;
 import starter.tasks.FillTableWithValues;
+import starter.tasks.WaitFor;
 
 import java.util.*;
 
@@ -15,7 +17,6 @@ import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.SendTextTo.*;
-import static starter.tasks.WaitInteractions.*;
 
 public class TimesheetTasks {
 
@@ -29,7 +30,7 @@ public class TimesheetTasks {
         Target targetTable = getTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX + " empty");
         performAttemptsTo(
                 "{0} waits for table to be visible",
-                waitVisible(targetTable)
+                WaitFor.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
         );
 
         List<WebElementFacade> rows = getTableRows(targetTable);
@@ -38,7 +39,7 @@ public class TimesheetTasks {
 
         performAttemptsTo(
                 "{0} waits for table to be visible",
-                waitVisible(targetTable)
+                WaitFor.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
         );
 
         rows = getTableRows(targetTable);
@@ -65,8 +66,7 @@ public class TimesheetTasks {
         clickOnTarget(TIMESHEET_CONTEXT + "all activities checkbox");
         clickOnTarget(TIMESHEET_BOARD + "Delete");
         clickOnTarget(TIMESHEET_CONTEXT + "Yes");
-        performAttemptsTo("",waitNotVisible(getTarget(TIMESHEET_CONTEXT + "Yes")));
-        performAttemptsTo("",waitNotPresent(getTarget(TIMESHEET_CONTEXT + "Yes")));
+        performAttemptsTo("{0} waits for Yes button to disappear",WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
     }
 
     /**
@@ -75,21 +75,17 @@ public class TimesheetTasks {
      * element to disappear.
      */
     public static void addTimesheetActivity() {
-        performAttemptsTo("{0}",waitVisible(getTarget(TIMESHEET_BOARD + "Add Activities")));
+        performAttemptsTo("{0}",WaitFor.waitUntil(TIMESHEET_BOARD + "Add Activities", STATES.VISIBLE.getState()));
         clickOnTarget(TIMESHEET_BOARD + "Add Activities");
-        performAttemptsTo("{0}",waitVisible(getTarget("Search")));
+        performAttemptsTo("{0}",WaitFor.waitUntil("Search", STATES.VISIBLE.getState()));
         input("Automation Test Task", "Search");
-        performAttemptsTo("{0}",waitVisible(getTarget("Search icon")));
+        performAttemptsTo("{0}",WaitFor.waitUntil("Search icon", STATES.VISIBLE.getState()));
         clickOnTarget("Search icon");
-        performAttemptsTo("{0}",waitVisible(getTarget("MAPRE Portfolio Automation Test Task Checkbox")));
+        performAttemptsTo("{0}",WaitFor.waitUntil("MAPRE Portfolio Automation Test Task Checkbox", STATES.VISIBLE.getState()));
         clickOnTarget("MAPRE Portfolio Automation Test Task Checkbox");
-        performAttemptsTo("{0}",waitVisible(getTarget("Add & Close")));
+        performAttemptsTo("{0}",WaitFor.waitUntil("Add & Close", STATES.VISIBLE.getState()));
         clickOnTarget("Add & Close");
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        performAttemptsTo("{0}",WaitFor.waitUntil("Add & Close", STATES.INVISIBLE.getState()));
     }
 
 
@@ -109,7 +105,7 @@ public class TimesheetTasks {
         // Wait for the table to be visible
         performAttemptsTo(
                 "{0} waits for table to be visible",
-                waitVisible(tableSelector)
+                WaitFor.waitUntil(tableSelector, Constants.STATES.VISIBLE.getState())
         );
 
         // Fill the table with the provided values
@@ -128,7 +124,7 @@ public class TimesheetTasks {
      */
     public static void fillTableWithValues(By tableSelector, List<Map<String, String>> rowsData) {
         // wait for the table to be visible
-        performAttemptsTo("{0} waits for table to be visible", waitVisible(tableSelector));
+        performAttemptsTo("{0} waits for table to be visible", WaitFor.waitUntil(tableSelector, Constants.STATES.VISIBLE.getState()));
         for (int rowIndex = 0; rowIndex < rowsData.size(); rowIndex++) {
             Map<String, String> rowData = rowsData.get(rowIndex);
 
@@ -140,7 +136,7 @@ public class TimesheetTasks {
 
                 //  wait and re ubicate the table before interacting with the cell
                 Target updatedTable = getTarget(tableSelector);
-                performAttemptsTo("{0} waits for table to be visible", waitVisible(updatedTable));
+                performAttemptsTo("{0} waits for table to be visible", WaitFor.waitUntil(updatedTable, Constants.STATES.VISIBLE.getState()));
 
                 // locate the cell
                 WebElementFacade cell = getTimesheetTableCell(updatedTable, rowIndex, colIndex);
@@ -180,11 +176,7 @@ public class TimesheetTasks {
         // click on the cell to refresh the DOM
         clickOnTarget(cell);
 
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        performAttemptsTo("{0} waits for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
 
         // wait for the input to be visible
         List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
@@ -202,7 +194,7 @@ public class TimesheetTasks {
         Target timetable = getTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX + " empty");
         performAttemptsTo(
                 "{0} waits for table to be present",
-                waitPresent(timetable)
+                WaitFor.waitUntil(timetable, Constants.STATES.PRESENT.getState())
         );
 
 
@@ -224,13 +216,11 @@ public class TimesheetTasks {
                 clickOnTarget(submit);
                 submit = getTarget(TIMESHEET_CONTEXT + "Submit");
                 clickOnTarget(submit);
-                waitNotVisible(submit);
+                WaitFor.waitUntil(submit, Constants.STATES.VISIBLE.getState());
                 clickOnTarget(TIMESHEET_BOARD + "Delete");
                 clickOnTarget(TIMESHEET_CONTEXT + "Yes");
-                performAttemptsTo("",waitNotVisible(getTarget(TIMESHEET_CONTEXT + "Yes")));
-                performAttemptsTo("",waitNotPresent(getTarget(TIMESHEET_CONTEXT + "Yes")));
+                performAttemptsTo("{0} waits for Yes button to disappear",WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
             }
         }
     }
-
 }

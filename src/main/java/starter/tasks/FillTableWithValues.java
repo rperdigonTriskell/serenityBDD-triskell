@@ -10,12 +10,12 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
+import starter.Constants;
+
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 import static starter.Constants.*;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitInteractions.*;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -83,8 +83,7 @@ public class FillTableWithValues implements Task {
         );
 
         // Wait for input field to appear
-        WebElementFacade loading = getWebelementFacade("loading");
-        waitNotVisible(loading);
+        performAttemptsTo("{0}",WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
 
         List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
 
