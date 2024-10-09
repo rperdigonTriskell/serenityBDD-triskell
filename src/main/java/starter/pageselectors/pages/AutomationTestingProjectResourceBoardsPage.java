@@ -20,13 +20,11 @@ public class AutomationTestingProjectResourceBoardsPage extends AbstractPage {
         mapSelectors.put("Requeriments", By.xpath(linkXpathText("Requirements")));
 
         //2 boards to Assigment
-        mapSelectors.put("Resources board Assignment", By.xpath("(//div[contains(@id, 'schedulergrid')])[3]"));
         mapSelectors.put("Resources Board Assignments name", By.xpath("((//div[contains(@id, 'schedulergrid')])[3]/div/div[1]//td[1]/div/div[1])[1]"));
         mapSelectors.put("Resources board Assignments data", By.xpath("(//div[contains(@id, 'schedulergrid')])[3]/div/div[2]"));
         //2 boards to Requirements
-        mapSelectors.put("Resources board Requirements", By.xpath("(//div[contains(@id, 'schedulergrid')])[3]"));
-        mapSelectors.put("Resources board Requirements name", By.xpath("((//div[contains(@id, 'schedulergrid')])[3]/div/div[1]//td[1]/div/div[1])[1]"));
-        mapSelectors.put("Resources board Requirements data", By.xpath("(//div[contains(@id, 'schedulergrid')])[3]/div/div[2]"));
+        mapSelectors.put("Resources Board Requirements name", By.cssSelector("table[id*='gridview-'] tr > td:nth-of-type(2) span"));
+        mapSelectors.put("Resources board Requirements data", By.xpath("(//table[contains(@id, 'schedulergrid')]//tr/td)[2]"));
         return mapSelectors;
     }
 }

@@ -9,6 +9,7 @@ import net.serenitybdd.core.Serenity;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
+import net.serenitybdd.screenplay.targets.Target;
 import org.junit.AfterClass;
 import starter.Constants;
 import starter.tasks.VerifyElementVisibility;
@@ -324,5 +325,15 @@ public class GenericStepDef {
         WebElementFacade element = getWebelementFacade("loading");
         element.waitForCondition().until(driver -> !element.isVisible());
         performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
+    }
+
+//    drag and drop "System Administrator data" to "1 weeks"
+    /**
+     * Waits for an loadig.
+     */
+    @When("drag and drop {string} to {string}")
+    public static void dragAndDropTo(String target, String space) {
+        Target targetElement = getTarget(target);
+
     }
 }

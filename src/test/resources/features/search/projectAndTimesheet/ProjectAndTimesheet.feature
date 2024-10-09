@@ -31,5 +31,5 @@ Feature: Project parts
     Then check to "Automation Testing Project Resource Boards" has loaded
     And verify the text element "Resources Board Assignments name" is "SYSTEM ADMINISTRATOR"
     When click in "Requeriments"
-    Then verify the element "System Administrator checkbox" are "visible"
-
+    And verify the text element "Resources Board Requirements name" is "System Administrator"
+    When drag and drop "System Administrator data" to "1 weeks"
