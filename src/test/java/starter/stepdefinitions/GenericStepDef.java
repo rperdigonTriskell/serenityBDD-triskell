@@ -325,5 +325,4 @@ public class GenericStepDef {
         element.waitForCondition().until(driver -> !element.isVisible());
         performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
     }
-
 }

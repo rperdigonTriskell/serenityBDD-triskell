@@ -28,5 +28,13 @@ public abstract class AbstractPage extends PageObject implements SelectorFactory
         return mapSelectors().get(selector);
     }
 
-
+    public static String xpathText(String xpathSearch) {
+        return String.format("[text()='%s']", xpathSearch);
+    }
+    public static String xpathContainsText(String xpathSearch) {
+        return String.format("[contains(text(), '%s')]", xpathSearch);
+    }
+    public static String linkXpathText(String xpathSearch) {
+        return String.format("//a[.//span[text()='%s']]", xpathSearch);
+    }
 }

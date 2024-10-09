@@ -31,6 +31,7 @@ public class ElementDataVerifier extends PageObject {
      */
     public static void verifyElementTextIs(String element, String expectedText) {
         Target target = getTarget(element);
+        WaitFor.waitForVisibility(target);
         performAttemptsTo(
                 "wait until the element " + element + " text is: " + expectedText,
                 WaitFor.waitUntil(element, Constants.STATES.VISIBLE.getState())

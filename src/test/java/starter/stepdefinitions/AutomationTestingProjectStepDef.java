@@ -1,12 +1,10 @@
 package starter.stepdefinitions;
 
 import io.cucumber.java.en.*;
-import starter.tasks.VerifyElementVisibility;
 
 import static starter.Constants.*;
 import static starter.stepdefinitions.GenericStepDef.verifyTheElementAre;
 import static starter.tasks.ElementInteraction.clickOnTarget;
-import static starter.tasks.GenericTasks.*;
 
 public class AutomationTestingProjectStepDef {
     /**
@@ -14,9 +12,19 @@ public class AutomationTestingProjectStepDef {
      *
      * @param element the element to click on
      */
+    @When("click in Automation Testing Project {string}")
+    public static void clickInAutomationTestingProject(String element) {
+        clickOnTarget(AUTOMATION_TESTING_PROJECT_CONTEXT + element);
+    }
+
+    /**
+     * Clicks on an element.
+     *
+     * @param element the element to click on
+     */
     @When("click in Automation Testing Project sidebar {string}")
     public static void clickInAutomationTestingProjectSidebar(String element) {
-        clickOnTarget(AUTOMATION_TESTING_PROJECT_CONTEXT + element);
+        clickOnTarget(AUTOMATION_TESTING_PROJECT_CONTEXT + SIDEBAR_CONTEXT + element);
     }
 
     /**

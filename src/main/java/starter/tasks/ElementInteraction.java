@@ -62,6 +62,8 @@ public class ElementInteraction {
      */
     public static Task createClickActionFor(Object target) {
         if (target instanceof By) {
+            WaitFor.waitForVisibility((By) target);
+            WaitFor.waitForClickable((By) target);
             return Task.where("{0} waits for and clicks on By locator",
                     WaitFor.waitUntil((By) target, Constants.STATES.VISIBLE.getState()),
                     WaitFor.waitUntil((By) target, Constants.STATES.CLICKABLE.getState()),
@@ -69,6 +71,8 @@ public class ElementInteraction {
             );
         }
         if (target instanceof WebElementFacade) {
+            WaitFor.waitForVisibility((WebElementFacade) target);
+            WaitFor.waitForClickable((WebElementFacade) target);
             WebElementFacade element = (WebElementFacade) target;
             return Task.where("{0} waits for and clicks on WebElementFacade",
                     ((WebElementFacade) target).waitUntilVisible(),
@@ -77,6 +81,8 @@ public class ElementInteraction {
             );
         }
         if (target instanceof Target) {
+            WaitFor.waitForVisibility((Target) target);
+            WaitFor.waitForClickable((Target) target);
             Target targetElement = (Target) target;
             return Task.where("{0} waits for and clicks on Target",
                     WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
@@ -85,6 +91,8 @@ public class ElementInteraction {
             );
         }
         if (target instanceof String) {
+            WaitFor.waitForVisibility(getTarget((String) target));
+            WaitFor.waitForClickable(getTarget((String) target));
             Target targetElement = getTarget((String) target);
             return Task.where("{0} waits for and clicks on selector",
                     WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),

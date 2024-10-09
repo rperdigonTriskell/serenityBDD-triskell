@@ -74,6 +74,22 @@ public class WaitFor implements Task {
                 .until(ExpectedConditions.visibilityOf(element));
     }
 
+    // Espera explícita para visibilidad
+    public static void waitForVisibility(By element) {
+        WebElementFacade webElementFacade = getWebelementFacade(element);
+        new WebDriverWait(driver, WAIT_DURATION)
+                .until(ExpectedConditions.visibilityOf(webElementFacade));
+    }
+
+
+
+    // Espera explícita para visibilidad
+    public static void waitForVisibility(Target element) {
+        WebElementFacade webElementFacade = getWebelementFacadeFromTarget(element);
+        new WebDriverWait(driver, WAIT_DURATION)
+                .until(ExpectedConditions.visibilityOf(webElementFacade));
+    }
+
     // Espera explícita para invisibilidad
     public static void waitForInvisibility(WebElementFacade element) {
         new WebDriverWait(driver, WAIT_DURATION)
@@ -84,5 +100,19 @@ public class WaitFor implements Task {
     public static void waitForClickable(WebElementFacade element) {
         new WebDriverWait(driver, WAIT_DURATION)
                 .until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    // Espera explícita para que el elemento sea clickeable
+    public static void waitForClickable(By element) {
+        WebElementFacade webElementFacade = getWebelementFacade(element);
+        new WebDriverWait(driver, WAIT_DURATION)
+                .until(ExpectedConditions.elementToBeClickable(webElementFacade));
+    }
+
+    // Espera explícita para que el elemento sea clickeable
+    public static void waitForClickable(Target element) {
+        WebElementFacade webElementFacade = getWebelementFacadeFromTarget(element);
+        new WebDriverWait(driver, WAIT_DURATION)
+                .until(ExpectedConditions.elementToBeClickable(webElementFacade));
     }
 }

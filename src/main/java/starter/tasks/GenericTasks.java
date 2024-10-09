@@ -33,6 +33,17 @@ public class GenericTasks {
         return target.resolveFor(actor);
     }
 
+    /**
+     * Retrieves the WebElementFacade for the given element on the current page.
+     *
+     * @param element The name of the element to retrieve the WebElementFacade for.
+     * @return The WebElementFacade for the given element.
+     */
+    public static WebElementFacade getWebelementFacade(By element) {
+        Target target = getTarget(element);
+        Actor actor = OnStage.theActorInTheSpotlight();
+        return target.resolveFor(actor);
+    }
 
     /**
      * Retrieves the Target for the given element on the current page.

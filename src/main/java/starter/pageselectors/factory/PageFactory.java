@@ -26,6 +26,8 @@ public class PageFactory extends PageObject {
         put(TIMESHEET, initElements(getStaticDriver(), TimesheetPage.class));
         put(PROJECT, initElements(getStaticDriver(), ProjectPage.class));
         put(AUTOMATION_TESTING_PROJECT, initElements(getStaticDriver(), AutomationTestingProjectPage.class));
+        put(AUTOMATION_TESTING_PROJECT_RESOURCE_BOARDS, initElements(getStaticDriver(), AutomationTestingProjectResourceBoardsPage.class));
+        put(ADD_RESOURCES, initElements(getStaticDriver(), AddResourcesPage.class));
     }};
 
     /**

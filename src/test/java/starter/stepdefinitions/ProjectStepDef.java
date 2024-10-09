@@ -38,7 +38,7 @@ public class ProjectStepDef {
      */
     @Then("verify the element Project {string} are {string}")
     public static void verifyTheElementProjectAre(String element, String visibility) {
-        verifyTheElementAre(PROJECT_CONTEXT + element,visibility);
+        verifyTheElementAre(PROJECT_CONTEXT + element, visibility);
     }
 
     /**
@@ -128,11 +128,6 @@ public class ProjectStepDef {
         verifyTheElementProjectAre("Create New Project", "visible");
         clickInProject("save");
         checkToHasLoaded("Automation Testing Project");
-        clickInAutomationTestingProjectSidebar("Main Menu");
-        verifyTheElementAutomationTestingProjectAre("Project", "visible");
-        clickInAutomationTestingProjectSidebar("Project");
-        checkToHasLoaded("Project");
-        sendTextAndEnterToProjectElement("Automation Testing Project", "search parent");
     }
 
     public static void deleteAllProject() {
