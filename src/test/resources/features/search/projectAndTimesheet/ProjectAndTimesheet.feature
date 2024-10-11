@@ -31,5 +31,12 @@ Feature: Project parts
     Then check to "Automation Testing Project Resource Boards" has loaded
     And verify the text element "Resources Board Assignments name" is "SYSTEM ADMINISTRATOR"
     When click in "Requeriments"
+    And verify the element "Resources Board Requirements name" are "visible"
     And verify the text element "Resources Board Requirements name" is "System Administrator"
-    When drag and drop "System Administrator data" to "1 weeks"
+    When drag and drop Requirements date System Administrator data to "3" weeks
+    Then verify the element "Automation Testing Project period modal" are "visible"
+    When click in "Save"
+    And verify the element "Resources Board Requirements name" are "visible"
+    And verify the text element "8.00 h/Day\n-\n64.00 h" is "System Administrator"
+
+

@@ -59,7 +59,6 @@ public class GenericTasks {
         return Target.the(element.toString()).located(element);
     }
 
-
     /**
      * Retrieves the WebElementFacade for the given element on the current page.
      *

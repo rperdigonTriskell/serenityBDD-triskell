@@ -1,9 +1,14 @@
 package starter.stepdefinitions;
 
 import io.cucumber.java.en.*;
+import net.serenitybdd.screenplay.targets.Target;
+import starter.tasks.DragAndDropByCoordinates;
+import starter.tasks.DragAndDropToElements;
 
 import static starter.Constants.*;
 import static starter.tasks.ElementInteraction.clickOnTarget;
+import static starter.tasks.GenericTasks.*;
+import static starter.tasks.WaitFor.waitForVisibility;
 
 public class AutomationTestingProjectResourceBoardsStepDef {
     /**
@@ -14,5 +19,25 @@ public class AutomationTestingProjectResourceBoardsStepDef {
     @When("click in Automation Testing Project Resource Boards {string}")
     public static void clickInAutomationTestingProject(String element) {
         clickOnTarget(AUTOMATION_TESTING_PROJECT_CONTEXT + element);
+    }
+
+    @When("drag and drop Requirements date System Administrator data to {string} weeks")
+    public static void dragAndDropRequirementsDateToWeeks(String space) {
+        Target source =
+                Target.the("source")
+                        .locatedBy("(//tr[contains(@id, 'schedulergrid')]//div[contains(@class, 'x-grid-cell-inner')])[2]//div[{1}]")
+                        .of("1", "1");
+
+        waitForVisibility(source);
+
+        Target destination =
+                Target.the("source")
+                        .locatedBy("(//tr[contains(@id, 'schedulergrid')]//div[contains(@class, 'x-grid-cell-inner')])[2]//div[{1}]")
+                        .of(space, space);
+
+        performAttemptsTo(
+                "{0} drag and drop {1} to {2}",
+                DragAndDropToElements.from(source).to(destination)
+        );
     }
 }

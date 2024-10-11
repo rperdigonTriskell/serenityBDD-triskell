@@ -34,8 +34,8 @@ public class DashboardPage extends AbstractPage {
         mapSelectors.put(SIDEBAR_CONTEXT + "Risk", By.cssSelector("a[data-qtip='Risk']"));
         mapSelectors.put(SIDEBAR_CONTEXT + "Task", By.cssSelector("a[data-qtip='Task']"));
         mapSelectors.put(SIDEBAR_CONTEXT + "Testing Comp", By.cssSelector("a[data-qtip='Testing Comp']"));
-        mapSelectors.put(SIDEBAR_CONTEXT + "Favorites", By.xpath("//div/span[text()='Favorites']"));
-        mapSelectors.put(SIDEBAR_CONTEXT + "IT (Team 1)", By.xpath("//span[text()='IT (Team 1)']"));
+        mapSelectors.put(SIDEBAR_CONTEXT + "Favorites", By.xpath("//div/span"+xpathText("Favorites")));
+        mapSelectors.put(SIDEBAR_CONTEXT + "IT (Team 1)", By.xpath("//span"+xpathText("IT (Team 1)")));
         //header
         mapSelectors.put(HEADING_CONTEXT + "Sidebar icon", By.id("toggle-menu-btn"));
         mapSelectors.put(HEADING_CONTEXT + "Search", By.name("searchParameter"));
@@ -45,7 +45,7 @@ public class DashboardPage extends AbstractPage {
         mapSelectors.put(HEADING_CONTEXT + "Notifications icon", By.cssSelector("a[data-qtip='Supersede a User'] ~ a:has(svg)"));
         mapSelectors.put(HEADING_CONTEXT + "User icon", By.cssSelector("a:has(div.avatar.user-image)"));
         mapSelectors.put(HEADING_CONTEXT + HOME_PAGE, By.xpath("//a[.//span[contains(@class, 'x-tab-inner x-tab-inner-center') and text()='Home page']]"));
-        mapSelectors.put(HEADING_CONTEXT + "Activity Feed", By.xpath("//a[.//span[text()='Activity Feed']]"));
+        mapSelectors.put(HEADING_CONTEXT + "Activity Feed", By.xpath(linkXpathText("Activity Feed")));
         mapSelectors.put(HEADING_CONTEXT + "Resource Costs Budget", By.xpath("//a[.//span[text()='Resource Costs Budget']]"));
         mapSelectors.put(HEADING_CONTEXT + "Dashboard 1", By.xpath("//a[.//span[text()='Dashboard 1']]"));
         mapSelectors.put(HEADING_CONTEXT + "+", By.cssSelector("a[data-qtip='Add Dashboard']"));

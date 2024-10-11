@@ -82,7 +82,6 @@ public class WaitFor implements Task {
     }
 
 
-
     // Espera explícita para visibilidad
     public static void waitForVisibility(Target element) {
         WebElementFacade webElementFacade = getWebelementFacadeFromTarget(element);

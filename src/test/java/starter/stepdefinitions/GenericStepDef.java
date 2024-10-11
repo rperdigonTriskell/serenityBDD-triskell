@@ -12,10 +12,7 @@ import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.targets.Target;
 import org.junit.AfterClass;
 import starter.Constants;
-import starter.tasks.VerifyElementVisibility;
-import starter.tasks.VerifyTableElements;
-import starter.tasks.VerifyTableElementsVisibility;
-import starter.tasks.WaitFor;
+import starter.tasks.*;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -28,6 +25,7 @@ import static starter.stepdefinitions.TimesheetTasks.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
+import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.pageselectors.factory.PageFactory.*;
@@ -327,13 +325,15 @@ public class GenericStepDef {
         performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
     }
 
-//    drag and drop "System Administrator data" to "1 weeks"
-    /**
-     * Waits for an loadig.
-     */
+
     @When("drag and drop {string} to {string}")
     public static void dragAndDropTo(String target, String space) {
-        Target targetElement = getTarget(target);
+        Target source = getTarget(target);
+        Target destination = getTarget(space);
 
+        performAttemptsTo(
+                "{0} drag and drop {1} to {2}",
+                DragAndDropToElements.from(source).to(destination)
+        );
     }
 }
