@@ -15,6 +15,13 @@ public abstract class AbstractPage extends PageObject implements SelectorFactory
     protected Map<String, By> mapSelectors = new HashMap<String, By>();
 
     /**
+     * Constructor to initialize common selectors.
+     */
+    public AbstractPage() {
+        mapSelectors.put("loading", By.id("loading-container"));
+    }
+
+    /**
      * Returns a map of selector mappings.
      * @return Map of selector mappings.
      */

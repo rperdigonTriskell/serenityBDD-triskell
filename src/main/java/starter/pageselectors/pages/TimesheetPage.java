@@ -63,7 +63,6 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put(TIMESHEET_CONTEXT + TIMESHEET_CONTEXT + "Submit", By.xpath("(//div[contains(@id, 'tkBodyWindow')])[1]"));
         mapSelectors.put(TIMESHEET_CONTEXT + "Submit", By.xpath("//a[.//span[text()='Submit']]"));
 
-        mapSelectors.put("loading", By.id("loading-container"));
 
         return mapSelectors;
     }

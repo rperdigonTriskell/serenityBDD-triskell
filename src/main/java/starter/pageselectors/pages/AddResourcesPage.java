@@ -22,7 +22,6 @@ public class AddResourcesPage extends AbstractPage {
         mapSelectors.put("Close", By.xpath("(//span[text()='Close'])[2]"));
         mapSelectors.put("System Administrator checkbox", By.xpath("//td[contains(@class, 'row-checker')]//div"));
         mapSelectors.put("Add Resource", By.xpath("//a[.//span[text()='Add Resource']]"));
-        mapSelectors.put("loading", By.id("loading-container"));
         return mapSelectors;
     }
 }

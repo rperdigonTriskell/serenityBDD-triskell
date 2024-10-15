@@ -2,10 +2,10 @@ package starter.stepdefinitions;
 
 import io.cucumber.java.en.*;
 import net.serenitybdd.screenplay.targets.Target;
-import starter.tasks.DragAndDropByCoordinates;
 import starter.tasks.DragAndDropToElements;
 
 import static starter.Constants.*;
+import static starter.stepdefinitions.GenericStepDef.waitLoading;
 import static starter.tasks.ElementInteraction.clickOnTarget;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitFor.waitForVisibility;
@@ -22,7 +22,7 @@ public class AutomationTestingProjectResourceBoardsStepDef {
     }
 
     @When("drag and drop Requirements date System Administrator data to {string} weeks")
-    public static void dragAndDropRequirementsDateToWeeks(String space) {
+    public static void  dragAndDropRequirementsDateToWeeks(String space) {
         Target source =
                 Target.the("source")
                         .locatedBy("(//tr[contains(@id, 'schedulergrid')]//div[contains(@class, 'x-grid-cell-inner')])[2]//div[{1}]")
@@ -39,5 +39,7 @@ public class AutomationTestingProjectResourceBoardsStepDef {
                 "{0} drag and drop {1} to {2}",
                 DragAndDropToElements.from(source).to(destination)
         );
+
+        waitLoading();
     }
 }

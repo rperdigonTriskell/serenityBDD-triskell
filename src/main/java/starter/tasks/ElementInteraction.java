@@ -26,35 +26,6 @@ public class ElementInteraction {
     }
 
     /**
-     * Clicks on the first item in the list whose title contains the given text.
-     *
-     * @param repeatedText     The text to search for in the list items.
-     * @param listElement      The list to iterate for results.
-     * @param elementWithTitle The title text to match in the list items.
-     */
-    public static void clickOnElementInListWithTitleContaining(String repeatedText, String listElement, String elementWithTitle) {
-        List<WebElementFacade> webElements = getWebElementsWithTitleContaining(listElement);
-        for (WebElementFacade element : webElements) {
-            if (element.getText().contains(elementWithTitle)) {
-                clickOnTarget(repeatedText);
-                break;
-            }
-        }
-    }
-
-    /**
-     * Gets a list of web elements whose selector contains the given text.
-     *
-     * @param repeatedText The text to search for in the selector.
-     * @return The list of matching web elements.
-     */
-    public static List<WebElementFacade> getWebElementsWithTitleContaining(String repeatedText) {
-        return Target.the("option with title field")
-                .located(getCurrentPage().getSelector(repeatedText))
-                .resolveAllFor(OnStage.theActorInTheSpotlight()); //resolveAllFor uses implicit wait
-    }
-
-    /**
      * Creates a ClickInteraction object based on the type of the given target.
      *
      * @param target The target to create the ClickInteraction for.
@@ -101,6 +72,35 @@ public class ElementInteraction {
             );
         }
         throw new IllegalArgumentException("Invalid target type: " + target.getClass().getSimpleName());
+    }
+
+    /**
+     * Clicks on the first item in the list whose title contains the given text.
+     *
+     * @param repeatedText     The text to search for in the list items.
+     * @param listElement      The list to iterate for results.
+     * @param elementWithTitle The title text to match in the list items.
+     */
+    public static void clickOnElementInListWithTitleContaining(String repeatedText, String listElement, String elementWithTitle) {
+        List<WebElementFacade> webElements = getWebElementsWithTitleContaining(listElement);
+        for (WebElementFacade element : webElements) {
+            if (element.getText().contains(elementWithTitle)) {
+                clickOnTarget(repeatedText);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Gets a list of web elements whose selector contains the given text.
+     *
+     * @param repeatedText The text to search for in the selector.
+     * @return The list of matching web elements.
+     */
+    public static List<WebElementFacade> getWebElementsWithTitleContaining(String repeatedText) {
+        return Target.the("option with title field")
+                .located(getCurrentPage().getSelector(repeatedText))
+                .resolveAllFor(OnStage.theActorInTheSpotlight()); //resolveAllFor uses implicit wait
     }
 
     /**

@@ -1,10 +1,14 @@
 package starter.tasks;
 
+import io.cucumber.datatable.DataTable;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.screenplay.questions.Text;
 import net.serenitybdd.screenplay.targets.Target;
 import org.hamcrest.Matchers;
 import starter.Constants;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -41,5 +45,25 @@ public class ElementDataVerifier extends PageObject {
                 actor -> Text.of(target).answeredBy(actor),
                 equalTo(expectedText)
         );
+    }
+
+    /**
+     * Verifies the text of multiple elements using a DataTable.
+     * The DataTable should have two columns: "element" and "value".
+     *
+     * @param dataTable The DataTable containing elements and expected values.
+     */
+    public static void verifyDatatableElementsTextIs(DataTable dataTable) {
+        // Convert DataTable to a list of maps (each row is a map with keys: "element" and "value")
+        List<Map<String, String>> rows = dataTable.asMaps(String.class, String.class);
+
+        // Iterate through each row
+        for (Map<String, String> row : rows) {
+            String element = row.get("element");
+            String expectedValue = row.get("value");
+
+            // Reuse the existing method to verify each element's text
+            verifyElementTextIs(element, expectedValue);
+        }
     }
 }

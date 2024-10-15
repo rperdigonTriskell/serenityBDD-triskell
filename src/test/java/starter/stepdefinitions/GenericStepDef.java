@@ -220,6 +220,17 @@ public class GenericStepDef {
         verifyElementTextIs(element, text);
     }
 
+
+    /**
+     * Verifies the text of the specified elements matches the expected values.
+     *
+     * @param dataTable the DataTable containing the elements and expected values
+     */
+    @Then("verify that the text of the specified elements matches the expected values:")
+    public void verifyThatTheTextOfTheSpecifiedElementsMatchesTheExpectedValues(DataTable dataTable) {
+        verifyDatatableElementsTextIs(dataTable);
+    }
+
     /**
      * Verifies that the elements on the specified context match the expected data.
      *

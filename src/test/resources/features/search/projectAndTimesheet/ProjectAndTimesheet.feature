@@ -36,7 +36,19 @@ Feature: Project parts
     When drag and drop Requirements date System Administrator data to "3" weeks
     Then verify the element "Automation Testing Project period modal" are "visible"
     When click in "Save"
+    Then verify the element "Automation Testing Project period modal" are "invisible"
     And verify the element "Resources Board Requirements name" are "visible"
-    And verify the text element "8.00 h/Day\n-\n64.00 h" is "System Administrator"
-
-
+    And verify the text element "System Administrator h/day" is "8.00 h/Day"
+    And verify the text element "System Administrator hour" is "80.00 h"
+    When click in "Gantt Chart"
+    Then check to "Gantt Chart" has loaded
+    When click in "Create"
+    Then verify the element "Selected item: Automation Testing Project" are "visible"
+    When click in "Task"
+    And send text "Automation test task" to element "Name"
+    And click in "Save"
+    Then verify the element "Gantt Chart" are "visible"
+    And verify that the text of the specified elements matches the expected values:
+      | element      | value                      |
+      | Name 1rt row | Automation Testing Project |
+      | Name 2rt row | Automation Testing Task    |

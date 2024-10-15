@@ -14,6 +14,7 @@ public class Constants {
     public final static String HOME_PAGE = "Home Page";
     public final static String AUTOMATION_TESTING_PROJECT = "Automation Testing Project";
     public final static String AUTOMATION_TESTING_PROJECT_RESOURCE_BOARDS = "Automation Testing Project Resource Boards";
+    public final static String AUTOMATION_TESTING_PROJECT_GANT_CHART = "Automation Testing Project Gant Chart";
     public final static String ADD_RESOURCES = "Add Resources";
     public final static String SIDEBAR_CONTEXT = "Sidebar ";
     public final static String HEADING_CONTEXT = "Heading ";
