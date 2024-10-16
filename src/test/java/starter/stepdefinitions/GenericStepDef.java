@@ -185,7 +185,7 @@ public class GenericStepDef {
      */
     @Then("verify the element {string} are {string}")
     public static void verifyTheElementAre(String element, String visibility) {
-        performAttemptsTo("{0} verify the element {1} are {2}", WaitFor.waitUntil(element, visibility),new VerifyElementVisibility(element,visibility));
+        performAttemptsTo("{0} verify the element {1} are {2}", new VerifyElementVisibility(element,visibility));
     }
 
     /**
@@ -259,6 +259,16 @@ public class GenericStepDef {
     @When("click in {string}")
     public static void clickIn(String element) {
         clickOnTarget(element);
+    }
+
+    /**
+     * Clicks on an element.
+     *
+     * @param element the element to click on
+     */
+    @When("left click in {string}")
+    public static void leftClickIn(String element) {
+        leftClickOnTarget(element);
     }
 
     /**

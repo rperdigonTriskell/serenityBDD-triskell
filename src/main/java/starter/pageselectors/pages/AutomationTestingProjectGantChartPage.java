@@ -5,8 +5,7 @@ import starter.pageselectors.factory.AbstractPage;
 
 import java.util.Map;
 
-import static starter.Constants.AUTOMATION_TESTING_PROJECT_GANT_CHART;
-import static starter.Constants.AUTOMATION_TESTING_PROJECT_RESOURCE_BOARDS;
+import static starter.Constants.AUTOMATION_TESTING_PROJECT_GANTT_CHART;
 
 public class AutomationTestingProjectGantChartPage extends AbstractPage {
     /**
@@ -16,12 +15,25 @@ public class AutomationTestingProjectGantChartPage extends AbstractPage {
      */
     @Override
     public Map mapSelectors() {
-        mapSelectors.put(AUTOMATION_TESTING_PROJECT_GANT_CHART, By.id("b-gantt-1"));
-        mapSelectors.put("Selected item: Automation Testing Project", By.id("b-popup-1"));
-        mapSelectors.put("Name", By.id("b-popup-1"));
-        mapSelectors.put("Save", By.id("b-button-22"));
+        mapSelectors.put(AUTOMATION_TESTING_PROJECT_GANTT_CHART, By.id("b-gantt-1"));
+        mapSelectors.put("Selected item: Automation Testing Project", By.id("b-popup-2"));
+        mapSelectors.put("Name", By.id("b-textfield-3-input"));
+        mapSelectors.put("Create", By.id("b-button-1"));
+        mapSelectors.put("Save", By.id("b-button-26"));
         mapSelectors.put("Name 1rt row", By.xpath("(//div[@data-column='name'])[2]"));
         mapSelectors.put("Name 2rt row", By.xpath("(//div[@data-column='name'])[3]"));
+        mapSelectors.put("task options", By.cssSelector("div[data-owner-cmp='b-menu-1'][role='menu']"));
+        mapSelectors.put("Edit", By.cssSelector("div[data-ref='editTask']"));
+        mapSelectors.put("Copy", By.cssSelector("div[data-ref='copy']"));
+        mapSelectors.put("Cut", By.cssSelector("div[data-ref='cut']"));
+        mapSelectors.put("Paste", By.cssSelector("div[data-ref='paste']"));
+        mapSelectors.put("Filter", By.cssSelector("div[data-ref='filterMenu']"));
+        mapSelectors.put("Indent", By.cssSelector("div[data-ref='indent']"));
+        mapSelectors.put("Outdent", By.cssSelector("div[data-ref='outdent']"));
+        mapSelectors.put("Add dependencies", By.cssSelector("div[data-ref='linkTasks']"));
+        mapSelectors.put("Remove dependencies", By.cssSelector("div[data-ref='unlinkTasks']"));
+        mapSelectors.put("Add item...", By.cssSelector("div[data-ref='addItem']"));
+        mapSelectors.put("Remove", By.cssSelector("div[data-ref='delete']"));
         return mapSelectors;
     }
 }

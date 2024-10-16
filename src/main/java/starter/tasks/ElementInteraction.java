@@ -75,21 +75,63 @@ public class ElementInteraction {
     }
 
     /**
-     * Clicks on the first item in the list whose title contains the given text.
+     * Performs a left click on the given target element.
      *
-     * @param repeatedText     The text to search for in the list items.
-     * @param listElement      The list to iterate for results.
-     * @param elementWithTitle The title text to match in the list items.
+     * @param target The target element to click on.
      */
-    public static void clickOnElementInListWithTitleContaining(String repeatedText, String listElement, String elementWithTitle) {
-        List<WebElementFacade> webElements = getWebElementsWithTitleContaining(listElement);
-        for (WebElementFacade element : webElements) {
-            if (element.getText().contains(elementWithTitle)) {
-                clickOnTarget(repeatedText);
-                break;
-            }
-        }
+    public static void leftClickOnTarget(Object target) {
+        performAttemptsTo("{0} attempts to left-click on target", createLeftClickActionFor(target));
     }
+
+    /**
+     * Creates a ClickInteraction object based on the type of the given target for a left-click action.
+     *
+     * @param target The target to create the ClickInteraction for.
+     * @return The ClickInteraction object.
+     */
+    public static Task createLeftClickActionFor(Object target) {
+        if (target instanceof By) {
+            WaitFor.waitForVisibility((By) target);
+            WaitFor.waitForClickable((By) target);
+            return Task.where("{0} waits for and left-clicks on By locator",
+                    WaitFor.waitUntil((By) target, Constants.STATES.VISIBLE.getState()),
+                    WaitFor.waitUntil((By) target, Constants.STATES.CLICKABLE.getState()),
+                    Click.on((By) target)
+            );
+        }
+        if (target instanceof WebElementFacade) {
+            WaitFor.waitForVisibility((WebElementFacade) target);
+            WaitFor.waitForClickable((WebElementFacade) target);
+            WebElementFacade element = (WebElementFacade) target;
+            return Task.where("{0} waits for and left-clicks on WebElementFacade",
+                    element.waitUntilVisible(),
+                    element.waitUntilClickable(),
+                    Click.on(element)
+            );
+        }
+        if (target instanceof Target) {
+            WaitFor.waitForVisibility((Target) target);
+            WaitFor.waitForClickable((Target) target);
+            Target targetElement = (Target) target;
+            return Task.where("{0} waits for and left-clicks on Target",
+                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+                    Click.on(targetElement)
+            );
+        }
+        if (target instanceof String) {
+            WaitFor.waitForVisibility(getTarget((String) target));
+            WaitFor.waitForClickable(getTarget((String) target));
+            Target targetElement = getTarget((String) target);
+            return Task.where("{0} waits for and left-clicks on selector",
+                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+                    Click.on(targetElement)
+            );
+        }
+        throw new IllegalArgumentException("Invalid target type: " + target.getClass().getSimpleName());
+    }
+
 
     /**
      * Gets a list of web elements whose selector contains the given text.

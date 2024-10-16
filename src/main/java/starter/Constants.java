@@ -14,7 +14,7 @@ public class Constants {
     public final static String HOME_PAGE = "Home Page";
     public final static String AUTOMATION_TESTING_PROJECT = "Automation Testing Project";
     public final static String AUTOMATION_TESTING_PROJECT_RESOURCE_BOARDS = "Automation Testing Project Resource Boards";
-    public final static String AUTOMATION_TESTING_PROJECT_GANT_CHART = "Automation Testing Project Gant Chart";
+    public final static String AUTOMATION_TESTING_PROJECT_GANTT_CHART = "Automation Testing Project Gantt Chart";
     public final static String ADD_RESOURCES = "Add Resources";
     public final static String SIDEBAR_CONTEXT = "Sidebar ";
     public final static String HEADING_CONTEXT = "Heading ";
@@ -35,16 +35,6 @@ public class Constants {
     public final static String ELEMENT = "element";
     public final static String VISIBILITY = "visibility";
     public final static String CHECKBOX = "checkbox";
-//    public final static String[] STATES = {
-//            "visible",
-//            "invisible",
-//            "enabled",
-//            "disabled",
-//            "present",
-//            "not present",
-//            "selected",
-//            "deselected",
-//    };
     public static final String EMPTY_DATA = "[empty]";
     public static final String  ACTUAL_DATE = "[actual date]";
     public static final String  EMPTY = "empty";

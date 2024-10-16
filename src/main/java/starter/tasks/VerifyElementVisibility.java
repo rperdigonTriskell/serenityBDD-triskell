@@ -25,18 +25,22 @@ public class VerifyElementVisibility implements Task {
         String visibilityState = visibility.toLowerCase();
 
         if (visibilityState.equals(STATES.VISIBLE.getState())) { // visible
+            performAttemptsTo("{0} wait until the element {1} is visible", WaitFor.waitUntil(element, STATES.VISIBLE.getState()));
             performShouldSeeThat("{0} verifies that the element {1} is visible",
                     actor2 -> WebElementQuestion.stateOf(locator).answeredBy(actor2),
                     WebElementStateMatchers.isVisible());
         } else if (visibilityState.equals(STATES.INVISIBLE.getState())) { // invisible
+            performAttemptsTo("{0} wait until the element {1} is visible", WaitFor.waitUntil(element, STATES.INVISIBLE.getState()));
             performShouldSeeThat("{0} verifies that the element {1} is not visible",
                     actor2 -> WebElementQuestion.stateOf(locator).answeredBy(actor2),
                     WebElementStateMatchers.isNotVisible());
         } else if (visibilityState.equals(STATES.PRESENT.getState())) { // present
+            performAttemptsTo("{0} wait until the element {1} is visible", WaitFor.waitUntil(element, STATES.PRESENT.getState()));
             performShouldSeeThat("{0} verifies that the element {1} is present",
                     actor2 -> WebElementQuestion.stateOf(locator).answeredBy(actor2),
                     WebElementStateMatchers.isPresent());
         } else if (visibilityState.equals(STATES.NOT_PRESENT.getState())) { // not present
+            performAttemptsTo("{0} wait until the element {1} is visible", WaitFor.waitUntil(element, STATES.NOT_PRESENT.getState()));
             performShouldSeeThat("{0} verifies that the element {1} is not present",
                     actor2 -> WebElementQuestion.stateOf(locator).answeredBy(actor2),
                     WebElementStateMatchers.isNotPresent());

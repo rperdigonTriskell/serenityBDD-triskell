@@ -41,7 +41,7 @@ Feature: Project parts
     And verify the text element "System Administrator h/day" is "8.00 h/Day"
     And verify the text element "System Administrator hour" is "80.00 h"
     When click in "Gantt Chart"
-    Then check to "Gantt Chart" has loaded
+    Then check to "Automation Testing Project Gantt Chart" has loaded
     When click in "Create"
     Then verify the element "Selected item: Automation Testing Project" are "visible"
     When click in "Task"
@@ -52,3 +52,5 @@ Feature: Project parts
       | element      | value                      |
       | Name 1rt row | Automation Testing Project |
       | Name 2rt row | Automation Testing Task    |
+    And left click in "Name 2rt row"
+    Then verify the element "task options" are "visible"
