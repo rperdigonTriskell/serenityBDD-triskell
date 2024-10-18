@@ -12,40 +12,45 @@ import static starter.pageselectors.factory.PageFactory.getStaticDriver;
 public class DragAndDropByCoordinates implements Task {
 
     private final Target source;
-    private final Target destination;
+    private final int horizontalSteps;  // Número de tramos en horizontal
 
-    // Constructor que recibe el origen y el destino
-    public DragAndDropByCoordinates(Target source, Target destination) {
+    // Constructor que recibe el origen y el número de tramos
+    public DragAndDropByCoordinates(Target source, int horizontalSteps) {
         this.source = source;
-        this.destination = destination;
+        this.horizontalSteps = horizontalSteps;
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        // Resolver los elementos como WebElementFacade
+        // Resolver el elemento source como WebElementFacade
         WebElementFacade sourceElement = source.resolveFor(actor);
-        WebElementFacade destinationElement = destination.resolveFor(actor);
 
-        // Obtener el tamaño y posición de los elementos
-        int sourceCenterX = sourceElement.getLocation().getX() + (sourceElement.getSize().getWidth() / 2);
-        int destinationCenterX = destinationElement.getLocation().getX() + (destinationElement.getSize().getWidth() / 2);
+        // Obtener el tamaño del elemento source
+        int sourceWidth = sourceElement.getSize().getWidth();
+        int sourceHeight = sourceElement.getSize().getHeight();
 
-        // Mover de izquierda a derecha, desde el centro izquierdo del source al centro derecho del destination
+        // Definir el tamaño de cada tramo/paso (por ejemplo, 100 píxeles por tramo)
+        int stepSize = 100; // Ajusta este valor según el tramo que quieras mover.
+
+        // Calcular la distancia total a mover
+        int distanceToMove = stepSize * horizontalSteps;
+
+        // Mover desde la esquina superior derecha del elemento hacia la derecha
         new Actions(getStaticDriver())
-                .moveToElement(sourceElement, -sourceElement.getSize().getWidth() / 2, 0)  // Mueve al centro-izquierda del source
+                .moveToElement(sourceElement, sourceWidth / 2, -sourceHeight / 2)  // Mueve a la esquina superior derecha del source
                 .clickAndHold()
-                .moveByOffset(destinationCenterX - sourceCenterX, 0)  // Arrastra horizontalmente hasta el centro del destino
+                .moveByOffset(distanceToMove, 0)  // Mueve hacia la derecha por el número de tramos especificado
                 .release()
                 .perform();
     }
 
     // Método estático para inicializar la tarea
     public static DragAndDropByCoordinates from(Target source) {
-        return instrumented(DragAndDropByCoordinates.class, source, null);
+        return instrumented(DragAndDropByCoordinates.class, source, 0);  // Por defecto, 0 tramos
     }
 
-    // Método para especificar el destino del drag and drop
-    public DragAndDropByCoordinates to(Target destination) {
-        return new DragAndDropByCoordinates(this.source, destination);
+    // Método para especificar el número de tramos en horizontal
+    public DragAndDropByCoordinates bySteps(int steps) {
+        return new DragAndDropByCoordinates(this.source, steps);
     }
 }

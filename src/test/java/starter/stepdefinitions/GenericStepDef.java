@@ -268,7 +268,7 @@ public class GenericStepDef {
      */
     @When("left click in {string}")
     public static void leftClickIn(String element) {
-        leftClickOnTarget(element);
+        rightClickOnTarget(element);
     }
 
     /**

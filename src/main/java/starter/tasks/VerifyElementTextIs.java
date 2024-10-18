@@ -4,12 +4,16 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.questions.Text;
 import net.serenitybdd.screenplay.targets.Target;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import starter.Constants;
 import static net.serenitybdd.screenplay.Tasks.instrumented;
+import static starter.Constants.WAIT_DURATION;
 import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.GenericTasks.performShouldSeeThat;
 import static starter.tasks.GenericTasks.getTarget;
 import static org.hamcrest.Matchers.equalTo;
+import static starter.tasks.WaitFor.waitForVisibility;
 
 public class VerifyElementTextIs implements Task {
 
@@ -27,6 +31,7 @@ public class VerifyElementTextIs implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
+        waitForVisibility(element);
         Target target = getTarget(element);
 
         performAttemptsTo(

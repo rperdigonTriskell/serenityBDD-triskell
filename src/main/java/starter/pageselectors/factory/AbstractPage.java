@@ -19,6 +19,7 @@ public abstract class AbstractPage extends PageObject implements SelectorFactory
      */
     public AbstractPage() {
         mapSelectors.put("loading", By.id("loading-container"));
+        mapSelectors.put("Saving", By.xpath(".//div[text()='Saving...']"));
     }
 
     /**

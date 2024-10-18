@@ -3,16 +3,21 @@ package starter.tasks;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
+import net.serenitybdd.screenplay.actions.RightClick;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import starter.Constants;
 
 import java.util.List;
 
 import static starter.Constants.CHECKBOX;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
+import static starter.pageselectors.factory.PageFactory.getStaticDriver;
 import static starter.tasks.GenericTasks.*;
+import static starter.tasks.WaitFor.waitForClickable;
+import static starter.tasks.WaitFor.waitForVisibility;
 
 
 public class ElementInteraction {
@@ -33,7 +38,7 @@ public class ElementInteraction {
      */
     public static Task createClickActionFor(Object target) {
         if (target instanceof By) {
-            WaitFor.waitForVisibility((By) target);
+            waitForVisibility((By) target);
             WaitFor.waitForClickable((By) target);
             return Task.where("{0} waits for and clicks on By locator",
                     WaitFor.waitUntil((By) target, Constants.STATES.VISIBLE.getState()),
@@ -42,7 +47,7 @@ public class ElementInteraction {
             );
         }
         if (target instanceof WebElementFacade) {
-            WaitFor.waitForVisibility((WebElementFacade) target);
+            waitForVisibility((WebElementFacade) target);
             WaitFor.waitForClickable((WebElementFacade) target);
             WebElementFacade element = (WebElementFacade) target;
             return Task.where("{0} waits for and clicks on WebElementFacade",
@@ -52,7 +57,7 @@ public class ElementInteraction {
             );
         }
         if (target instanceof Target) {
-            WaitFor.waitForVisibility((Target) target);
+            waitForVisibility((Target) target);
             WaitFor.waitForClickable((Target) target);
             Target targetElement = (Target) target;
             return Task.where("{0} waits for and clicks on Target",
@@ -62,7 +67,7 @@ public class ElementInteraction {
             );
         }
         if (target instanceof String) {
-            WaitFor.waitForVisibility(getTarget((String) target));
+            waitForVisibility(getTarget((String) target));
             WaitFor.waitForClickable(getTarget((String) target));
             Target targetElement = getTarget((String) target);
             return Task.where("{0} waits for and clicks on selector",
@@ -75,62 +80,37 @@ public class ElementInteraction {
     }
 
     /**
-     * Performs a left click on the given target element.
+     * Performs a right-click on the given target element.
      *
-     * @param target The target element to click on.
+     * @param target The target element to right-click on.
      */
-    public static void leftClickOnTarget(Object target) {
-        performAttemptsTo("{0} attempts to left-click on target", createLeftClickActionFor(target));
+    public static void rightClickOnTarget(String target) {
+        performAttemptsTo("{0} attempts to right-click on target", createRightClickActionFor(target));
     }
 
     /**
-     * Creates a ClickInteraction object based on the type of the given target for a left-click action.
+     * Creates a ClickInteraction object based on the type of the given target for a right-click action.
      *
      * @param target The target to create the ClickInteraction for.
      * @return The ClickInteraction object.
      */
-    public static Task createLeftClickActionFor(Object target) {
-        if (target instanceof By) {
-            WaitFor.waitForVisibility((By) target);
-            WaitFor.waitForClickable((By) target);
-            return Task.where("{0} waits for and left-clicks on By locator",
-                    WaitFor.waitUntil((By) target, Constants.STATES.VISIBLE.getState()),
-                    WaitFor.waitUntil((By) target, Constants.STATES.CLICKABLE.getState()),
-                    Click.on((By) target)
-            );
-        }
-        if (target instanceof WebElementFacade) {
-            WaitFor.waitForVisibility((WebElementFacade) target);
-            WaitFor.waitForClickable((WebElementFacade) target);
-            WebElementFacade element = (WebElementFacade) target;
-            return Task.where("{0} waits for and left-clicks on WebElementFacade",
-                    element.waitUntilVisible(),
-                    element.waitUntilClickable(),
-                    Click.on(element)
-            );
-        }
-        if (target instanceof Target) {
-            WaitFor.waitForVisibility((Target) target);
-            WaitFor.waitForClickable((Target) target);
-            Target targetElement = (Target) target;
-            return Task.where("{0} waits for and left-clicks on Target",
-                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
-                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
-                    Click.on(targetElement)
-            );
-        }
-        if (target instanceof String) {
-            WaitFor.waitForVisibility(getTarget((String) target));
-            WaitFor.waitForClickable(getTarget((String) target));
-            Target targetElement = getTarget((String) target);
-            return Task.where("{0} waits for and left-clicks on selector",
-                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
-                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
-                    Click.on(targetElement)
-            );
-        }
-        throw new IllegalArgumentException("Invalid target type: " + target.getClass().getSimpleName());
+    public static Task createRightClickActionFor(String target) {
+        waitForVisibility(target);
+        waitForClickable(target);
+
+//        // Ejecutar el script para prevenir el menú contextual del navegador
+//        JavascriptExecutor jsExecutor = (JavascriptExecutor) getStaticDriver();
+//        jsExecutor.executeScript("document.addEventListener('contextmenu', event => event.preventDefault());");
+
+        Target targetElement = getTarget(target);
+
+        return Task.where("{0} waits for and right-clicks on selector",
+                WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+                RightClick.on(targetElement) // Right-click action
+        );
     }
+
 
 
     /**

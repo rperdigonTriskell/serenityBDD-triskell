@@ -24,6 +24,7 @@ public class AutomationTestingProjectResourceBoardsPage extends AbstractPage {
         mapSelectors.put("Automation Testing Project period modal", By.xpath("(//div[contains(@id, 'triskelleventeditor')]/span[contains(@id, 'triskelleventeditor')])[2]"));
         mapSelectors.put("Save", By.xpath("(//a[.//span[text()='Save']])[2]"));
         mapSelectors.put("Gantt Chart", By.cssSelector("a[id*=GanttButton]"));
+        mapSelectors.put("hours/Day", By.xpath("(//input[@name='dailyUnits'])[2]"));
 
 
         //2 boards to Assigment

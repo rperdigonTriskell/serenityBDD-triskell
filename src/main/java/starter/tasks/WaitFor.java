@@ -6,6 +6,7 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -82,6 +83,11 @@ public class WaitFor implements Task {
         retryOnStaleElement(() -> new WebDriverWait(driver, WAIT_DURATION)
                 .until(ExpectedConditions.visibilityOfElementLocated(element)));
     }
+    public static void waitForVisibility(String element) {
+        WebElementFacade webElementFacade = getWebelementFacade(element);
+        retryOnStaleElement(() -> new WebDriverWait(driver, WAIT_DURATION)
+                .until(ExpectedConditions.visibilityOf(webElementFacade)));
+    }
 
     public static void waitForInvisibilityWithRetry(WebElementFacade element) {
         retryOnStaleElement(() -> new WebDriverWait(driver, WAIT_DURATION)
@@ -105,6 +111,12 @@ public class WaitFor implements Task {
                 .until(ExpectedConditions.elementToBeClickable(element)));
     }
 
+    public static void waitForClickable(String element) {
+        WebElementFacade webElementFacade = getWebelementFacade(element);
+        retryOnStaleElement(() -> new WebDriverWait(driver, WAIT_DURATION)
+                .until(ExpectedConditions.elementToBeClickable(webElementFacade)));
+    }
+
     // Espera explícita para que el elemento esté presente usando WebElementFacade
     public static void waitForElementPresent(WebElementFacade element) {
         retryOnStaleElement(() -> element.waitUntilPresent());
@@ -121,17 +133,34 @@ public class WaitFor implements Task {
     }
 
 
-    // Método de reintento en caso de StaleElementReferenceException
-    private static void retryOnStaleElement(Runnable waitAction) {
-        int retries = 3;  // Número de reintentos permitidos
+    /**
+     * Retry the given action up to a defined number of times when a StaleElementReferenceException occurs.
+     * Adds a delay between retries to allow the DOM to stabilize.
+     *
+     * @param action The action to be performed that may throw a StaleElementReferenceException.
+     */
+    public static void retryOnStaleElement(Runnable action) {
+        int retries = 3; // Number of retry attempts
+        int retryDelay = 1000; // Delay between retries in milliseconds (1 second)
+
+        // Loop for the number of retries
         while (retries > 0) {
             try {
-                waitAction.run();  // Ejecutar la acción de espera
-                return;  // Si es exitoso, salir del método
-            } catch (StaleElementReferenceException e) {
+                // Try to perform the action
+                action.run();
+                return; // Exit method if successful
+            } catch (StaleElementReferenceException | NoSuchElementException e) {
+                // Decrement retries and check if exhausted
                 retries--;
                 if (retries == 0) {
-                    throw e;  // Si se agotan los reintentos, relanzar la excepción
+                    throw e; // Throw exception if no more retries are left
+                }
+                try {
+                    // Sleep for the specified delay before retrying
+                    Thread.sleep(retryDelay);
+                } catch (InterruptedException ie) {
+                    // Restore the interrupted status of the thread
+                    Thread.currentThread().interrupt();
                 }
             }
         }
