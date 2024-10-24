@@ -3,6 +3,7 @@ package starter.tasks;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
+import net.serenitybdd.screenplay.actions.MoveMouse;
 import net.serenitybdd.screenplay.actions.RightClick;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
@@ -16,8 +17,7 @@ import static starter.Constants.CHECKBOX;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.pageselectors.factory.PageFactory.getStaticDriver;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitFor.waitForClickable;
-import static starter.tasks.WaitFor.waitForVisibility;
+import static starter.tasks.WaitFor.*;
 
 
 public class ElementInteraction {
@@ -27,6 +27,8 @@ public class ElementInteraction {
      * @param target The target element to click on.
      */
     public static void clickOnTarget(Object target) {
+        waitFor(target, Constants.STATES.VISIBLE.getState());
+        waitFor(target, Constants.STATES.CLICKABLE.getState());
         performAttemptsTo("{0} attempts to click on target", createClickActionFor(target));
     }
 
@@ -68,7 +70,7 @@ public class ElementInteraction {
         }
         if (target instanceof String) {
             waitForVisibility(getTarget((String) target));
-            WaitFor.waitForClickable(getTarget((String) target));
+            waitForClickable(getTarget((String) target));
             Target targetElement = getTarget((String) target);
             return Task.where("{0} waits for and clicks on selector",
                     WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
@@ -97,10 +99,6 @@ public class ElementInteraction {
     public static Task createRightClickActionFor(String target) {
         waitForVisibility(target);
         waitForClickable(target);
-
-//        // Ejecutar el script para prevenir el menú contextual del navegador
-//        JavascriptExecutor jsExecutor = (JavascriptExecutor) getStaticDriver();
-//        jsExecutor.executeScript("document.addEventListener('contextmenu', event => event.preventDefault());");
 
         Target targetElement = getTarget(target);
 
@@ -157,4 +155,16 @@ public class ElementInteraction {
         // If no row with the target text is found, throw an exception
         throw new AssertionError("Target text '" + target + "' not found in any row.");
     }
+
+    /**
+     * Performs a hover (mouse over) action on the given target element.
+     *
+     * @param target The target element to hover over.
+     */
+    public static void hoverOverTarget(String target) {
+        waitForVisibility(getTarget(target));
+        Target targetElement = getTarget(target);
+        performAttemptsTo("{0} attempts to hover over target", Task.where("{0} hovers over target", MoveMouse.to(targetElement)));
+    }
+
 }

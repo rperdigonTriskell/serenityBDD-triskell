@@ -21,6 +21,7 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put(TIMESHEET_CONTEXT + "Administrator Approval", By.cssSelector("a[data-qtip='Administrator Approval']"));
         mapSelectors.put(TIMESHEET_CONTEXT + "Timesheet Summary", By.xpath("//a[.//span[text()='Timesheet Summary']]"));
         mapSelectors.put(TIMESHEET_CONTEXT + TIMESHEET, By.xpath("//div[contains(@id, 'tabbar')]//a[.//span[text()='Timesheet']]"));
+        mapSelectors.put(SIDEBAR_CONTEXT + "Project", By.cssSelector("a[data-qtip='Project']"));
         //board summary
         mapSelectors.put(TIMESHEET_SUMMARY + BOARD_SUFFIX + " title", By.xpath("//div[span[contains(text(),'Timesheet Summary from')]]"));
         mapSelectors.put(TIMESHEET_SUMMARY + BOARD_SUFFIX + " Supersede a User", By.cssSelector("div[id*='toolbar'] > a[data-qtip='Supersede a User']"));
@@ -47,7 +48,7 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put("Add Object To Timesheet", By.xpath("(//div[span[text()='Add object to timesheet']])[1]"));
         mapSelectors.put("Search", By.name("search"));
         mapSelectors.put("Search icon", By.xpath("//a[.//span[@class='x-btn-icon-el fas fa-search ']]"));
-        mapSelectors.put("MAPRE Portfolio Automation Test Task Checkbox", By.xpath("(//input[@class=' x-tree-checkbox'])[1]"));
+        mapSelectors.put("first search result", By.xpath("(//input[@class=' x-tree-checkbox'])[1]"));
         mapSelectors.put("Integration_Triskell Task 2 Checkbox", By.xpath("(//span[contains(text(), 'Task 2')]/preceding-sibling::input)[1]"));
         mapSelectors.put("Integration_Triskell Task 6 Checkbox", By.xpath("(//span[contains(text(), 'Task 6')]/preceding-sibling::input)[1]"));
         mapSelectors.put("Add & Close", By.xpath("(//a[.//span[text()='Add & Close']])[1]"));

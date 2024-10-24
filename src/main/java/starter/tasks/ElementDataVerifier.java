@@ -2,8 +2,10 @@ package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.screenplay.Actor;
+import starter.Constants;
 
 import static starter.tasks.GenericTasks.performAttemptsTo;
+import static starter.tasks.WaitFor.waitFor;
 
 public class ElementDataVerifier {
 
@@ -24,6 +26,7 @@ public class ElementDataVerifier {
      * @param expectedText The expected text to match.
      */
     public static void verifyElementTextIs(String element, String expectedText) {
+        waitFor(element, Constants.STATES.VISIBLE.getState());
         performAttemptsTo("verify that element: {0} text matches expected text: {1}", VerifyElementTextIs.forElement(element, expectedText));
     }
 

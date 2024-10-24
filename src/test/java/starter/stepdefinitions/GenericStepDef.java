@@ -30,6 +30,7 @@ import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.SendTextTo.*;
+import static starter.tasks.WaitFor.*;
 import static starter.tasks.security.CredentialManager.*;
 import static starter.tasks.security.EnvironmentManager.*;
 
@@ -185,6 +186,7 @@ public class GenericStepDef {
      */
     @Then("verify the element {string} are {string}")
     public static void verifyTheElementAre(String element, String visibility) {
+        waitFor(element,visibility);
         performAttemptsTo("{0} verify the element {1} are {2}", new VerifyElementVisibility(element,visibility));
     }
 
@@ -356,5 +358,15 @@ public class GenericStepDef {
                 "{0} drag and drop {1} to {2}",
                 DragAndDropToElements.from(source).to(destination)
         );
+    }
+
+    /**
+     * Clicks on an element.
+     *
+     * @param element the element to click on
+     */
+    @When("moves the cursor over the element {string}")
+    public static void movesTheCursorOverTheElement(String element) {
+        hoverOverTarget(element);
     }
 }

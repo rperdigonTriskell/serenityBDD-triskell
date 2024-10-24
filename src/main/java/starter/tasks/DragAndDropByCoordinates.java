@@ -8,49 +8,59 @@ import org.openqa.selenium.interactions.Actions;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 import static starter.pageselectors.factory.PageFactory.getStaticDriver;
+import static starter.tasks.GenericTasks.getWebelementFacadeFromTarget;
 
 public class DragAndDropByCoordinates implements Task {
 
-    private final Target source;
-    private final int horizontalSteps;  // Número de tramos en horizontal
+    // Target elements for drag and drop operation
+    private final Target source;     // The element to be dragged
+    private final Target reference;   // The reference element to validate size
+    private final int horizontalSteps; // Number of steps to move horizontally
 
-    // Constructor que recibe el origen y el número de tramos
-    public DragAndDropByCoordinates(Target source, int horizontalSteps) {
-        this.source = source;
-        this.horizontalSteps = horizontalSteps;
+    // Constructor to initialize the source, reference, and horizontal steps
+    public DragAndDropByCoordinates(Target source, Target reference, int horizontalSteps) {
+        this.source = source;             // Initialize source element
+        this.reference = reference;       // Initialize reference element
+        this.horizontalSteps = horizontalSteps; // Initialize horizontal movement steps
     }
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        // Resolver el elemento source como WebElementFacade
-        WebElementFacade sourceElement = source.resolveFor(actor);
+        // Get the source element as a WebElementFacade
+        WebElementFacade sourceElement = getWebelementFacadeFromTarget(source);
+        int sourceWidth = sourceElement.getSize().getWidth();   // Get width of source element
+        int sourceHeight = sourceElement.getSize().getHeight(); // Get height of source element
 
-        // Obtener el tamaño del elemento source
-        int sourceWidth = sourceElement.getSize().getWidth();
-        int sourceHeight = sourceElement.getSize().getHeight();
+        // Get the reference element as a WebElementFacade
+        WebElementFacade referenceElement = getWebelementFacadeFromTarget(reference);
+        int referenceWidth = referenceElement.getSize().getWidth(); // Get width of reference element
+        int referenceHeight = referenceElement.getSize().getHeight(); // Get height of reference element
 
-        // Definir el tamaño de cada tramo/paso (por ejemplo, 100 píxeles por tramo)
-        int stepSize = 100; // Ajusta este valor según el tramo que quieras mover.
+        // Validate size of reference element (optional logic here)
+        if (referenceWidth <= 0 || referenceHeight <= 0) {
+            throw new IllegalStateException("Reference element has invalid dimensions.");
+        }
 
-        // Calcular la distancia total a mover
-        int distanceToMove = stepSize * horizontalSteps;
+        // Calculate the total distance to move horizontally
+        int stepSize = referenceWidth; // Define step size based on reference width
+        int distanceToMove = stepSize * horizontalSteps; // Calculate total distance to move horizontally
 
-        // Mover desde la esquina superior derecha del elemento hacia la derecha
+        // Perform the drag-and-drop action using Actions class
         new Actions(getStaticDriver())
-                .moveToElement(sourceElement, sourceWidth / 2, -sourceHeight / 2)  // Mueve a la esquina superior derecha del source
-                .clickAndHold()
-                .moveByOffset(distanceToMove, 0)  // Mueve hacia la derecha por el número de tramos especificado
-                .release()
-                .perform();
+                .moveToElement(sourceElement, sourceWidth / 2, sourceHeight / 2) // Move to the center of source element
+                .clickAndHold() // Click and hold the source element
+                .moveByOffset(distanceToMove, 0) // Move the element by the calculated distance
+                .release() // Release the dragged element
+                .perform(); // Execute the actions
     }
 
-    // Método estático para inicializar la tarea
-    public static DragAndDropByCoordinates from(Target source) {
-        return instrumented(DragAndDropByCoordinates.class, source, 0);  // Por defecto, 0 tramos
+    // Static method to instantiate the task with default horizontal steps of 0
+    public static DragAndDropByCoordinates from(Target source, Target reference) {
+        return instrumented(DragAndDropByCoordinates.class, source, reference, 0);
     }
 
-    // Método para especificar el número de tramos en horizontal
+    // Method to set the number of horizontal steps for the drag-and-drop
     public DragAndDropByCoordinates bySteps(int steps) {
-        return new DragAndDropByCoordinates(this.source, steps);
+        return new DragAndDropByCoordinates(this.source, this.reference, steps); // Create a new instance with updated steps
     }
 }

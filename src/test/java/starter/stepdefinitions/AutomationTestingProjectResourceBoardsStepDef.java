@@ -2,6 +2,7 @@ package starter.stepdefinitions;
 
 import io.cucumber.java.en.*;
 import net.serenitybdd.screenplay.targets.Target;
+import starter.tasks.DragAndDropBetweenElements;
 import starter.tasks.DragAndDropToElements;
 
 import static starter.Constants.*;
@@ -25,8 +26,7 @@ public class AutomationTestingProjectResourceBoardsStepDef {
     public static void  dragAndDropRequirementsDateToWeeks(String space) {
         Target source =
                 Target.the("source")
-                        .locatedBy("(//tr[contains(@id, 'schedulergrid')]//div[contains(@class, 'x-grid-cell-inner')])[2]//div[{1}]")
-                        .of("1", "1");
+                        .locatedBy("(//div[@class='x-grid-cell-inner '])[6]");
 
         waitForVisibility(source);
 
@@ -37,7 +37,7 @@ public class AutomationTestingProjectResourceBoardsStepDef {
 
         performAttemptsTo(
                 "{0} drag and drop {1} to {2}",
-                DragAndDropToElements.from(source).to(destination)
+                DragAndDropBetweenElements.from(source, destination)
         );
 
         waitLoading();

@@ -17,6 +17,8 @@ import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.SendTextTo.*;
+import static starter.tasks.WaitFor.waitFor;
+import static starter.tasks.WaitFor.waitForElementPresent;
 
 public class TimesheetTasks {
 
@@ -66,7 +68,7 @@ public class TimesheetTasks {
         clickOnTarget(TIMESHEET_CONTEXT + "all activities checkbox");
         clickOnTarget(TIMESHEET_BOARD + "Delete");
         clickOnTarget(TIMESHEET_CONTEXT + "Yes");
-        performAttemptsTo("{0} waits for Yes button to disappear",WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
+        performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
     }
 
     /**
@@ -75,17 +77,17 @@ public class TimesheetTasks {
      * element to disappear.
      */
     public static void addTimesheetActivity() {
-        performAttemptsTo("{0}",WaitFor.waitUntil(TIMESHEET_BOARD + "Add Activities", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitFor.waitUntil(TIMESHEET_BOARD + "Add Activities", STATES.VISIBLE.getState()));
         clickOnTarget(TIMESHEET_BOARD + "Add Activities");
-        performAttemptsTo("{0}",WaitFor.waitUntil("Search", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitFor.waitUntil("Search", STATES.VISIBLE.getState()));
         input("Automation Test Task", "Search");
-        performAttemptsTo("{0}",WaitFor.waitUntil("Search icon", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitFor.waitUntil("Search icon", STATES.VISIBLE.getState()));
         clickOnTarget("Search icon");
-        performAttemptsTo("{0}",WaitFor.waitUntil("MAPRE Portfolio Automation Test Task Checkbox", STATES.VISIBLE.getState()));
-        clickOnTarget("MAPRE Portfolio Automation Test Task Checkbox");
-        performAttemptsTo("{0}",WaitFor.waitUntil("Add & Close", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitFor.waitUntil("first search result", STATES.VISIBLE.getState()));
+        clickOnTarget("first search result");
+        performAttemptsTo("{0}", WaitFor.waitUntil("Add & Close", STATES.VISIBLE.getState()));
         clickOnTarget("Add & Close");
-        performAttemptsTo("{0}",WaitFor.waitUntil("Add & Close", STATES.INVISIBLE.getState()));
+        performAttemptsTo("{0}", WaitFor.waitUntil("Add & Close", STATES.INVISIBLE.getState()));
     }
 
 
@@ -113,14 +115,13 @@ public class TimesheetTasks {
                 FillTableWithValues.inTable(tableSelector, rowsData)
         );
 
-//        fillTableWithValues(tableSelector, rowsData);
     }
 
     /**
      * Fills the web table identified by the given By selector with values provided in the DataTable.
      *
      * @param tableSelector the By selector used to find the web table
-     * @param rowsData       the DataTable containing the values to fill the table
+     * @param rowsData      the DataTable containing the values to fill the table
      */
     public static void fillTableWithValues(By tableSelector, List<Map<String, String>> rowsData) {
         // wait for the table to be visible
@@ -192,11 +193,8 @@ public class TimesheetTasks {
      */
     public static void ifBlueColorThenEmptyTimesheetTimeTable() {
         Target timetable = getTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX + " empty");
-        performAttemptsTo(
-                "{0} waits for table to be present",
-                WaitFor.waitUntil(timetable, Constants.STATES.PRESENT.getState())
-        );
 
+        waitForElementPresent(timetable);
 
         List<Map<String, String>> rowsData = new ArrayList<>();
         Map<String, String> rowData = new HashMap<>();
@@ -219,7 +217,7 @@ public class TimesheetTasks {
                 WaitFor.waitUntil(submit, Constants.STATES.VISIBLE.getState());
                 clickOnTarget(TIMESHEET_BOARD + "Delete");
                 clickOnTarget(TIMESHEET_CONTEXT + "Yes");
-                performAttemptsTo("{0} waits for Yes button to disappear",WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
+                performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
             }
         }
     }

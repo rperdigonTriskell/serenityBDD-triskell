@@ -94,9 +94,7 @@ public class ProjectStepDef {
     public void ifTheTableIsAnProject(String tableState, String action) {
         inputAndEnter("Automation Testing Project", PROJECT_CONTEXT + "search parent");
 
-        WebElementFacade element = getWebelementFacade("loading");
-        element.waitForCondition().until(driver -> !element.isVisible());
-        performAttemptsTo("{0}", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
+        waitLoading();
 
         Target projectTable = getTarget(PROJECT_CONTEXT + "empty project board");
         performAttemptsTo("{0}", WaitFor.waitUntil(projectTable, STATES.PRESENT.getState()));

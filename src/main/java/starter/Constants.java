@@ -41,6 +41,8 @@ public class Constants {
     public static final String  ADD = "add";
     public static final String  NOT_EMPTY = "not empty";
     public static final String  DELETE = "delete";
+    public static final String  TOOLBAR = "toolbar";
+    public static final String  TOOLBAR_CONTEXT = TOOLBAR + " ";
 
     // Enum para estados con su valor de texto asociado
     public enum STATES {

@@ -10,11 +10,11 @@ import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
-import starter.Constants;
 
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 import static starter.Constants.*;
 import static starter.tasks.GenericTasks.*;
+import static starter.tasks.WaitFor.waitForVisibility;
 
 import java.util.List;
 import java.util.Map;
@@ -78,15 +78,23 @@ public class FillTableWithValues implements Task {
      * Enters text into the input field within a table cell.
      */
     private void enterTimesheetTextInCell(Actor actor, WebElementFacade cell, String text) {
+        waitForVisibility(cell);
+        WaitFor.waitForClickable(cell);
         actor.attemptsTo(
                 Click.on(cell)  // Click to refresh DOM and reveal input
         );
 
+
         // Wait for input field to appear
-        performAttemptsTo("{0}",WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
+        WebElementFacade element = getWebelementFacade("loading");
+        element.waitForCondition().until(driver -> !element.isVisible());
+        performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
 
         List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
 
+        // Wait for the last input field to be visible
+        waitForVisibility(inputField.get(inputField.size() - 1));
+        WaitFor.waitForClickable(inputField.get(inputField.size() - 1));
         // Enter the text in the last input field
         actor.attemptsTo(
                 Clear.field(inputField.get(inputField.size() - 1)),
