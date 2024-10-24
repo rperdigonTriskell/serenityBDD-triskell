@@ -1,61 +1,61 @@
-#Feature: Generate Report
-#  As a user, I want to add an activity to my timesheet so that I can log my work hours.
-#
-#  Background:
-#    Given go to web Triskell
-#    Then check to "Login" has loaded
-#    When send credential "username" to element "Username"
-#    And send credential "password" to element "Password"
-#    And click in "Validate"
-#    Then check to "Dashboard" has loaded
-#    When click in sidebar "Timesheet"
-#    Then check to "Timesheet" has loaded
-#    When click in timesheet "Timesheet"
-#    Then verify the element timesheet board "Add Activities" are "visible"
-#    When if the table is "empty", "add" an activity
-#    And verify the following elements on the "Timesheet board activity board" should match the expected data:
-#      | Check   | WORK APP | RES. APP | OBJECT               | DESCRIPTION | PLANNED | TOTAL   |
-#      | [empty] | [empty]  | [empty]  | Automation Test Task | [empty]     | [empty] | [empty] |
-#    And verify the following elements on the "Timesheet board time board" should match the expected data:
-#      | MON   | TUE   | WED   | THU   | FRI   | SAT   | SUN   |
-#      | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
-#
-#  @PROD
-#  Scenario: Generating a Report with All Correct Data
-#    When send text to table "Timesheet board time board":
-#      | MON | TUE | WED | THU | FRI |
-#      | 8   | 8   | 8   | 8   | 8   |
-#    And click in timesheet board "Submit Timesheet"
-#    Then verify the element timesheet "Timesheet Submit" are "visible"
-#    When click in timesheet "Submit"
-#    Then verify the element timesheet "Submit" are "invisible"
-#    And verify the following elements on the "Timesheet board time board" should match the expected data:
-#      | MON   | TUE   | WED   | THU   | FRI   |
-#      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
-#
-#
-#  @PROD
-#  Scenario: Generating a Report with Data Replacement
-#    When send text to table "Timesheet board time board":
-#      | MON | TUE | WED | THU | FRI |
-#      | 8   | 8   | 8   | 8   | 8   |
-#    And click in timesheet board "Submit Timesheet"
-#    Then verify the element timesheet "Timesheet Submit" are "visible"
-#    When click in timesheet "Submit"
-#    Then verify the element timesheet "Submit" are "invisible"
-#    And verify the following elements on the "Timesheet board time board" should match the expected data:
-#      | MON   | TUE   | WED   | THU   | FRI   |
-#      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
-#    When send text to table "Timesheet board time board":
-#      | MON | TUE | WED | THU | FRI |
-#      | 5   | 5   | 5   | 5   | 5   |
-#    And click in timesheet board "Submit Timesheet"
-#    Then verify the element timesheet "Timesheet Submit" are "visible"
-#    When click in timesheet "Submit"
-#    Then verify the element timesheet "Submit" are "invisible"
-#    And verify the following elements on the "Timesheet board time board" should match the expected data:
-#      | MON   | TUE   | WED   | THU   | FRI   |
-#      | 5.00h | 5.00h | 5.00h | 5.00h | 5.00h |
+Feature: Generate Report
+  As a user, I want to add an activity to my timesheet so that I can log my work hours.
+
+  Background:
+    Given go to web Triskell
+    Then check to "Login" has loaded
+    When send credential "username" to element "Username"
+    And send credential "password" to element "Password"
+    And click in "Validate"
+    Then check to "Dashboard" has loaded
+    When click in sidebar "Timesheet"
+    Then check to "Timesheet" has loaded
+    When click in timesheet "Timesheet"
+    Then verify the element timesheet board "Add Activities" are "visible"
+    When if the table is "empty", "add" an activity
+    And verify the following elements on the "Timesheet board activity board" should match the expected data:
+      | Check   | WORK APP | RES. APP | OBJECT               | DESCRIPTION | PLANNED | TOTAL   |
+      | [empty] | [empty]  | [empty]  | Automation Test Task | [empty]     | [empty] | [empty] |
+    And verify the following elements on the "Timesheet board time board" should match the expected data:
+      | MON   | TUE   | WED   | THU   | FRI   | SAT   | SUN   |
+      | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
+
+  @PROD
+  Scenario: Generating a Report with All Correct Data
+    When send text to table "Timesheet board time board":
+      | MON | TUE | WED | THU | FRI |
+      | 8   | 8   | 8   | 8   | 8   |
+    And click in timesheet board "Submit Timesheet"
+    Then verify the element timesheet "Timesheet Submit" are "visible"
+    When click in timesheet "Submit"
+    Then verify the element timesheet "Submit" are "invisible"
+    And verify the following elements on the "Timesheet board time board" should match the expected data:
+      | MON   | TUE   | WED   | THU   | FRI   |
+      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
+
+
+  @PROD
+  Scenario: Generating a Report with Data Replacement
+    When send text to table "Timesheet board time board":
+      | MON | TUE | WED | THU | FRI |
+      | 8   | 8   | 8   | 8   | 8   |
+    And click in timesheet board "Submit Timesheet"
+    Then verify the element timesheet "Timesheet Submit" are "visible"
+    When click in timesheet "Submit"
+    Then verify the element timesheet "Submit" are "invisible"
+    And verify the following elements on the "Timesheet board time board" should match the expected data:
+      | MON   | TUE   | WED   | THU   | FRI   |
+      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
+    When send text to table "Timesheet board time board":
+      | MON | TUE | WED | THU | FRI |
+      | 5   | 5   | 5   | 5   | 5   |
+    And click in timesheet board "Submit Timesheet"
+    Then verify the element timesheet "Timesheet Submit" are "visible"
+    When click in timesheet "Submit"
+    Then verify the element timesheet "Submit" are "invisible"
+    And verify the following elements on the "Timesheet board time board" should match the expected data:
+      | MON   | TUE   | WED   | THU   | FRI   |
+      | 5.00h | 5.00h | 5.00h | 5.00h | 5.00h |
 #
 ##
 ##    Given that the user is on the timesheet page

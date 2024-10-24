@@ -27,8 +27,6 @@ public class ElementInteraction {
      * @param target The target element to click on.
      */
     public static void clickOnTarget(Object target) {
-        waitFor(target, Constants.STATES.VISIBLE.getState());
-        waitFor(target, Constants.STATES.CLICKABLE.getState());
         performAttemptsTo("{0} attempts to click on target", createClickActionFor(target));
     }
 
