@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import static starter.Constants.*;
+import static starter.tasks.WaitFor.waitFor;
 
 public class VerifyTableElementsVisibility implements Task {
     private final DataTable dataTable;
@@ -27,12 +28,16 @@ public class VerifyTableElementsVisibility implements Task {
             String visibility = row.get("visibility");
 
             if (visibility.equals(STATES.VISIBLE.getState())) {
+                waitFor(element,STATES.VISIBLE.getState());
                 actor.attemptsTo(VerifyElementVisibility.verifyElementIsVisible(element));
             } else if (visibility.equals(STATES.INVISIBLE.getState())) {
+                actor.attemptsTo(WaitFor.waitUntil(element,STATES.INVISIBLE.getState()));
                 actor.attemptsTo(VerifyElementVisibility.verifyElementIsNotVisible(element));
             } else if (visibility.equals(STATES.PRESENT.getState())) {
+                waitFor(element,STATES.PRESENT.getState());
                 actor.attemptsTo(VerifyElementVisibility.verifyElementIsPresent(element));
             } else if (visibility.equals(STATES.NOT_PRESENT.getState())) {
+                actor.attemptsTo(WaitFor.waitUntil(element,STATES.NOT_PRESENT.getState()));
                 actor.attemptsTo(VerifyElementVisibility.verifyElementIsNotPresent(element));
             } else {
                 throw new IllegalArgumentException("Unknown visibility state: " + visibility);

@@ -39,7 +39,7 @@ public class GenericStepDef {
      * Other utilities
      */
     // Actor for scenario
-    String actor = "user not logged";
+    String actor = getCredential("username", false);
     String baseUrl;
 
     /**

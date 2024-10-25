@@ -48,7 +48,7 @@ public class TimesheetPage extends AbstractPage {
         mapSelectors.put("Add Object To Timesheet", By.xpath("(//div[span[text()='Add object to timesheet']])[1]"));
         mapSelectors.put("Search", By.name("search"));
         mapSelectors.put("Search icon", By.xpath("//a[.//span[@class='x-btn-icon-el fas fa-search ']]"));
-        mapSelectors.put("first search result", By.xpath("(//input[@class=' x-tree-checkbox'])[1]"));
+        mapSelectors.put("first search result", By.cssSelector("input.x-tree-checkbox"));
         mapSelectors.put("Integration_Triskell Task 2 Checkbox", By.xpath("(//span[contains(text(), 'Task 2')]/preceding-sibling::input)[1]"));
         mapSelectors.put("Integration_Triskell Task 6 Checkbox", By.xpath("(//span[contains(text(), 'Task 6')]/preceding-sibling::input)[1]"));
         mapSelectors.put("Add & Close", By.xpath("(//a[.//span[text()='Add & Close']])[1]"));

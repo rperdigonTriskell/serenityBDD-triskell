@@ -36,7 +36,7 @@ public class WaitFor implements Task {
             waitForInvisibility(webElementFacade);
             actor.attemptsTo(WaitUntil.the(target, isNotVisible()).forNoMoreThan(WAIT_DURATION));
         } else if (state.equals(Constants.STATES.PRESENT.getState())) {
-            waitForElementPresent(webElementFacade);
+            waitFor(webElementFacade, Constants.STATES.PRESENT.getState());
             actor.attemptsTo(WaitUntil.the(target, isPresent()).forNoMoreThan(WAIT_DURATION));
         } else if (state.equals(Constants.STATES.NOT_PRESENT.getState())) {
             waitForElementPresent(webElementFacade);

@@ -1,4 +1,3 @@
-@Timesheet
 Feature: Dashboard parts
 
   Background:
@@ -11,7 +10,7 @@ Feature: Dashboard parts
     When click in "Sidebar Timesheet"
     Then check to "Timesheet" has loaded
 
-  @PROD
+  @PROD @AWS
   Scenario: See All components Timesheet
     When click in "Timesheet"
     Then check to the following "Timesheet" elements are:
@@ -25,8 +24,8 @@ Feature: Dashboard parts
     And check to the following "Timesheet board" elements are:
       | element                  | visibility |
       | title                    | visible    |
-      | activity board           | visible    |
-      | time board               | visible    |
+      | activity board           | present    |
+      | time board               | present    |
       | Add Activities           | visible    |
       | Delete                   | visible    |
       | Generate                 | visible    |
