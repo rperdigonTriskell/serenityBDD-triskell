@@ -20,7 +20,7 @@ Feature: Generate Report
       | MON   | TUE   | WED   | THU   | FRI   | SAT   | SUN   |
       | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
 
-  @PROD @AWS
+  @AWS
   Scenario: Generating a Report with All Correct Data
     When send text to table "Timesheet board time board":
       | MON | TUE | WED | THU | FRI |
@@ -34,7 +34,7 @@ Feature: Generate Report
       | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
 
 
-  @PROD @AWS
+  @AWS
   Scenario: Generating a Report with Data Replacement
     When send text to table "Timesheet board time board":
       | MON | TUE | WED | THU | FRI |

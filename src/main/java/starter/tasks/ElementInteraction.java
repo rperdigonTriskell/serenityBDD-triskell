@@ -7,12 +7,14 @@ import net.serenitybdd.screenplay.actions.MoveMouse;
 import net.serenitybdd.screenplay.actions.RightClick;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
+import net.serenitybdd.screenplay.waits.Wait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import starter.Constants;
 
 import java.util.List;
 
+import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static starter.Constants.CHECKBOX;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.pageselectors.factory.PageFactory.getStaticDriver;
@@ -120,7 +122,7 @@ public class ElementInteraction {
     public static List<WebElementFacade> getWebElementsWithTitleContaining(String repeatedText) {
         return Target.the("option with title field")
                 .located(getCurrentPage().getSelector(repeatedText))
-                .resolveAllFor(OnStage.theActorInTheSpotlight()); //resolveAllFor uses implicit wait
+                .resolveAllFor(theActorInTheSpotlight()); //resolveAllFor uses implicit wait
     }
 
     /**
@@ -162,8 +164,10 @@ public class ElementInteraction {
      * @param target The target element to hover over.
      */
     public static void hoverOverTarget(String target) {
-        waitForVisibility(getTarget(target));
         Target targetElement = getTarget(target);
+        waitFor(targetElement, Constants.STATES.PRESENT.getState());
+        waitFor(targetElement, Constants.STATES.VISIBLE.getState());
+        waitFor(targetElement, Constants.STATES.CLICKABLE.getState());
         performAttemptsTo("{0} attempts to hover over target", Task.where("{0} hovers over target", MoveMouse.to(targetElement)));
     }
 

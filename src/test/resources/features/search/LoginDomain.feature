@@ -5,7 +5,7 @@
 ##  #basic scenarios
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Successful login
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -21,7 +21,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Failed login - Empty user
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -39,7 +39,7 @@
 #
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Failed login - Wrong name
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -56,7 +56,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Failed login - Empty password
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -74,7 +74,7 @@
 #
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Failed login - Wrong password
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -91,7 +91,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Ok/close error - Empty user
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -115,7 +115,7 @@
 #
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Ok/close error - Wrong name and wrong password
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -139,7 +139,7 @@
 #
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Ok/close error - Empty password
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -162,7 +162,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ | X         |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Ok/close error - Wrong password
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -188,7 +188,7 @@
 #  # Field Validation Tests
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: username_without_domain and Password Length
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -216,7 +216,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Allowed Characters
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -235,7 +235,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Spaced Blank User Pass
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -254,7 +254,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: SQL Injection
 #    Given go to wrong web "<webside>" with domain "domain"
 #    Then check to "Login" hasn't loaded
@@ -273,7 +273,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/domain/‘ or 1=1;–.         |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: SQL Injection login
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -292,7 +292,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: XSS Injection
 #    Given go to wrong web "<webside>" with domain "domain" and XSS atack
 #    Then check to "Login" hasn't loaded
@@ -304,7 +304,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/domain/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: XSS Injection login
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -323,7 +323,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Force Attack
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded
@@ -350,7 +350,7 @@
 #      | https://ondemand.triskellsoftware.com/triskell/init/ |
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: bad url
 #    Given go to wrong web "<webside>" with domain "domain"
 #    Then check to "bad url" has loaded
@@ -370,7 +370,7 @@
 ##    # ////////////////////////////////////////////////////////////
 ##    # Especific domain test
 #
-#  @PROD
+#  @@AWS
 #  Scenario Outline: Ok/close error - Wrong format password
 #    Given go to web "<webside>" with domain "domain"
 #    Then check to "Login" has loaded

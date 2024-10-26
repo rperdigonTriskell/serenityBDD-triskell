@@ -13,7 +13,7 @@
 #    Then check to "Project" has loaded
 #    When if the table Project "not empty", "delete" an Project
 #
-#  @PROD
+#  @@AWS
 #  Scenario: create project
 #    When click in Project "add Project"
 #    Then verify the element Project "Create New Project" are "visible"
@@ -27,7 +27,7 @@
 #    Then check to "Automation Testing Project" has loaded
 #
 #
-#  @PROD
+#  @@AWS
 #  Scenario: delete project
 #    When click in Project "add Project"
 #    Then verify the element Project "Create New Project" are "visible"

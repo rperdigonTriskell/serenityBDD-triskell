@@ -19,7 +19,7 @@ Feature: User history
     Then check to "Project" has loaded
     When if the table Project "empty", "add" an Project
 
-  @PROD @AWS
+  @AWS
   Scenario: assign project and timesheet
     Then check to "Automation Testing Project" has loaded
     When click in Automation Testing Project "Resource Boards"
@@ -79,9 +79,10 @@ Feature: User history
       | Name 2rt row | Automation Testing Task       |
       | Name 3rt row | Automation Testing Task Child |
     When drag and drop "Name 3rt row date" to 3 days
+    And click in toolbar "Save"
     And moves the cursor over the element "time bar 3rt row"
     Then verify the element "time bar 3rt row modal duration" are "visible"
-    Then verify the text element "time bar 3rt row modal duration" is "2 days"
+    Then verify the text element "time bar 3rt row modal duration" is "4 days"
     And click in "Name 3rt Assigned Resources"
     Then verify the element "Name 3rt Assigned Resources down arrow" are "visible"
     And click in "Name 3rt Assigned Resources down arrow"
@@ -108,7 +109,7 @@ Feature: User history
     And verify the element timesheet board "activity board" are "visible"
     And verify the following elements on the "Timesheet board activity board" should match the expected data:
       | Check   | WORK APP | RES. APP | OBJECT                        | DESCRIPTION | PLANNED | TOTAL   |
-      | [empty] | [empty]  | [empty]  | Automation Testing Task Child | [empty]     | 16.00h | [empty] |
+      | [empty] | [empty]  | [empty]  | Automation Testing Task Child | [empty]     | 32.00h | [empty] |
     And verify the following elements on the "Timesheet board time board" should match the expected data:
       | MON   | TUE   | WED   | THU   | FRI   | SAT   | SUN   |
       | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |

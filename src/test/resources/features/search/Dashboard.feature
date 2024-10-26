@@ -9,9 +9,9 @@
 #    And click in "Validate"
 #    Then check to "Dashboard" has loaded
 #
-#  #@PROD @AWS @DEV @NR @PROD
+#  #@PROD @DEV @NR @PROD
 #
-#  @PROD
+#  @@AWS
 #  Scenario: See All components Dashboard
 #    Then check to the following "Sidebar" elements are:
 #      | element             | visibility |
@@ -73,7 +73,7 @@
 ##Feature: Visualización de elementos en "My Items"
 ##
 ##
-##  @PROD
+##  @@AWS
 ##  Scenario: El usuario ve los elementos en "My Items"
 ##    Given el usuario está en la página de inicio de Triskell
 ##    When el usuario navega a la sección "My Items"
@@ -85,7 +85,7 @@
 ##Feature: Gestión de alertas y notificaciones
 ##
 ##
-##  @PROD
+##  @@AWS
 ##  Scenario: El usuario no tiene alertas y notificaciones
 ##    Given el usuario está en la página de inicio de Triskell
 ##    When el usuario navega a la sección "My Alerts and Notifications"
@@ -96,7 +96,7 @@
 ##Feature: Visualización del calendario
 ##
 ##
-##  @PROD
+##  @@AWS
 ##  Scenario: El usuario ve el calendario en "My Calendar View"
 ##    Given el usuario está en la página de inicio de Triskell
 ##    When el usuario navega a la sección "My Calendar View"

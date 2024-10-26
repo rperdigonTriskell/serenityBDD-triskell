@@ -18,90 +18,107 @@ import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.*;
 import static starter.pageselectors.factory.PageFactory.*;
+import static starter.tasks.WaitFor.waitFor;
 
 public class GenericTasks {
-
     /**
-     * Retrieves the WebElementFacade for the given element on the current page.
+     * Retrieves the WebElementFacade for the given element by name.
      *
      * @param element The name of the element to retrieve the WebElementFacade for.
      * @return The WebElementFacade for the given element.
      */
     public static WebElementFacade getWebelementFacade(String element) {
-        Target target = getTarget(element);
-        Actor actor = OnStage.theActorInTheSpotlight();
-        return target.resolveFor(actor);
+        return resolveFacade(getTarget(element));
     }
 
     /**
-     * Retrieves the WebElementFacade for the given element on the current page.
+     * Retrieves the WebElementFacade for the given element by selector.
      *
-     * @param element The name of the element to retrieve the WebElementFacade for.
+     * @param element The selector of the element to retrieve the WebElementFacade for.
      * @return The WebElementFacade for the given element.
      */
     public static WebElementFacade getWebelementFacade(By element) {
-        Target target = getTarget(element);
-        Actor actor = OnStage.theActorInTheSpotlight();
-        return target.resolveFor(actor);
+        return resolveFacade(getTarget(element));
     }
 
     /**
-     * Retrieves the Target for the given element on the current page.
+     * Retrieves the Target for the given element by name.
+     *
+     * @param element The name of the element.
+     * @return The Target for the given element.
      */
     public static Target getTarget(String element) {
         return Target.the(element).located(getCurrentPage().getSelector(element));
     }
 
     /**
-     * Retrieves the Target for the given element on the current page.
+     * Retrieves the Target for the given element by selector.
+     *
+     * @param element The selector of the element.
+     * @return The Target for the given element.
      */
     public static Target getTarget(By element) {
         return Target.the(element.toString()).located(element);
     }
 
     /**
-     * Retrieves the WebElementFacade for the given element on the current page.
+     * Retrieves the WebElementFacade for a given Target.
      *
-     * @param element The name of the element to retrieve the WebElementFacade for.
-     * @return The WebElementFacade for the given element.
+     * @param element The Target to retrieve the WebElementFacade for.
+     * @return The WebElementFacade for the given Target.
      */
     public static WebElementFacade getWebelementFacadeFromTarget(Target element) {
-        Actor actor = OnStage.theActorInTheSpotlight();
-        return element.resolveFor(actor);
+        return resolveFacade(element);
     }
 
     /**
-     * Retrieves the WebElementFacade for the given element on the current page.
+     * Retrieves a list of WebElementFacade instances for a given Target.
      *
-     * @param element The name of the element to retrieve the WebElementFacade for.
-     * @return The WebElementFacade for the given element.
+     * @param element The Target to retrieve the WebElementFacades for.
+     * @return A list of WebElementFacade instances for the given Target.
      */
     public static List<WebElementFacade> getWebelementsFacadeFromTarget(Target element) {
-        Actor actor = OnStage.theActorInTheSpotlight();
-        return element.resolveAllFor(actor);
+        return resolveAllFacade(element);
     }
 
-
     /**
-     * Retrieves the WebElementFacade for the given selector on the current page.
+     * Retrieves the WebElementFacade for the given selector.
      *
      * @param selector The By selector to locate the WebElementFacade.
      * @return The WebElementFacade for the given selector.
      */
     public static WebElementFacade getWebElementFacadeFromBySelector(By selector) {
-        Target target = Target.the("element").located(selector);
+        return resolveFacade(getTarget(selector));
+    }
+
+    /**
+     * Retrieves a list of WebElementFacade instances for elements matching the given selector.
+     *
+     * @param selector The By selector to locate the elements.
+     * @return A list of WebElementFacade instances for the elements matching the selector.
+     */
+    public static List<WebElementFacade> getWebElementsFacadeBySelector(By selector) {
+        return resolveAllFacade(getTarget(selector));
+    }
+
+    /**
+     * Resolves a single WebElementFacade for a given Target.
+     *
+     * @param target The Target to resolve.
+     * @return The WebElementFacade for the Target.
+     */
+    private static WebElementFacade resolveFacade(Target target) {
         Actor actor = OnStage.theActorInTheSpotlight();
         return target.resolveFor(actor);
     }
 
     /**
-     * Retrieves a list of WebElementFacade for elements matching the given selector on the current page.
+     * Resolves a list of WebElementFacade instances for a given Target.
      *
-     * @param selector The By selector to locate the elements.
-     * @return A list of WebElementFacade for the elements matching the selector.
+     * @param target The Target to resolve.
+     * @return A list of WebElementFacade instances for the Target.
      */
-    public static List<WebElementFacade> getWebElementsFacadeBySelector(By selector) {
-        Target target = Target.the("elements").located(selector);
+    private static List<WebElementFacade> resolveAllFacade(Target target) {
         Actor actor = OnStage.theActorInTheSpotlight();
         return target.resolveAllFor(actor);
     }

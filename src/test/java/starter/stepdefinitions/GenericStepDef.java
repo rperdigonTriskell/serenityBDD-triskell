@@ -344,6 +344,7 @@ public class GenericStepDef {
     @Then("wait for loading")
     public static void waitLoading() {
         WebElementFacade element = getWebelementFacade("loading");
+        waitFor(element, STATES.VISIBLE.getState());
         element.waitForCondition().until(driver -> !element.isVisible());
         performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
     }
