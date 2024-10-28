@@ -5,11 +5,8 @@ import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.MoveMouse;
 import net.serenitybdd.screenplay.actions.RightClick;
-import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
-import net.serenitybdd.screenplay.waits.Wait;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import starter.Constants;
 
 import java.util.List;
@@ -17,8 +14,9 @@ import java.util.List;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static starter.Constants.CHECKBOX;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
-import static starter.pageselectors.factory.PageFactory.getStaticDriver;
 import static starter.tasks.GenericTasks.*;
+import static starter.tasks.WaitElement.getWaitClicableTarget;
+import static starter.tasks.WaitElement.getWaitVisibleTarget;
 import static starter.tasks.WaitFor.*;
 
 
@@ -71,9 +69,7 @@ public class ElementInteraction {
             );
         }
         if (target instanceof String) {
-            waitForVisibility(getTarget((String) target));
-            waitForClickable(getTarget((String) target));
-            Target targetElement = getTarget((String) target);
+            Target targetElement = getWaitClicableTarget((String) target);
             return Task.where("{0} waits for and clicks on selector",
                     WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
                     WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
@@ -169,6 +165,13 @@ public class ElementInteraction {
         waitFor(targetElement, Constants.STATES.VISIBLE.getState());
         waitFor(targetElement, Constants.STATES.CLICKABLE.getState());
         performAttemptsTo("{0} attempts to hover over target", Task.where("{0} hovers over target", MoveMouse.to(targetElement)));
+    }
+
+    public static void waitLoadingInteraction() {
+        WebElementFacade element = getWebelementFacade("loading");
+        waitFor(element, Constants.STATES.VISIBLE.getState());
+        element.waitForCondition().until(driver -> !element.isVisible());
+        performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", Constants.STATES.INVISIBLE.getState()));
     }
 
 }

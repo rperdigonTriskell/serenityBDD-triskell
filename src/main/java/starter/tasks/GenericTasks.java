@@ -138,40 +138,14 @@ public class GenericTasks {
     }
 
     /**
-     * Executes a task as the actor in the spotlight.
+     * Executes one or more tasks as the actor in the spotlight.
      *
-     * @param description a description of the task
-     * @param task        the task to be executed
+     * @param description a description of the actions being executed
+     * @param actions     the tasks or actions to be executed
      */
-    public static void performAttemptsTo(String description, Task task) {
+    public static void performAttemptsTo(String description, Performable... actions) {
         OnStage.theActorInTheSpotlight().attemptsTo(
-                Task.where(description, task)
-        );
-    }
-
-    /**
-     * Executes a task as the actor in the spotlight.
-     *
-     * @param description a description of the task
-     * @param task1       the task to be executed
-     * @param task2       the task to be executed
-     */
-    public static void performAttemptsTo(String description, Task task1, Task task2) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                Task.where(description, task1),
-                Task.where(description, task2)
-        );
-    }
-
-    /**
-     * Executes a task as the actor in the spotlight.
-     *
-     * @param description a description of the task
-     * @param performable the task to be executed
-     */
-    public static void performAttemptsTo(String description, Performable performable) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                Task.where(description, performable)
+                Task.where(description, actions)
         );
     }
 

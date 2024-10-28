@@ -12,13 +12,13 @@ import starter.tasks.WaitFor;
 import java.util.*;
 
 import static starter.Constants.*;
-import static starter.pageselectors.factory.PageFactory.getCurrentPage;
+import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.SendTextTo.*;
-import static starter.tasks.WaitFor.waitFor;
-import static starter.tasks.WaitFor.waitForElementPresent;
+import static starter.tasks.WaitElement.*;
+
+import static starter.tasks.WaitFor.*;
 
 public class TimesheetTasks {
 
@@ -102,13 +102,7 @@ public class TimesheetTasks {
         List<Map<String, String>> rowsData = getListFromDatatable(dataTable);
 
         // Get the table's selector
-        By tableSelector = getCurrentPage().getSelector(tableName);
-
-        // Wait for the table to be visible
-        performAttemptsTo(
-                "{0} waits for table to be visible",
-                WaitFor.waitUntil(tableSelector, Constants.STATES.VISIBLE.getState())
-        );
+        By tableSelector = getWaitVisibleSelector(tableName);
 
         // Fill the table with the provided values
         OnStage.theActorInTheSpotlight().attemptsTo(

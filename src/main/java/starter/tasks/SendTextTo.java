@@ -12,6 +12,7 @@ import starter.Constants;
 import java.util.List;
 
 import static starter.tasks.GenericTasks.*;
+import static starter.tasks.WaitElement.*;
 import static starter.tasks.security.CredentialManager.*;
 
 public class SendTextTo {
@@ -22,12 +23,10 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void input(String text, String element) {
-        Target target = getTarget(element);
-        // Clear the specified element
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitFor.waitUntil(element, Constants.STATES.VISIBLE.getState()),
+        Target target = getWaitVisibleTarget(element);
+        performAttemptsTo(
+                "clear {1} and input text",
                 Clear.field(target),
-                // Enter the given text into the specified element
                 Enter.theValue(text).into(target)
         );
     }
@@ -38,12 +37,11 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void inputAndEnter(String text, String element) {
-        Target target = getTarget(element);
+        Target target = getWaitVisibleTarget(element);
         // Clear the specified element
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitFor.waitUntil(element, Constants.STATES.VISIBLE.getState()),
+        performAttemptsTo(
+                "clear {1}, input text and hit enter",
                 Clear.field(target),
-                // Enter the given text into the specified element
                 Enter.theValue(text).into(target).thenHit(Keys.ENTER)
         );
     }
@@ -55,14 +53,10 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void input(String text, WebElementFacade element) {
-        element.waitUntilPresent();
-        element.waitUntilClickable();
-        element.waitUntilVisible();
-
-        // Clear the specified element
-        OnStage.theActorInTheSpotlight().attemptsTo(
+        element = getWaitWebelementFacade(element);
+        performAttemptsTo(
+                "clear {1} and input text",
                 Clear.field(element),
-                // Enter the given text into the specified element
                 Enter.theValue(text).into(element)
         );
     }
