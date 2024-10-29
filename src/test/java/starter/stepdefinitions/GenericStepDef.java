@@ -358,4 +358,14 @@ public class GenericStepDef {
     public static void movesTheCursorOverTheElement(String element) {
         hoverOverTarget(element);
     }
+
+    /**
+     * Checks if a page has loaded.
+     *
+     * @param file the name of the file to check
+     */
+    @Then("check to {string} has download")
+    public static void checkToHasDownloadLoaded(String file) {
+        verifyFileNamw(file);
+    }
 }

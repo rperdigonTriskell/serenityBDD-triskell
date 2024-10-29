@@ -1,6 +1,7 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.en.Then;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
@@ -210,4 +211,7 @@ public class GenericTasks {
         return dataTable.asMaps(String.class, String.class);
     }
 
+    public static void verifyFileNamw(String fileName) {
+        performAttemptsTo("verify that the file name is {0}", VerifyFileDownloaded.withNameInRemotePath(fileName));
+    }
 }
