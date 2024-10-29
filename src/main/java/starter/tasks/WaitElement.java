@@ -93,7 +93,7 @@ public class WaitElement {
      * @param element The name of the element to retrieve the WebElementFacade for.
      * @return The WebElementFacade for the given element.
      */
-    public static WebElementFacade getWaitWebelementFacade(WebElementFacade element) {
+    public static WebElementFacade getWaitWebelementFacadeVisible(WebElementFacade element) {
         performAttemptsTo(
                 "{0} waits for table to be visible",
                 element.waitUntilPresent(),
@@ -109,7 +109,7 @@ public class WaitElement {
      * @param element The name of the element to retrieve the WebElementFacade for.
      * @return The WebElementFacade for the given element.
      */
-    public static WebElementFacade getWaitWebelementFacade(String element) {
+    public static WebElementFacade getWaitWebelementFacadeVisible(String element) {
         return getWaitVisibleTarget(element).resolveFor(OnStage.theActorInTheSpotlight());
     }
 

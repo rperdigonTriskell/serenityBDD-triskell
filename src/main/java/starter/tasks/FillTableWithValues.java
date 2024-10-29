@@ -3,21 +3,16 @@ package starter.tasks;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.actions.Clear;
-import net.serenitybdd.screenplay.actions.Click;
-import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
 
-import static starter.Constants.*;
 import static starter.tasks.ElementInteraction.clickOnTarget;
 import static starter.tasks.ElementInteraction.waitLoadingInteraction;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.SendTextTo.input;
 import static starter.tasks.WaitElement.*;
-import static starter.tasks.WaitElement.getWaitWebelementFacade;
-import static starter.tasks.WaitFor.*;
+import static starter.tasks.WaitElement.getWaitWebelementFacadeVisible;
 
 import java.util.List;
 import java.util.Map;
@@ -73,7 +68,7 @@ public class FillTableWithValues implements Task {
      * Enters text into the input field within a table cell.
      */
     private void enterTimesheetTextInCell(WebElementFacade cell, String text) {
-        clickOnTarget(getWaitWebelementFacade(cell));
+        clickOnTarget(getWaitWebelementFacadeVisible(cell));
         waitLoadingInteraction();
         List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
         input(text, inputField.get(inputField.size() - 1));

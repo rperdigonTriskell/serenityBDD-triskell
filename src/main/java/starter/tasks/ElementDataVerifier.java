@@ -1,10 +1,16 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
-import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.actors.OnStage;
 import starter.Constants;
 
+import java.util.List;
+import java.util.Map;
+
+import static starter.tasks.GenericTasks.getWebelementFacade;
 import static starter.tasks.GenericTasks.performAttemptsTo;
+import static starter.tasks.WaitElement.getWaitWebelementFacadeVisible;
 import static starter.tasks.WaitFor.waitFor;
 
 public class ElementDataVerifier {
@@ -38,5 +44,22 @@ public class ElementDataVerifier {
      */
     public static void verifyDatatableElementsTextIs(DataTable dataTable) {
         performAttemptsTo("verify that the text of the specified elements matches the expected values", VerifyDatatableElementsTextIs.from(dataTable));
+    }
+
+    /**
+     * Verifies that the elements on the specified context match the expected data.
+     *
+     * @param  context   the context in which to verify the elements
+     * @param  dataTable the DataTable containing the expected data for the elements
+     */
+    public static void verifyElementsMatchData(String context, DataTable dataTable) {
+        // Process the DataTable into a list of maps
+        List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
+
+        VerifyTableElements verifyTask = new VerifyTableElements(context, expectedData);
+        performAttemptsTo(
+                "verify the following elements on the {0} should match the expected data",
+                verifyTask
+        );
     }
 }

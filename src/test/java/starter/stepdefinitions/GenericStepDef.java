@@ -241,16 +241,7 @@ public class GenericStepDef {
      */
     @Then("verify the following elements on the {string} should match the expected data:")
     public static void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
-        // Process the DataTable into a list of maps
-        List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
-
-        WebElementFacade element = getWebelementFacade(context);
-        element.waitForCondition().until(driver -> element.isVisible());
-
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitFor.waitUntil(context, Constants.STATES.VISIBLE.getState()),
-                 new VerifyTableElements(context, expectedData)
-        );
+        verifyElementsMatchData(context, dataTable);
     }
 
     /**

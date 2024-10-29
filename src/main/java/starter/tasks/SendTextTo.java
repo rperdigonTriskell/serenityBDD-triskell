@@ -4,10 +4,8 @@ import io.cucumber.datatable.DataTable;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actions.Clear;
 import net.serenitybdd.screenplay.actions.Enter;
-import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.Keys;
-import starter.Constants;
 
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void input(String text, WebElementFacade element) {
-        element = getWaitWebelementFacade(element);
+        element = getWaitWebelementFacadeVisible(element);
         performAttemptsTo(
                 "clear {1} and input text",
                 Clear.field(element),
