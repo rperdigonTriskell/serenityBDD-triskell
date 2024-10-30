@@ -29,11 +29,7 @@ public class TimesheetTasks {
      * @param action     the action to perform ("add" or "delete")
      */
     public static void manageTimesheetTable(String tableState, String action) {
-        Target targetTable = getTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX + " empty");
-        performAttemptsTo(
-                "{0} waits for table to be visible",
-                WaitFor.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
-        );
+        Target targetTable = getWaitVisibleTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX + " empty");
 
         List<WebElementFacade> rows = getTableRows(targetTable);
 

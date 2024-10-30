@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.*;
 import static starter.pageselectors.factory.PageFactory.*;
+import static starter.tasks.WaitElement.getWaitVisibleWebelementFacadeFromTarget;
 
 public class GenericTasks {
     /**
@@ -178,7 +179,7 @@ public class GenericTasks {
      * @return a list of WebElements representing the table rows
      */
     public static List<WebElementFacade> getTableRows(Target targetTable) {
-        WebElementFacade table = getWebelementFacadeFromTarget(targetTable);
+        WebElementFacade table = getWaitVisibleWebelementFacadeFromTarget(targetTable);
         List<WebElementFacade> rows;
         if (!table.findElements(By.xpath(".//table")).isEmpty()) {
             rows = table.thenFindAll(By.xpath(".//table//tbody//tr"));

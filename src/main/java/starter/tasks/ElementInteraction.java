@@ -27,8 +27,6 @@ public class ElementInteraction {
      * @param target The target element to click on.
      */
     public static void clickOnTarget(Object target) {
-        waitFor(target, Constants.STATES.VISIBLE.getState());
-        waitFor(target, Constants.STATES.CLICKABLE.getState());
         performAttemptsTo("{0} attempts to click on target", createClickActionFor(target));
     }
 
@@ -40,39 +38,29 @@ public class ElementInteraction {
      */
     public static Task createClickActionFor(Object target) {
         if (target instanceof By) {
-            waitForVisibility((By) target);
-            WaitFor.waitForClickable((By) target);
-            return Task.where("{0} waits for and clicks on By locator",
-                    WaitFor.waitUntil((By) target, Constants.STATES.VISIBLE.getState()),
-                    WaitFor.waitUntil((By) target, Constants.STATES.CLICKABLE.getState()),
+            return Task.where("{0} waits for clickable and clicks on By locator",
+                    waitUntil((By) target, Constants.STATES.CLICKABLE.getState()),
                     Click.on((By) target)
             );
         }
         if (target instanceof WebElementFacade) {
-            waitForVisibility((WebElementFacade) target);
-            WaitFor.waitForClickable((WebElementFacade) target);
             WebElementFacade element = (WebElementFacade) target;
-            return Task.where("{0} waits for and clicks on WebElementFacade",
-                    ((WebElementFacade) target).waitUntilVisible(),
-                    ((WebElementFacade) target).waitUntilClickable(),
+            element.waitUntilClickable();
+            return Task.where("{0} waits for clickable and clicks on WebElementFacade",
                     Click.on(element)
             );
         }
         if (target instanceof Target) {
-            waitForVisibility((Target) target);
-            WaitFor.waitForClickable((Target) target);
             Target targetElement = (Target) target;
-            return Task.where("{0} waits for and clicks on Target",
-                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
-                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+            return Task.where("{0} waits for clickable and clicks on Target",
+                    waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                     Click.on(targetElement)
             );
         }
         if (target instanceof String) {
             Target targetElement = getWaitClicableTarget((String) target);
-            return Task.where("{0} waits for and clicks on selector",
-                    WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
-                    WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+            return Task.where("{0} waits for clickable and clicks on selector",
+                    waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                     Click.on(targetElement)
             );
         }

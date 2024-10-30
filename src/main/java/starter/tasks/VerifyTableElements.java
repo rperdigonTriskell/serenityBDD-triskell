@@ -38,7 +38,7 @@ public class VerifyTableElements implements Task {
     @Override
     public <T extends Actor> void performAs(T actor) {
         // Locate the table
-        WebElementFacade table = WaitElement.getWaitWebelementFacadeVisible(tableName);
+        WebElementFacade table = WaitElement.getWaitVisiWebelementFacadeVisible(tableName);
         List<WebElementFacade> rows = table.thenFindAll(By.xpath("tr"));
 
         // Iterate over each row of the expected data

@@ -36,7 +36,6 @@ public class SendTextTo {
      */
     public static void inputAndEnter(String text, String element) {
         Target target = getWaitVisibleTarget(element);
-        // Clear the specified element
         performAttemptsTo(
                 "clear {1}, input text and hit enter",
                 Clear.field(target),
@@ -66,7 +65,6 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void credential(String text, String element) {
-        // Retrieve the credential value and send the credential value into the specified element
         input(getCredential(text, false), element);
     }
 
@@ -76,9 +74,7 @@ public class SendTextTo {
      * @param table the DataTable to iterate through
      */
     public static void table(DataTable table) {
-        // Use a DataTable to iterate through the rows
         for (List<String> row : table.asLists(String.class)) {
-            // Call the input method with the elements of each row
             input(row.get(1), row.get(0));
         }
     }

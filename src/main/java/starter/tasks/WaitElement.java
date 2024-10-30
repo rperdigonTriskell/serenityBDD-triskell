@@ -109,7 +109,7 @@ public class WaitElement {
      * @param element The name of the element to retrieve the WebElementFacade for.
      * @return The WebElementFacade for the given element.
      */
-    public static WebElementFacade getWaitWebelementFacadeVisible(String element) {
+    public static WebElementFacade getWaitVisiWebelementFacadeVisible(String element) {
         return getWaitVisibleTarget(element).resolveFor(OnStage.theActorInTheSpotlight());
     }
 
@@ -119,7 +119,7 @@ public class WaitElement {
      * @param target The Target to retrieve the WebElementFacade for.
      * @return The WebElementFacade for the given Target.
      */
-    public static WebElementFacade getWaitWebelementFacadeFromTarget(Target target) {
+    public static WebElementFacade getWaitVisibleWebelementFacadeFromTarget(Target target) {
         getWaitVisibleTarget(target);
         return target.resolveFor(OnStage.theActorInTheSpotlight());
     }
