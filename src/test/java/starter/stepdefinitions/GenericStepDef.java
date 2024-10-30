@@ -6,18 +6,14 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 import net.serenitybdd.core.Serenity;
-import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.targets.Target;
 import org.junit.AfterClass;
-import starter.Constants;
 import starter.tasks.*;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static starter.Constants.*;
@@ -25,7 +21,6 @@ import static starter.stepdefinitions.TimesheetTasks.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.pageselectors.factory.PageFactory.*;

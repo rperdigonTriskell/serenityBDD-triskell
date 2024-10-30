@@ -1,7 +1,6 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.en.Then;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
@@ -19,7 +18,6 @@ import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.*;
 import static starter.pageselectors.factory.PageFactory.*;
-import static starter.tasks.WaitFor.waitFor;
 
 public class GenericTasks {
     /**
