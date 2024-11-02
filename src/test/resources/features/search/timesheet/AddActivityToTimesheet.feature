@@ -1,9 +1,9 @@
-#Feature: Add Activity to Timesheet
+Feature: Add Activity to Timesheet
 
-#  As a user, I want to add an activity to my timesheet so that I can log my work hours.
+  As a user, I want to add an activity to my timesheet so that I can log my work hours.
 
-#  Background:
-#    Given go to web Triskell
+  Background:
+    Given go to web Triskell
 #    Then check to "Login" has loaded
 #    When send credential "username" to element "Username"
 #    And send credential "password" to element "Password"
@@ -17,9 +17,9 @@
 #    Then verify the text element timesheet board "activity board empty" is ""
 
 
-#  @AWS
-#  Scenario: Add a New Activity
-#    When click in timesheet board "Add Activities"
+  @AWS
+  Scenario: Add a New Activity
+    When click in timesheet board "Add Activities"
 #    Then verify the element "Add Object To Timesheet" are "visible"
 #    When send text "Automation Test Task" to element "Search"
 #    And click in "Search icon"
