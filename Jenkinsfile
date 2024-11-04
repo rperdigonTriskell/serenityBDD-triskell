@@ -15,9 +15,11 @@ pipeline {
         stage('Build and execute tests') {
             steps {
                 withCredentials([file(credentialsId: 'serenityCredentials', variable: 'CREDENTIALS_FILE')]) {
-                    // Usar el archivo de credenciales
-                    sh "echo 'Using credentials file at: $CREDENTIALS_FILE'" // Mensaje conciso
-                    sh "mvn clean verify -DcredentialsFile=$CREDENTIALS_FILE" // Sin -X para menos detalle
+                    // Usar el archivo de credenciales de manera segura
+                    sh '''
+                        echo "Using credentials file at: $CREDENTIALS_FILE"
+                        mvn clean verify -DcredentialsFile=$CREDENTIALS_FILE
+                    '''
                 }
             }
         }
