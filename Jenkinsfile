@@ -1,25 +1,30 @@
 pipeline {
     agent any
     tools {
-         maven 'Maven 3.8.1'
-     }
+        maven 'Maven 3.8.1'
+    }
     stages {
         stage('Clone repository') {
             steps {
-                git url: 'https://github.com/rperdigonTriskell/serenityBDD-triskell.git', credentialsId: 'gitCredentials', branch: 'waitImplementation'
+                script {
+                    // Clonar el repositorio
+                    git url: 'https://github.com/rperdigonTriskell/serenityBDD-triskell.git', credentialsId: 'gitCredentials', branch: 'waitImplementation'
+                }
             }
         }
         stage('Build and execute tests') {
             steps {
                 withCredentials([file(credentialsId: 'serenityCredentials', variable: 'CREDENTIALS_FILE')]) {
-                    sh 'echo "Using credentials file at: $CREDENTIALS_FILE"' // Verifica la ruta del archivo
-                    sh 'mvn clean verify -DcredentialsFile=$CREDENTIALS_FILE -X' // Añade -X para más información de depuración
+                    // Usar el archivo de credenciales
+                    sh "echo 'Using credentials file at: $CREDENTIALS_FILE'" // Mensaje conciso
+                    sh "mvn clean verify -DcredentialsFile=$CREDENTIALS_FILE" // Sin -X para menos detalle
                 }
             }
         }
     }
     post {
         always {
+            // Publicar informe de Serenity
             publishHTML(target: [
                 reportName: 'Serenity Report',
                 reportDir: 'target/site/serenity',
@@ -27,6 +32,7 @@ pipeline {
                 keepAll: true,
                 alwaysLinkToLastBuild: true
             ])
+            // Publicar resultados de pruebas
             junit '**/target/surefire-reports/*.xml'
         }
     }
