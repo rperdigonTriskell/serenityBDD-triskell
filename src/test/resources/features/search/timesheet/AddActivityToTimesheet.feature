@@ -17,7 +17,7 @@ Feature: Add Activity to Timesheet
     Then verify the text element timesheet board "activity board empty" is ""
 
 
-  @AWS
+  @PROD
   Scenario: Add a New Activity
     When click in timesheet board "Add Activities"
     Then verify the element "Add Object To Timesheet" are "visible"
@@ -35,7 +35,7 @@ Feature: Add Activity to Timesheet
       | MON   | TUE   | WED   | THU   | FRI   | SAT   | SUN   |
       | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
 
-  @AWS
+  @PROD
   Scenario: Adding Multiple Activities
     When click in timesheet board "Add Activities"
     Then verify the element "Add Object To Timesheet" are "visible"
@@ -82,7 +82,7 @@ Feature: Add Activity to Timesheet
       | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
       | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
 
-  @AWS
+  @PROD
   Scenario: Attempting to add an activity without providing details
     When click in timesheet board "Add Activities"
     Then verify the element "Add Object To Timesheet" are "visible"
