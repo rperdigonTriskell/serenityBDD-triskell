@@ -17,7 +17,8 @@ public class CredentialManager {
     static {
         try {
             // Load the properties file
-            properties.load(new FileInputStream("src/test/resources/config.properties"));
+            String credentialsFilePath = System.getProperty("credentialsFile", "src/test/resources/config.properties");
+            properties.load(new FileInputStream(credentialsFilePath));
         } catch (IOException e) {
             throw new RuntimeException("Error loading the credentials file", e);
         }
