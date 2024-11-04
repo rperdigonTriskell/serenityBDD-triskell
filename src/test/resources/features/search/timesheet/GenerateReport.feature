@@ -20,7 +20,7 @@
 #      | MON   | TUE   | WED   | THU   | FRI   | SAT   | SUN   |
 #      | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h | 0.00h |
 #
-#  @AWS
+#  @PROD
 #  Scenario: Generating a Report with All Correct Data
 #    When send text to table "Timesheet board time board":
 #      | MON | TUE | WED | THU | FRI |
@@ -34,7 +34,7 @@
 #      | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
 #
 #
-#  @AWS
+#  @PROD
 #  Scenario: Generating a Report with Data Replacement
 #    When send text to table "Timesheet board time board":
 #      | MON | TUE | WED | THU | FRI |

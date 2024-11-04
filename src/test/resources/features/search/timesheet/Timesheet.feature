@@ -10,7 +10,7 @@
 #    When click in "Sidebar Timesheet"
 #    Then check to "Timesheet" has loaded
 #
-#  @AWS
+#  @PROD
 #  Scenario: See All components Timesheet
 #    When click in "Timesheet"
 #    Then check to the following "Timesheet" elements are:
