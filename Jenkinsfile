@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven 3.8.1'
+        maven 'Maven 3.9.6'
     }
     stages {
         stage('Clone repository') {
@@ -9,19 +9,6 @@ pipeline {
                 git url: 'https://github.com/rperdigonTriskell/serenityBDD-triskell.git', credentialsId: 'gitCredentials', branch: 'waitImplementation'
             }
         }
-//         stage('Check Environment') {
-//             steps {
-//                 script {
-//                     sh 'java -version'
-//                     sh 'mvn -v'
-//                 }
-//             }
-//         }
-//         stage('List Workspace') {
-//             steps {
-//                 sh 'ls -al'
-//             }
-//         }
         stage('Build and execute tests') {
             steps {
                 withCredentials([file(credentialsId: 'serenityCredentials', variable: 'CREDENTIALS_FILE')]) {
