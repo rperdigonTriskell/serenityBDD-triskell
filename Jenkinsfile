@@ -15,6 +15,12 @@ pipeline {
                 }
             }
         }
+        stage('Install dependencies') {
+            steps {
+                // Instalar las dependencias de Maven
+                sh 'mvn clean install -DskipTests'
+            }
+        }
         stage('Build and execute tests') {
             steps {
                 withCredentials([file(credentialsId: 'serenityConfigFile', variable: 'CREDENTIALS_FILE')]) {
