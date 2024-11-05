@@ -4,7 +4,7 @@ pipeline {
         ENVIRONMENT = '@PROD'  // Ajusta según el entorno que quieras usar
     }
     tools {
-        maven 'Maven 3.8.1'
+        maven 'Maven 3.9.6'
     }
     stages {
         stage('Clone repository') {
