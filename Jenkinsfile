@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        ENVIRONMENT = '@PROD'
+    }
     tools {
         maven 'Maven 3.8.1'
     }
