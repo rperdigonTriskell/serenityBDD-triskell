@@ -7,15 +7,13 @@ pipeline {
         stage('Clone repository') {
             steps {
                 script {
-                    // Clonar el repositorio
                     git url: 'https://github.com/rperdigonTriskell/serenityBDD-triskell.git', credentialsId: 'gitCredentials', branch: 'waitImplementation'
                 }
             }
         }
         stage('Build and execute tests') {
             steps {
-                withCredentials([file(credentialsId: 'serenityCredentials', variable: 'CREDENTIALS_FILE')]) {
-                    // Usar el archivo de credenciales de manera segura
+                withCredentials([file(credentialsId: 'serenityConfigFile', variable: 'CREDENTIALS_FILE')]) {
                     sh '''
                         echo "Using credentials file at: $CREDENTIALS_FILE"
                         mvn clean verify -DcredentialsFile=$CREDENTIALS_FILE
@@ -26,7 +24,6 @@ pipeline {
     }
     post {
         always {
-            // Publicar informe de Serenity
             publishHTML(target: [
                 reportName: 'Serenity Report',
                 reportDir: 'target/site/serenity',
@@ -34,7 +31,6 @@ pipeline {
                 keepAll: true,
                 alwaysLinkToLastBuild: true
             ])
-            // Publicar resultados de pruebas
             junit '**/target/surefire-reports/*.xml'
         }
     }
