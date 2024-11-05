@@ -11,13 +11,19 @@ public class CredentialManager {
 
     static {
         try {
+            // Cargar config.properties (credenciales)
             String credentialsFilePath = System.getenv("CREDENTIALS_FILE");
+
             if (credentialsFilePath == null || credentialsFilePath.isEmpty()) {
                 throw new RuntimeException("The CREDENTIALS_FILE environment variable is not set.");
             }
+
+            System.out.println("DEBUG: Loading credentials file from: " + credentialsFilePath);
             properties.load(new FileInputStream(credentialsFilePath));
 
+            // Cargar environments.properties (entornos)
             String environmentFilePath = "src/test/resources/environments.properties";
+            System.out.println("DEBUG: Loading environments file from: " + environmentFilePath);
             environmentProperties.load(new FileInputStream(environmentFilePath));
 
         } catch (IOException e) {
