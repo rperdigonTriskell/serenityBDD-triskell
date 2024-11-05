@@ -12,12 +12,17 @@ public class CredentialManager {
     private static final Properties properties = new Properties();
 
     /**
-     * Static block to load properties from the config file.
+     * Static block to load properties from the credentials file.
      */
     static {
         try {
-            // Load the properties file
-            properties.load(new FileInputStream("src/test/resources/config.properties"));
+            String credentialsFilePath = System.getenv("CREDENTIALS_FILE");
+
+            if (credentialsFilePath == null || credentialsFilePath.isEmpty()) {
+                throw new RuntimeException("The CREDENTIALS_FILE environment variable is not set.");
+            }
+
+            properties.load(new FileInputStream(credentialsFilePath));
         } catch (IOException e) {
             throw new RuntimeException("Error loading the credentials file", e);
         }
@@ -32,7 +37,6 @@ public class CredentialManager {
      * @throws RuntimeException If an error occurs during credential retrieval
      */
     public static String getCredential(String credentialName, boolean useAwsSecrets) {
-        // Check if useAwsSecrets is true and throw an exception if it is (not implemented)
         if (useAwsSecrets) {
             throw new UnsupportedOperationException("AWS credential retrieval not yet implemented");
         }
@@ -40,7 +44,7 @@ public class CredentialManager {
         // Get the credential from the properties file
         String credentialValue = properties.getProperty(credentialName);
         if (credentialValue == null) {
-            credentialValue=credentialName;
+            throw new RuntimeException("Credential not found: " + credentialName);
         }
         return credentialValue;
     }
