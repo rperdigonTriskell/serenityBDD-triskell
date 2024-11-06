@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven' // Matches the Maven tool name in Jenkins
-        JAVA_HOME = tool name: 'jdk-23.0.1', type: 'jdk' // Matches the JDK tool name in Jenkins
+        JAVA_HOME = tool name: 'jdk-22', type: 'jdk' // Matches the JDK tool name in Jenkins
         CREDENTIALS_FILE = credentials('serenityConfigFile')
     }
     stages {
