@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ENVIRONMENT = '@PROD'  // Adjust for the environment you want to use
+        ENVIRONMENT = '@PROD'
     }
 
     tools {
@@ -30,7 +30,6 @@ pipeline {
             steps {
                 script {
                     echo 'Copying environments.properties to the workspace...'
-                    // Using Windows-compatible syntax with escaping paths properly
                     bat 'copy "src\\test\\resources\\environments.properties" .'
                 }
             }
