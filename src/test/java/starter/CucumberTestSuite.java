@@ -8,7 +8,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         plugin = {"pretty"},
         features = {"src/test/resources/features"},
-        tags = "@PROD or @AWS"
+        tags = "@PROD or @AWS",
+        glue = "starter"
 )
 public class CucumberTestSuite {
 }
