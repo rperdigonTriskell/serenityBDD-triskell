@@ -11,17 +11,22 @@ public class CredentialManager {
 
     static {
         try {
-            // Cargar config.properties (credenciales)
-            String credentialsFilePath = System.getenv("CREDENTIALS_FILE");
+            String credentialsFilePath;
 
-            if (credentialsFilePath == null || credentialsFilePath.isEmpty()) {
-                throw new RuntimeException("The CREDENTIALS_FILE environment variable is not set.");
+            // Verificar si estamos en Jenkins
+            if (System.getenv("CREDENTIALS_FILE") != null && !System.getenv("CREDENTIALS_FILE").isEmpty()) {
+                // Si estamos en Jenkins, cargamos el archivo especificado por la variable de entorno
+                credentialsFilePath = System.getenv("CREDENTIALS_FILE");
+            } else {
+                // Si no estamos en Jenkins, usamos el archivo local
+                credentialsFilePath = "C:\\Users\\rperdigon\\IdeaProjects\\serenityBDD-triskell\\src\\test\\resources\\config.properties";
             }
 
+            // Cargar el archivo de credenciales
             System.out.println("DEBUG: Loading credentials file from: " + credentialsFilePath);
             properties.load(new FileInputStream(credentialsFilePath));
 
-            // Cargar environments.properties (entornos)
+            // Cargar el archivo environments.properties
             String environmentFilePath = "src/test/resources/environments.properties";
             System.out.println("DEBUG: Loading environments file from: " + environmentFilePath);
             environmentProperties.load(new FileInputStream(environmentFilePath));
