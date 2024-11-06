@@ -25,6 +25,14 @@ pipeline {
                 bat 'mvn clean install -DskipTests'
             }
         }
+        stage('Prepare environment') {
+                    steps {
+                        script {
+                            echo 'Copying environments.properties to the workspace...'
+                            bat 'copy src\\test\\resources\\environments.properties .'
+                        }
+                    }
+                }
 
         stage('Build and execute tests') {
             steps {
