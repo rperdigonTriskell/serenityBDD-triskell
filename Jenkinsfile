@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ENVIRONMENT = '@PROD'  // Ajusta según el entorno que quieras usar
+        ENVIRONMENT = '@PROD'  // Adjust for the environment you want to use
     }
 
     tools {
@@ -25,15 +25,17 @@ pipeline {
                 bat 'mvn clean install -DskipTests'
             }
         }
-       stage('Prepare environment') {
-           steps {
-               script {
-                   echo 'Copying environments.properties to the workspace...'
-                   // Using forward slashes for better compatibility
-                   bat 'copy src/test/resources/environments.properties .'
-               }
-           }
-       }
+
+        stage('Prepare environment') {
+            steps {
+                script {
+                    echo 'Copying environments.properties to the workspace...'
+                    // Using Windows-compatible syntax with escaping paths properly
+                    bat 'copy "src\\test\\resources\\environments.properties" .'
+                }
+            }
+        }
+
         stage('Build and execute tests') {
             steps {
                 withCredentials([file(credentialsId: 'serenityConfigFile', variable: 'CREDENTIALS_FILE')]) {
@@ -42,7 +44,7 @@ pipeline {
                         echo Using credentials file at: %CREDENTIALS_FILE%
                         type %CREDENTIALS_FILE%
                     """
-                    bat 'mvn clean verify -DcredentialsFile=%CREDENTIALS_FILE%'
+                    bat "mvn clean verify -DcredentialsFile=%CREDENTIALS_FILE%"
                 }
             }
         }
