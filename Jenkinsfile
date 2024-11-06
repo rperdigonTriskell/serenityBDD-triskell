@@ -22,7 +22,7 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 echo 'Instalando dependencias de Maven...'
-                sh 'mvn clean install -DskipTests'
+                bat 'mvn clean install -DskipTests'
             }
         }
 
@@ -30,12 +30,11 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'serenityConfigFile', variable: 'CREDENTIALS_FILE')]) {
                     echo 'Ejecutando pruebas de Serenity...'
-                    sh '''
-                        echo "Using credentials file at: $CREDENTIALS_FILE"
-                        echo "Contents of CREDENTIALS_FILE:"
-                        cat $CREDENTIALS_FILE
-                    '''
-                    sh 'mvn clean verify -DcredentialsFile=$CREDENTIALS_FILE'
+                    bat """
+                        echo Using credentials file at: %CREDENTIALS_FILE%
+                        type %CREDENTIALS_FILE%
+                    """
+                    bat 'mvn clean verify -DcredentialsFile=%CREDENTIALS_FILE%'
                 }
             }
         }
@@ -51,7 +50,7 @@ pipeline {
                 keepAll: true,
                 alwaysLinkToLastBuild: true
             ])
-            junit '**/target/surefire-reports/*.xml'
+            junit 'target/surefire-reports/*.xml'
         }
         success {
             echo 'Pipeline ejecutado correctamente'
