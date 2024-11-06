@@ -1,71 +1,41 @@
 pipeline {
     agent any
-
     environment {
-        ENVIRONMENT = '@PROD'
+        MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven' // Matches the Maven tool name in Jenkins
+        JAVA_HOME = tool name: 'jdk-23.0.1', type: 'jdk' // Matches the JDK tool name in Jenkins
+        CREDENTIALS_FILE = credentials('serenityConfigFile')
     }
-
-    tools {
-        maven 'Maven 3.9.6'
-    }
-
     stages {
-        stage('Clone repository') {
+        stage('Checkout') {
             steps {
-                script {
-                    echo 'Clonando el repositorio...'
-                    git url: 'https://github.com/rperdigonTriskell/serenityBDD-triskell.git', credentialsId: 'gitCredentials', branch: 'waitImplementation'
-                }
+                git branch: 'waitImplementation',
+                    url: 'https://github.com/rperdigonTriskell/serenityBDD-triskell.git',
+                    credentialsId: 'gitCredentials'
             }
         }
-
-        stage('Install dependencies') {
+        stage('Build') {
             steps {
-                echo 'Instalando dependencias de Maven...'
-                bat 'mvn clean install -DskipTests'
+                // Use relative path for the environment properties file
+                sh "${MAVEN_HOME}/bin/mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=$CREDENTIALS_FILE"
             }
         }
-
-        stage('Prepare environment') {
+        stage('Publish Reports') {
             steps {
-                script {
-                    echo 'Copying environments.properties to the workspace...'
-                    bat 'copy "src\\test\\resources\\environments.properties" .'
-                }
-            }
-        }
-
-        stage('Build and execute tests') {
-            steps {
-                withCredentials([file(credentialsId: 'serenityConfigFile', variable: 'CREDENTIALS_FILE')]) {
-                    echo 'Ejecutando pruebas de Serenity...'
-                    bat """
-                        echo Using credentials file at: %CREDENTIALS_FILE%
-                        type %CREDENTIALS_FILE%
-                    """
-                    bat "mvn clean verify -DcredentialsFile=%CREDENTIALS_FILE%"
-                }
+                // Archive Serenity reports (assuming they are in the target directory)
+                archiveArtifacts artifacts: 'target/site/serenity/*.html', allowEmptyArchive: true
+                // Publish Serenity HTML report if needed
+                publishHTML(target: [
+                    reportDir: 'target/site/serenity',
+                    reportFiles: 'index.html',
+                    reportName: 'Serenity BDD Report'
+                ])
             }
         }
     }
-
     post {
         always {
-            echo 'Publicando el reporte de Serenity y resultados de pruebas...'
-            publishHTML(target: [
-                reportName: 'Serenity Report',
-                reportDir: 'target/site/serenity',
-                reportFiles: 'index.html',
-                keepAll: true,
-                alwaysLinkToLastBuild: true
-            ])
-            junit 'target/surefire-reports/*.xml'
-        }
-        success {
-            echo 'Pipeline ejecutado correctamente'
-        }
-        failure {
-            echo 'La ejecución del pipeline falló'
+            // Clean up workspace after the build
+            cleanWs()
         }
     }
 }
