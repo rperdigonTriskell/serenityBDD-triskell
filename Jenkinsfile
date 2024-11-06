@@ -29,7 +29,7 @@ pipeline {
                     steps {
                         script {
                             echo 'Copying environments.properties to the workspace...'
-                            bat 'copy src\\test\\resources\\environments.properties .'
+                            bat 'src\\test\\resources\\environments.properties'
                         }
                     }
                 }
