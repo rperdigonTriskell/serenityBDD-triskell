@@ -25,15 +25,15 @@ pipeline {
                 bat 'mvn clean install -DskipTests'
             }
         }
-        stage('Prepare environment') {
-                    steps {
-                        script {
-                            echo 'Copying environments.properties to the workspace...'
-                            bat 'src\\test\\resources\\environments.properties'
-                        }
-                    }
-                }
-
+       stage('Prepare environment') {
+           steps {
+               script {
+                   echo 'Copying environments.properties to the workspace...'
+                   // Using forward slashes for better compatibility
+                   bat 'copy src/test/resources/environments.properties .'
+               }
+           }
+       }
         stage('Build and execute tests') {
             steps {
                 withCredentials([file(credentialsId: 'serenityConfigFile', variable: 'CREDENTIALS_FILE')]) {
