@@ -6,56 +6,42 @@ import java.util.Properties;
 
 public class CredentialManager {
 
+    /**
+     * Declaration of a static final Properties object.
+     */
     private static final Properties properties = new Properties();
-    private static final Properties environmentProperties = new Properties();
 
+    /**
+     * Static block to load properties from the config file.
+     */
     static {
         try {
-            String credentialsFilePath;
-
-            // Verificar si estamos en Jenkins
-            if (System.getenv("CREDENTIALS_FILE") != null && !System.getenv("CREDENTIALS_FILE").isEmpty()) {
-                // Si estamos en Jenkins, cargamos el archivo especificado por la variable de entorno
-                credentialsFilePath = System.getenv("CREDENTIALS_FILE");
-            } else {
-                // Si no estamos en Jenkins, usamos el archivo local
-                credentialsFilePath = "C:\\Users\\rperdigon\\IdeaProjects\\serenityBDD-triskell\\src\\test\\resources\\config.properties";
-            }
-
-            // Cargar el archivo de credenciales
-            System.out.println("DEBUG: Loading credentials file from: " + credentialsFilePath);
-            properties.load(new FileInputStream(credentialsFilePath));
-
-            // Cargar el archivo environments.properties
-            String environmentFilePath = "src/test/resources/environments.properties";
-            System.out.println("DEBUG: Loading environments file from: " + environmentFilePath);
-            environmentProperties.load(new FileInputStream(environmentFilePath));
-
+            // Load the properties file
+            properties.load(new FileInputStream("src/test/resources/config.properties"));
         } catch (IOException e) {
-            throw new RuntimeException("Error loading the configuration files", e);
+            throw new RuntimeException("Error loading the credentials file", e);
         }
     }
 
+    /**
+     * Get the specified credential.
+     *
+     * @param credentialName Name of the credential to retrieve
+     * @param useAwsSecrets Indicates whether AWS Secrets Manager should be used to retrieve the credential (not used in this case)
+     * @return The value of the retrieved credential
+     * @throws RuntimeException If an error occurs during credential retrieval
+     */
     public static String getCredential(String credentialName, boolean useAwsSecrets) {
+        // Check if useAwsSecrets is true and throw an exception if it is (not implemented)
         if (useAwsSecrets) {
             throw new UnsupportedOperationException("AWS credential retrieval not yet implemented");
         }
 
-        String environment = System.getenv("ENVIRONMENT");
-        if (environment == null || environment.isEmpty()) {
-            environment = "@PROD"; // Valor por defecto
-        }
-
-        String environmentUrl = environmentProperties.getProperty(environment);
-        if (environmentUrl == null) {
-            throw new RuntimeException("Environment URL not found for key: " + environment);
-        }
-
-        String credentialValue = properties.getProperty(environmentUrl);
+        // Get the credential from the properties file
+        String credentialValue = properties.getProperty(credentialName);
         if (credentialValue == null) {
-            throw new RuntimeException("Credential not found for key: " + environmentUrl);
+            credentialValue=credentialName;
         }
-
         return credentialValue;
     }
 }

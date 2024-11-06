@@ -1,41 +1,54 @@
-pipeline {
-    agent any
-    environment {
-        MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven' // Matches the Maven tool name in Jenkins
-        JAVA_HOME = tool name: 'jdk-22', type: 'jdk' // Matches the JDK tool name in Jenkins
-        CREDENTIALS_FILE = credentials('serenityConfigFile')
-    }
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'waitImplementation',
-                    url: 'https://github.com/rperdigonTriskell/serenityBDD-triskell.git',
-                    credentialsId: 'gitCredentials'
+package starter.tasks.security;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public class CredentialManager {
+
+    /**
+     * Declaration of a static final Properties object.
+     */
+    private static final Properties properties = new Properties();
+
+    /**
+     * Static block to load properties from the config file.
+     */
+    static {
+        try {
+            // Verificar si estamos en Jenkins y usar el archivo de credenciales de Jenkins
+            String credentialsFilePath = System.getenv("CREDENTIALS_FILE");
+            if (credentialsFilePath != null) {
+                // Usar el archivo proporcionado por Jenkins
+                properties.load(new FileInputStream(credentialsFilePath));
+            } else {
+                // Cargar el archivo de configuración localmente si no está en Jenkins
+                properties.load(new FileInputStream("src/test/resources/config.properties"));
             }
-        }
-        stage('Build') {
-            steps {
-                // Use relative path for the environment properties file
-                bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=%CREDENTIALS_FILE%"
-            }
-        }
-        stage('Publish Reports') {
-            steps {
-                // Archive Serenity reports (assuming they are in the target directory)
-                archiveArtifacts artifacts: 'target\\site\\serenity\\*.html', allowEmptyArchive: true
-                // Publish Serenity HTML report if needed
-                publishHTML(target: [
-                    reportDir: 'target\\site\\serenity',
-                    reportFiles: 'index.html',
-                    reportName: 'Serenity BDD Report'
-                ])
-            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error loading the credentials file", e);
         }
     }
-    post {
-        always {
-            // Clean up workspace after the build
-            cleanWs()
+
+    /**
+     * Get the specified credential.
+     *
+     * @param credentialName Name of the credential to retrieve
+     * @param useAwsSecrets Indicates whether AWS Secrets Manager should be used to retrieve the credential (not used in this case)
+     * @return The value of the retrieved credential
+     * @throws RuntimeException If an error occurs during credential retrieval
+     */
+    public static String getCredential(String credentialName, boolean useAwsSecrets) {
+        // Check if useAwsSecrets is true and throw an exception if it is (not implemented)
+        if (useAwsSecrets) {
+            throw new UnsupportedOperationException("AWS credential retrieval not yet implemented");
         }
+
+        // Get the credential from the properties file
+        String credentialValue = properties.getProperty(credentialName);
+        if (credentialValue == null) {
+            credentialValue = credentialName;  // If not found, return the credential name as default
+        }
+        return credentialValue;
     }
 }
