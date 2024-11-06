@@ -16,16 +16,16 @@ pipeline {
         stage('Build') {
             steps {
                 // Use relative path for the environment properties file
-                sh "${MAVEN_HOME}/bin/mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=$CREDENTIALS_FILE"
+                bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=%CREDENTIALS_FILE%"
             }
         }
         stage('Publish Reports') {
             steps {
                 // Archive Serenity reports (assuming they are in the target directory)
-                archiveArtifacts artifacts: 'target/site/serenity/*.html', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'target\\site\\serenity\\*.html', allowEmptyArchive: true
                 // Publish Serenity HTML report if needed
                 publishHTML(target: [
-                    reportDir: 'target/site/serenity',
+                    reportDir: 'target\\site\\serenity',
                     reportFiles: 'index.html',
                     reportName: 'Serenity BDD Report'
                 ])
