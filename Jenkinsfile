@@ -13,6 +13,17 @@ pipeline {
                     credentialsId: 'gitCredentials'
             }
         }
+         stage('Check Environment Variables') {
+                    steps {
+                        script {
+                            // Verifica si la variable de entorno serenityConfigFile está configurada correctamente
+                            echo "serenityConfigFile: ${env.serenityConfigFile}"
+                            if (!env.serenityConfigFile) {
+                                error "serenityConfigFile variable is not set. Exiting the build."
+                            }
+                        }
+                    }
+                }
         stage('Build') {
             steps {
                 // Use relative path for the environment properties file
