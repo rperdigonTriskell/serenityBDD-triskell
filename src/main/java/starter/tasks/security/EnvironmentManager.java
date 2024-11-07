@@ -26,7 +26,7 @@ public class EnvironmentManager {
      * @return      the base URL for the environment
      * @throws RuntimeException if no URL is provided for the environment
      */
-    public static String getBaseUrl(String tag) {
+    public static String getEnviromentBaseUrl(String tag) {
         String url = properties.getProperty(tag);
         if (url == null || url.isEmpty()) {
             throw new RuntimeException("No URL provided for the environment with tag: " + tag);

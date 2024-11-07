@@ -47,7 +47,7 @@ public class GenericStepDef {
         Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
         for (String tag : scenarioTags) {
             try {
-                baseUrl = getBaseUrl(tag);
+                baseUrl = getEnviromentBaseUrl(tag);
                 if (baseUrl != null) {
                     break;
                 }
