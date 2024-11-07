@@ -6,18 +6,23 @@ import java.util.Properties;
 
 public class CredentialManager {
 
-    /**
-     * Declaration of a static final Properties object.
-     */
     private static final Properties properties = new Properties();
+    private static final boolean isJenkins = System.getenv("JENKINS_HOME") != null;
 
-    /**
-     * Static block to load properties from the config file.
-     */
     static {
         try {
-            // Load the properties file
-            properties.load(new FileInputStream("src/test/resources/config.properties"));
+            // Si estamos en Jenkins, usa el archivo del workspace de Jenkins
+            if (isJenkins) {
+                String jenkinsCredentialsPath = System.getenv("serenityConfigFile");
+                if (jenkinsCredentialsPath != null) {
+                    properties.load(new FileInputStream(jenkinsCredentialsPath));
+                } else {
+                    throw new RuntimeException("No serenityConfigFile environment variable set in Jenkins");
+                }
+            } else {
+                // Si estamos localmente, usa el archivo de propiedades local
+                properties.load(new FileInputStream("src/test/resources/config.properties"));
+            }
         } catch (IOException e) {
             throw new RuntimeException("Error loading the credentials file", e);
         }
@@ -40,7 +45,7 @@ public class CredentialManager {
         // Get the credential from the properties file
         String credentialValue = properties.getProperty(credentialName);
         if (credentialValue == null) {
-            credentialValue=credentialName;
+            credentialValue = credentialName; // Return the credential name if not found
         }
         return credentialValue;
     }
