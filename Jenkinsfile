@@ -3,7 +3,7 @@ pipeline {
     environment {
         MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven' // Matches the Maven tool name in Jenkins
         JAVA_HOME = tool name: 'jdk-22', type: 'jdk' // Matches the JDK tool name in Jenkins
-        CREDENTIALS_FILE = credentials('serenityConfigFile') // Loads the serenityConfigFile credentials
+        CREDENTIALS_FILE = credentials('CREDENTIALS_FILE') // Usar el nuevo ID de las credenciales
     }
     stages {
         stage('Checkout') {
@@ -13,20 +13,20 @@ pipeline {
                     credentialsId: 'gitCredentials'
             }
         }
-         stage('Check Environment Variables') {
-                    steps {
-                        script {
-                            // Verifica si la variable de entorno serenityConfigFile está configurada correctamente
-                            echo "serenityConfigFile: ${env.serenityConfigFile}"
-                            if (!env.serenityConfigFile) {
-                                error "serenityConfigFile variable is not set. Exiting the build."
-                            }
-                        }
+        stage('Check Environment Variables') {
+            steps {
+                script {
+                    // Verifica si la variable de entorno CREDENTIALS_FILE está configurada correctamente
+                    echo "CREDENTIALS_FILE: ${env.CREDENTIALS_FILE}"
+                    if (!env.CREDENTIALS_FILE) {
+                        error "CREDENTIALS_FILE variable is not set. Exiting the build."
                     }
                 }
+            }
+        }
         stage('Build') {
             steps {
-                // Use relative path for the environment properties file
+                // Usamos la variable CREDENTIALS_FILE para pasar la ruta del archivo de credenciales
                 bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=${CREDENTIALS_FILE}"
             }
         }
@@ -45,8 +45,10 @@ pipeline {
     }
     post {
         always {
-            // Clean up workspace after the build
-            cleanWs()
+            // Aseguramos que el paso de limpieza esté dentro del contexto 'node'
+            node {
+                cleanWs() // Clean workspace after the build
+            }
         }
     }
 }

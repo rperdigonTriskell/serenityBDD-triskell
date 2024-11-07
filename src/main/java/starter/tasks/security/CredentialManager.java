@@ -15,7 +15,7 @@ public class CredentialManager {
         try {
             if (isJenkins) {
                 // Jenkins environment
-                String jenkinsCredentialsPath = System.getenv("SERENITY_CREDENTIALS"); // Cambiado para usar la variable de entorno correcta
+                String jenkinsCredentialsPath = System.getenv("CREDENTIALS_FILE"); // Cambiado para usar CREDENTIALS_FILE
 
                 if (jenkinsCredentialsPath != null) {
                     // Si las credenciales están en base64 (como las almacena Jenkins), las decodificamos
@@ -30,7 +30,7 @@ public class CredentialManager {
 
                     properties.load(new FileInputStream(configFilePath));
                 } else {
-                    throw new RuntimeException("No SERENITY_CREDENTIALS environment variable set in Jenkins");
+                    throw new RuntimeException("No CREDENTIALS_FILE environment variable set in Jenkins");
                 }
             } else {
                 // Local environment
