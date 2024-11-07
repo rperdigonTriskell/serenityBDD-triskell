@@ -16,8 +16,14 @@ public class CredentialManager {
      */
     static {
         try {
-            // Load the properties file
-            properties.load(new FileInputStream("src/test/resources/config.properties"));
+            // Load the credentials file path from the environment variable
+            String configFilePath = System.getenv("CREDENTIALS_FILE");
+            if (configFilePath == null || configFilePath.isEmpty()) {
+                throw new RuntimeException("La variable de entorno CREDENTIALS_FILE no está definida.");
+            }
+
+            // Load the properties from the specified file path
+            properties.load(new FileInputStream(configFilePath));
         } catch (IOException e) {
             throw new RuntimeException("Error loading the credentials file", e);
         }
@@ -40,7 +46,7 @@ public class CredentialManager {
         // Get the credential from the properties file
         String credentialValue = properties.getProperty(credentialName);
         if (credentialValue == null) {
-            credentialValue=credentialName;
+            throw new RuntimeException("Credential not found: " + credentialName);
         }
         return credentialValue;
     }
