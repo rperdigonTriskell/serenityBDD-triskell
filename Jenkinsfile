@@ -3,6 +3,7 @@ pipeline {
     environment {
         MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven' // Matches the Maven tool name in Jenkins
         JAVA_HOME = tool name: 'jdk-22', type: 'jdk' // Matches the JDK tool name in Jenkins
+        CREDENTIALS_FILE = credentials('serenityConfigFile') // Loads the serenityConfigFile credentials
     }
     stages {
         stage('Checkout') {
@@ -12,21 +13,10 @@ pipeline {
                     credentialsId: 'gitCredentials'
             }
         }
-        stage('Prepare Credentials') {
-            steps {
-                script {
-                    // Save the credentials as a file in the workspace if in Jenkins
-                    def credentialsContent = "${CREDENTIALS_FILE}"
-                    def configFilePath = "${WORKSPACE}/config.properties"
-                    writeFile file: configFilePath, text: credentialsContent
-                    echo "Config file saved to: ${configFilePath}"
-                }
-            }
-        }
         stage('Build') {
             steps {
-                // Pass the path of the config.properties file to Maven
-                bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=${WORKSPACE}\\config.properties"
+                // Use relative path for the environment properties file
+                bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=${CREDENTIALS_FILE}"
             }
         }
         stage('Publish Reports') {
