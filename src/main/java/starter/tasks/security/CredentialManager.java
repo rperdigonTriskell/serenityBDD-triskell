@@ -1,9 +1,7 @@
 package starter.tasks.security;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Properties;
 
 public class CredentialManager {
@@ -14,21 +12,12 @@ public class CredentialManager {
     static {
         try {
             if (isJenkins) {
-                // Jenkins environment
-                String jenkinsCredentialsPath = System.getenv("CREDENTIALS_FILE"); // Cambiado para usar CREDENTIALS_FILE
+                // Jenkins environment: cargar el archivo directamente
+                String jenkinsCredentialsPath = System.getenv("CREDENTIALS_FILE");
 
                 if (jenkinsCredentialsPath != null) {
-                    // Si las credenciales están en base64 (como las almacena Jenkins), las decodificamos
-                    byte[] decodedBytes = Base64.getDecoder().decode(jenkinsCredentialsPath);
-                    String decodedConfig = new String(decodedBytes);
-
-                    // Guardamos el archivo en el workspace de Jenkins
-                    String configFilePath = "config.properties"; // O cualquier otra ruta en el workspace de Jenkins
-                    try (FileOutputStream fos = new FileOutputStream(configFilePath)) {
-                        fos.write(decodedConfig.getBytes());
-                    }
-
-                    properties.load(new FileInputStream(configFilePath));
+                    // Cargar el archivo de credenciales usando la ruta proporcionada
+                    properties.load(new FileInputStream(jenkinsCredentialsPath));
                 } else {
                     throw new RuntimeException("No CREDENTIALS_FILE environment variable set in Jenkins");
                 }
