@@ -45,10 +45,8 @@ pipeline {
     }
     post {
         always {
-            // Aseguramos que el paso de limpieza esté dentro del contexto 'node'
-            node {
-                cleanWs() // Clean workspace after the build
-            }
+            // Ejecutamos cleanWs directamente en el contexto del node principal del pipeline
+            cleanWs() // Clean workspace after the build
         }
     }
 }
