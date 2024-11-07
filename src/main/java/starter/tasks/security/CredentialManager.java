@@ -1,7 +1,9 @@
 package starter.tasks.security;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Properties;
 
 public class CredentialManager {
@@ -11,16 +13,27 @@ public class CredentialManager {
 
     static {
         try {
-            // Si estamos en Jenkins, usa el archivo del workspace de Jenkins
             if (isJenkins) {
+                // Jenkins environment
                 String jenkinsCredentialsPath = System.getenv("serenityConfigFile");
+
                 if (jenkinsCredentialsPath != null) {
-                    properties.load(new FileInputStream(jenkinsCredentialsPath));
+                    // Si las credenciales están en base64 (como las almacena Jenkins), las decodificamos
+                    byte[] decodedBytes = Base64.getDecoder().decode(jenkinsCredentialsPath);
+                    String decodedConfig = new String(decodedBytes);
+
+                    // Guardamos el archivo en el workspace de Jenkins
+                    String configFilePath = "config.properties"; // O cualquier otra ruta en el workspace de Jenkins
+                    try (FileOutputStream fos = new FileOutputStream(configFilePath)) {
+                        fos.write(decodedConfig.getBytes());
+                    }
+
+                    properties.load(new FileInputStream(configFilePath));
                 } else {
                     throw new RuntimeException("No serenityConfigFile environment variable set in Jenkins");
                 }
             } else {
-                // Si estamos localmente, usa el archivo de propiedades local
+                // Local environment
                 properties.load(new FileInputStream("src/test/resources/config.properties"));
             }
         } catch (IOException e) {
@@ -28,16 +41,7 @@ public class CredentialManager {
         }
     }
 
-    /**
-     * Get the specified credential.
-     *
-     * @param credentialName Name of the credential to retrieve
-     * @param useAwsSecrets Indicates whether AWS Secrets Manager should be used to retrieve the credential (not used in this case)
-     * @return The value of the retrieved credential
-     * @throws RuntimeException If an error occurs during credential retrieval
-     */
     public static String getCredential(String credentialName, boolean useAwsSecrets) {
-        // Check if useAwsSecrets is true and throw an exception if it is (not implemented)
         if (useAwsSecrets) {
             throw new UnsupportedOperationException("AWS credential retrieval not yet implemented");
         }
