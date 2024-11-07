@@ -3,6 +3,7 @@ pipeline {
     environment {
         MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven' // Matches the Maven tool name in Jenkins
         JAVA_HOME = tool name: 'jdk-22', type: 'jdk' // Matches the JDK tool name in Jenkins
+        CREDENTIALS_FILE = credentials('CREDENTIALS_FILE') // Usar el nuevo ID de las credenciales
     }
     stages {
         stage('Checkout') {
@@ -25,10 +26,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // Usamos withCredentials para pasar el archivo de credenciales de forma segura
-                withCredentials([file(credentialsId: 'CREDENTIALS_FILE', variable: 'CREDENTIALS_FILE_PATH')]) {
-                    bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=${CREDENTIALS_FILE_PATH}"
-                }
+                // Usamos la variable CREDENTIALS_FILE para pasar la ruta del archivo de credenciales
+                bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=src/test/resources/environment.properties -Dserenity.credentials.file=${CREDENTIALS_FILE}"
             }
         }
         stage('Publish Reports') {
