@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     def reportDir = isUnix() ? 'target/site/serenity' : 'target\\site\\serenity'
-                    def reportFiles = isUnix() ? 'index.html' : 'index.html'
+                    def reportFiles = 'index.html'
 
                     archiveArtifacts artifacts: "${reportDir}/*.html", allowEmptyArchive: true
                     publishHTML(target: [
@@ -50,6 +50,16 @@ pipeline {
                     ])
                 }
             }
+        }
+    }
+    post {
+        success {
+            emailext(
+                to: 'rperdigon@triskellsoftware.com',
+                subject: "Serenity BDD Test Report - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "The Serenity BDD test report has been generated and is attached to this email.",
+                attachmentsPattern: 'target/site/serenity/index.html'
+            )
         }
     }
 }
