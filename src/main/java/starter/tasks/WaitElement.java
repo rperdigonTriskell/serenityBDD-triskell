@@ -78,6 +78,21 @@ public class WaitElement {
      * @param element The name of the element.
      * @return The Target for the given element.
      */
+    public static Target getWaitPresentTarget(String element) {
+        Target target = getTarget(element);
+        performAttemptsTo(
+                "{0} waits for table to be visible",
+                waitUntil(element, Constants.STATES.PRESENT.getState())
+        );
+        return target;
+    }
+
+    /**
+     * Retrieves the Target for the given element by name, with a wait until it is visible.
+     *
+     * @param element The name of the element.
+     * @return The Target for the given element.
+     */
     public static Target getWaitClicableTarget(String element) {
         Target target = getWaitVisibleTarget(element);
         performAttemptsTo(

@@ -31,8 +31,6 @@ public class TimesheetTasks {
     public static void manageTimesheetTable(String tableState, String action) {
         Target targetTable = getWaitVisibleTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX + " empty");
 
-        List<WebElementFacade> rows = getTableRows(targetTable);
-
         ifBlueColorThenEmptyTimesheetTimeTable();
 
         performAttemptsTo(
@@ -40,7 +38,7 @@ public class TimesheetTasks {
                 WaitFor.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
         );
 
-        rows = getTableRows(targetTable);
+        List<WebElementFacade> rows = getTableRows(targetTable);
 
         if (tableState.equals(EMPTY)) {
             if (rows.isEmpty() && ADD.equals(action)) {
@@ -182,9 +180,7 @@ public class TimesheetTasks {
      * fills the table with default values.
      */
     public static void ifBlueColorThenEmptyTimesheetTimeTable() {
-        Target timetable = getTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX + " empty");
-
-        waitForElementPresent(timetable);
+        Target timetable = getWaitPresentTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX + " empty");
 
         List<Map<String, String>> rowsData = new ArrayList<>();
         Map<String, String> rowData = new HashMap<>();
@@ -194,17 +190,19 @@ public class TimesheetTasks {
         rowData.put("THU", "");
         rowData.put("FRI", "");
         rowsData.add(rowData);
+
         if (!getTableRows(timetable).isEmpty()) {
             String timerows = getTableRows(timetable).get(0).thenFindAll(By.cssSelector("td > div")).get(0).getCssValue("color");
             if (timerows.equals("rgba(33, 150, 243, 1)")) {
-                OnStage.theActorInTheSpotlight().attemptsTo(
-                        FillTableWithValues.inTable(getCurrentPage().getSelector(TIMESHEET_BOARD + TIME + BOARD_SUFFIX), rowsData)
+                performAttemptsTo(
+                        "{0} fills the table with default values",
+                        FillTableWithValues.inTable(getCurrentPage().getSelector(TIMESHEET_BOARD + TIME + BOARD_SUFFIX),
+                                rowsData)
                 );
-                Target submit = getTarget(TIMESHEET_BOARD + "Submit Timesheet");
+                Target submit = getWaitVisibleTarget(TIMESHEET_BOARD + "Submit Timesheet");
                 clickOnTarget(submit);
-                submit = getTarget(TIMESHEET_CONTEXT + "Submit");
+                submit = getWaitVisibleTarget(TIMESHEET_CONTEXT + "Submit");
                 clickOnTarget(submit);
-                WaitFor.waitUntil(submit, Constants.STATES.VISIBLE.getState());
                 clickOnTarget(TIMESHEET_BOARD + "Delete");
                 clickOnTarget(TIMESHEET_CONTEXT + "Yes");
                 performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
