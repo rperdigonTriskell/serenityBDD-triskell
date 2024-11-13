@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven'
-        JAVA_HOME = tool name: 'jdk-22', type: 'jdk'
+        JAVA_HOME = tool name: 'jdk-23', type: 'jdk'
         CREDENTIALS_FILE = credentials('CREDENTIALS_FILE')
         serenityEnvironmentFile = 'src/test/resources/environment.properties'
     }
