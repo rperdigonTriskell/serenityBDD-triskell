@@ -47,7 +47,7 @@ Feature: User history
     Then verify the element "Automation Testing Project period modal" are "invisible"
     And verify the element "Resources Board Requirements name" are "visible"
     And verify the text element "System Administrator h/day" is "8.00 h/Day"
-    And verify the text element "System Administrator hour" is "152.00 h"
+    And verify the text element "System Administrator hour" is calculated in this month by 8 hour by day
     When click in "Gantt Chart"
     Then check to "Automation Testing Project Gantt Chart" has loaded
     When click in toolbar "Create"
@@ -78,7 +78,7 @@ Feature: User history
       | Name 1rt row | Automation Testing Project    |
       | Name 2rt row | Automation Testing Task       |
       | Name 3rt row | Automation Testing Task Child |
-    When drag and drop "Name 3rt row date" to 3 days
+    When drag and drop "Name 3rt row date" to 3 days more
     And click in toolbar "Save"
     And moves the cursor over the element "time bar 3rt row"
     Then verify the element "time bar 3rt row modal duration" are "visible"

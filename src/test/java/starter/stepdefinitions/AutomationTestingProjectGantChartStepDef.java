@@ -11,7 +11,7 @@ import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitFor.*;
 
 public class AutomationTestingProjectGantChartStepDef {
-    @When("drag and drop {string} to {int} days")
+    @When("drag and drop {string} to {int} days more")
     public static void dragAndDropTo(String target, int space) {
         Target reference = getTarget("day");
         Target source = getTarget(target);

@@ -31,6 +31,8 @@ public class VerifyElementTextIs implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
+
+
         waitForVisibility(element);
         Target target = getTarget(element);
 
