@@ -29,8 +29,15 @@ public class AutomationTestingProjectGantChartPage extends AbstractPage {
         mapSelectors.put("Name 1rt row", By.xpath("(//div[@data-column='name'])[2]"));
         mapSelectors.put("Name 2rt row", By.xpath("(//div[@data-column='name'])[3]"));
         mapSelectors.put("Name 3rt row", By.xpath("(//div[@data-column='name'])[4]"));
-        mapSelectors.put("Name 3rt row date", By.cssSelector("div.b-gantt-task.b-sch-event-resizable-true"));
+        mapSelectors.put("day percentage bar", By.cssSelector("div.b-gantt-task.b-sch-event-resizable-true"));
+        mapSelectors.put("Information", By.cssSelector("div.b-align-start.b-header-title[id*='b-taskeditor-']"));
+        mapSelectors.put("General", By.id("b-tab-1"));
+        mapSelectors.put("Finish calendar icon", By.cssSelector("input[data-owner-cmp*='b-enddatefield-'] ~ div.b-widget.b-fieldtrigger.b-icon-calendar.b-align-end.b-icon[id*='b-fieldtrigger-']"));
+        mapSelectors.put("calendar", By.cssSelector("div.b-weeks-container.notranslate[data-owner-cmp*='b-tkbryntumdatefield-']"));
+        mapSelectors.put("active day", By.cssSelector("div.b-active-date.b-selected-date"));
+        mapSelectors.put("Start Date", By.cssSelector("input[data-owner-cmp*='b-startdatefield-']"));
         mapSelectors.put("task options", By.cssSelector("div[data-owner-cmp='b-menu-1'][role='menu']"));
+        mapSelectors.put("days calendar", By.cssSelector("div[role='gridcell']"));
         mapSelectors.put("Edit", By.cssSelector("div[data-ref='editTask']"));
         mapSelectors.put("Copy", By.cssSelector("div[data-ref='copy']"));
         mapSelectors.put("Cut", By.cssSelector("div[data-ref='cut']"));
@@ -54,7 +61,9 @@ public class AutomationTestingProjectGantChartPage extends AbstractPage {
         mapSelectors.put(AUTOMATION_TESTING_PROJECT_CONTEXT + SIDEBAR_CONTEXT + TIMESHEET, By.cssSelector("a[data-qtip='Timesheet']"));
         mapSelectors.put("time bar 3rt row", By.xpath("(//div[@data-task-bar-feature='percentBar'])[3]"));
         mapSelectors.put("time bar 3rt row modal duration", By.cssSelector("div[class='b-hbox b-box-center b-auto-container-panel b-panel-body-wrap b-tooltip-body-wrap'] tbody>tr:nth-child(3)>td:nth-child(2)"));
-        mapSelectors.put("day", By.xpath("(//div[@data-tick-index='0'])[4]"));
+        mapSelectors.put("day", By.xpath("(//div[@data-task-bar-feature='percentBar'])[3]"));
+        mapSelectors.put("Automatic progress", By.cssSelector("div[id*=b-messagedialog].b-contains-focus"));
+        mapSelectors.put("OK", By.xpath("//button[.//text()[contains(., 'OK')]]"));
         return mapSelectors;
     }
 }

@@ -259,6 +259,16 @@ public class GenericStepDef {
         rightClickOnTarget(element);
     }
 
+/**
+     * Clicks on an element.
+     *
+     * @param element the element to click on
+     */
+    @When("double click in {string}")
+    public static void doubleClickIn(String element) {
+        doubleClickOnTarget(element);
+    }
+
     /**
      * Clicks on an element.
      *

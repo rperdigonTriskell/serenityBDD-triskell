@@ -51,4 +51,41 @@ public class LaboralHours {
     public static boolean isLaboralDay(LocalDate date) {
         return date.getDayOfWeek().getValue() <= 5;
     }
+
+    /**
+     * Calculates the date after a specified number of working days from the given date.
+     *
+     * @param startDate The starting date
+     * @param laboralDays The number of working days to add
+     * @return The date after the specified number of working days
+     */
+    public static LocalDate calculateLaboralDaysFromDate(LocalDate startDate, int laboralDays) {
+        int laboralDaysCount = 0;
+        LocalDate currentDate = startDate;
+
+        while (laboralDaysCount < laboralDays) {
+            currentDate = currentDate.plusDays(1);
+            if (isLaboralDay(currentDate)) {
+                laboralDaysCount++;
+            }
+        }
+        return currentDate;
+    }
+
+    /**
+     * Calculates the date after a specified number of working days from a start day (number).
+     *
+     * @param startDay The starting day of the month (e.g., 18)
+     * @param laboralDays The number of working days to add
+     * @return The date after the specified number of working days
+     */
+    public static int calculateLaboralDaysFromStartDay(int startDay, int laboralDays) {
+        int currentMonth = LocalDate.now().getMonthValue();
+        int currentYear = LocalDate.now().getYear();
+
+        LocalDate startDate = LocalDate.of(currentYear, currentMonth, startDay);
+        LocalDate resultDate = calculateLaboralDaysFromDate(startDate, laboralDays);
+
+        return resultDate.getDayOfMonth();
+    }
 }

@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.*;
 import static starter.pageselectors.factory.PageFactory.*;
+import static starter.tasks.WaitElement.getActor;
 import static starter.tasks.WaitElement.getWaitVisibleWebelementFacadeFromTarget;
 
 public class GenericTasks {
@@ -108,7 +109,7 @@ public class GenericTasks {
      * @return The WebElementFacade for the Target.
      */
     private static WebElementFacade resolveFacade(Target target) {
-        Actor actor = OnStage.theActorInTheSpotlight();
+        Actor actor = getActor();
         return target.resolveFor(actor);
     }
 
@@ -119,7 +120,7 @@ public class GenericTasks {
      * @return A list of WebElementFacade instances for the Target.
      */
     private static List<WebElementFacade> resolveAllFacade(Target target) {
-        Actor actor = OnStage.theActorInTheSpotlight();
+        Actor actor = getActor();
         return target.resolveAllFor(actor);
     }
 
@@ -132,7 +133,7 @@ public class GenericTasks {
      * @param <T>              The type of the question result.
      */
     public static <T> void performShouldSeeThat(String description, Function<Actor, T> questionFunction, Matcher<T> matcher) {
-        OnStage.theActorInTheSpotlight().should(
+        getActor().should(
                 seeThat(description, questionFunction::apply, matcher)
         );
     }
@@ -144,7 +145,7 @@ public class GenericTasks {
      * @param actions     the tasks or actions to be executed
      */
     public static void performAttemptsTo(String description, Performable... actions) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
+        getActor().attemptsTo(
                 Task.where(description, actions)
         );
     }

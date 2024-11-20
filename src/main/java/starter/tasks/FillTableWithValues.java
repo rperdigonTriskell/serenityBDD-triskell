@@ -100,6 +100,6 @@ public class FillTableWithValues implements Task {
      */
     public static List<WebElementFacade> getWebElementsFacadeBySelector(By selector) {
         Target targetElements = Target.the("elements list").located(selector);
-        return targetElements.resolveAllFor(OnStage.theActorInTheSpotlight());
+        return targetElements.resolveAllFor(getActor());
     }
 }

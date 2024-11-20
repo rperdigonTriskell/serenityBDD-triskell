@@ -50,6 +50,8 @@ Feature: User history
     And verify the text element "System Administrator hour" is calculated in this month by 8 hour by day
     When click in "Gantt Chart"
     Then check to "Automation Testing Project Gantt Chart" has loaded
+    And verify the element "Automatic progress" are "visible"
+    When click in "OK"
     When click in toolbar "Create"
     Then verify the element "Selected item: Automation Testing Project" are "visible"
     And verify the text element "Selected item: Automation Testing Project name" is "Selected item: Automation Testing Project"
@@ -78,7 +80,13 @@ Feature: User history
       | Name 1rt row | Automation Testing Project    |
       | Name 2rt row | Automation Testing Task       |
       | Name 3rt row | Automation Testing Task Child |
-    When drag and drop "Name 3rt row date" to 3 days more
+    When double click in "day percentage bar"
+    Then verify the element "Information" are "visible"
+    When click in "General"
+    And click in "Finish calendar icon"
+    And click in 3 days more
+    And click in "OK"
+    Then verify the element "Information" are "invisible"
     And click in toolbar "Save"
     And moves the cursor over the element "time bar 3rt row"
     Then verify the element "time bar 3rt row modal duration" are "visible"

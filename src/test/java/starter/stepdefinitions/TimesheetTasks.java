@@ -99,10 +99,7 @@ public class TimesheetTasks {
         By tableSelector = getWaitVisibleSelector(tableName);
 
         // Fill the table with the provided values
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                FillTableWithValues.inTable(tableSelector, rowsData)
-        );
-
+        performAttemptsTo("{0} fills the table", FillTableWithValues.inTable(tableSelector, rowsData));
     }
 
     /**

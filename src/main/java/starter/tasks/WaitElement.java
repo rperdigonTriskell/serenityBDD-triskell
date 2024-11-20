@@ -1,18 +1,33 @@
 package starter.tasks;
 
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.Performable;
+import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
+import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
 import starter.Constants;
 
 import java.util.List;
 
+import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitFor.*;
 
 public class WaitElement {
+
+    /**
+     * Retrieves the actor in the spotlight.
+     *
+     * @return The actor in the spotlight.
+     */
+    public static Actor getActor(){
+        return OnStage.theActorInTheSpotlight();
+    }
+
     /**
      * Retrieves the Target for the given element by name, with a wait until it is visible.
      *
@@ -53,7 +68,7 @@ public class WaitElement {
                 "{0} waits for table to be visible",
                 waitUntil(target, Constants.STATES.VISIBLE.getState())
         );
-        return target.resolveFor(OnStage.theActorInTheSpotlight());
+        return target.resolveFor(getActor());
     }
 
 
@@ -103,6 +118,18 @@ public class WaitElement {
     }
 
     /**
+     * Creates a Performable that waits for a WebElementFacade to be visible.
+     *
+     * @param element The WebElementFacade to wait for.
+     * @return A Performable to execute the wait.
+     */
+    public static Performable toBeVisible(WebElementFacade element) {
+        return Task.where("{0} waits for the WebElementFacade to be visible",
+                actor -> element.waitUntilVisible()
+        );
+    }
+
+    /**
      * Retrieves the WebElementFacade for the given element by name.
      *
      * @param element The name of the element to retrieve the WebElementFacade for.
@@ -111,9 +138,7 @@ public class WaitElement {
     public static WebElementFacade getWaitWebelementFacadeVisible(WebElementFacade element) {
         performAttemptsTo(
                 "{0} waits for table to be visible",
-                element.waitUntilPresent(),
-                element.waitUntilClickable(),
-                element.waitUntilVisible()
+                toBeVisible(element)
         );
         return element;
     }
@@ -125,7 +150,7 @@ public class WaitElement {
      * @return The WebElementFacade for the given element.
      */
     public static WebElementFacade getWaitVisiWebelementFacadeVisible(String element) {
-        return getWaitVisibleTarget(element).resolveFor(OnStage.theActorInTheSpotlight());
+        return getWaitVisibleTarget(element).resolveFor(getActor());
     }
 
     /**
@@ -136,7 +161,7 @@ public class WaitElement {
      */
     public static WebElementFacade getWaitVisibleWebelementFacadeFromTarget(Target target) {
         getWaitVisibleTarget(target);
-        return target.resolveFor(OnStage.theActorInTheSpotlight());
+        return target.resolveFor(getActor());
     }
 
     /**
@@ -147,7 +172,7 @@ public class WaitElement {
      */
     public static List<WebElementFacade> getWaitWebElementsFacadeBySelector(By selector) {
         Target target = Target.the("target elements").located(selector);
-        List<WebElementFacade> elements = target.resolveAllFor(OnStage.theActorInTheSpotlight());
+        List<WebElementFacade> elements = target.resolveAllFor(getActor());
         elements.forEach(WebElementFacade::waitUntilVisible);
         return elements;
     }

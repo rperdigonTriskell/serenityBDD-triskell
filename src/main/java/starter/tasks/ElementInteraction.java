@@ -3,6 +3,7 @@ package starter.tasks;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actions.Click;
+import net.serenitybdd.screenplay.actions.DoubleClick;
 import net.serenitybdd.screenplay.actions.MoveMouse;
 import net.serenitybdd.screenplay.actions.RightClick;
 import net.serenitybdd.screenplay.targets.Target;
@@ -77,6 +78,15 @@ public class ElementInteraction {
     }
 
     /**
+     * Performs a right-click on the given target element.
+     *
+     * @param target The target element to right-click on.
+     */
+    public static void doubleClickOnTarget(String target) {
+        performAttemptsTo("{0} attempts to right-click on target", createDoubleClickActionFor(target));
+    }
+
+    /**
      * Creates a ClickInteraction object based on the type of the given target for a right-click action.
      *
      * @param target The target to create the ClickInteraction for.
@@ -92,6 +102,25 @@ public class ElementInteraction {
                 WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
                 WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                 RightClick.on(targetElement) // Right-click action
+        );
+    }
+
+    /**
+     * Creates a ClickInteraction object based on the type of the given target for a right-click action.
+     *
+     * @param target The target to create the ClickInteraction for.
+     * @return The ClickInteraction object.
+     */
+    public static Task createDoubleClickActionFor(String target) {
+        waitForVisibility(target);
+        waitForClickable(target);
+
+        Target targetElement = getTarget(target);
+
+        return Task.where("{0} waits for and right-clicks on selector",
+                WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+                DoubleClick.on(targetElement)
         );
     }
 
