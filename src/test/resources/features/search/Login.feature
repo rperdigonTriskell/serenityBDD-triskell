@@ -1,10 +1,9 @@
-#@Login
 #Feature: Login to the application
-#
-##//////////////////////////////////////////////////////////////////////////////
-# #basic scenarios
-#
-#
+##
+###//////////////////////////////////////////////////////////////////////////////
+## #basic scenarios
+##
+##
 #  @PROD
 #  Scenario Outline: Successful login
 #    Given go to web "<webside>"
@@ -15,7 +14,7 @@
 #    Then check to "Dashboard" has loaded
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -32,7 +31,7 @@
 #
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -49,7 +48,7 @@
 #
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -66,7 +65,7 @@
 #
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -79,11 +78,11 @@
 #    When send credential "1@1.1" to element "Username"
 #    And send credential "111" to element "Password"
 #    And click in "Validate"
-#    Then verify the text element "Error" is "Authentication rejected, contact with administrator"
+#    Then verify the text element "Error" is "Wrong user / password"
 #
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -100,7 +99,7 @@
 #
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -117,7 +116,7 @@
 #
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -136,11 +135,11 @@
 #
 #    Examples:
 #      | webside                                        | quit_error |
-##      | https://intaws.triskellsoftware.com/triskell/  | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/  | OK         |
 #      #      | https://intdev.triskellsoftware.com/triskell/  | OK         |
 #      #      | https://intnr.triskellsoftware.com/triskell/   | OK         |
 #      | https://ondemand.triskellsoftware.com/triskell | OK         |
-##      | https://intaws.triskellsoftware.com/triskell/  | X          |
+#      | https://intaws.triskellsoftware.com/triskell/  | X          |
 #      #      | https://intdev.triskellsoftware.com/triskell/  | X          |
 #      #      | https://intnr.triskellsoftware.com/triskell/   | X          |
 #      | https://ondemand.triskellsoftware.com/triskell | X          |
@@ -159,11 +158,11 @@
 #
 #    Examples:
 #      | webside                                         | quit_error |
-##      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | OK         |
 #      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
-##      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | X          |
 #      | https://ondemand.triskellsoftware.com/triskell/ | X          |
@@ -182,11 +181,11 @@
 #
 #    Examples:
 #      | webside                                         | quit_error |
-##      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | OK         |
 #      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
-##      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | X          |
 #      | https://ondemand.triskellsoftware.com/triskell/ | X          |
@@ -199,17 +198,17 @@
 #    When send credential "1@1.1" to element "Username"
 #    And send credential "111" to element "Password"
 #    And click in "Validate"
-#    Then verify the text element "Error" is "Authentication rejected, contact with administrator"
+#    Then verify the text element "Error" is "Wrong user / password"
 #    And click in "<quit_error>"
 #    Then check to "Login" has loaded
 #
 #    Examples:
 #      | webside                                         | quit_error |
-##      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | OK         |
 #      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
-##      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | X          |
 #      | https://ondemand.triskellsoftware.com/triskell/ | X          |
@@ -229,11 +228,11 @@
 #
 #    Examples:
 #      | webside                                         | quit_error |
-##      | https://intaws.triskellsoftware.com/triskell/   | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | OK         |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | OK         |
 #      | https://ondemand.triskellsoftware.com/triskell/ | OK         |
-##      | https://intaws.triskellsoftware.com/triskell/   | X          |
+#      | https://intaws.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intdev.triskellsoftware.com/triskell/   | X          |
 #      #      | https://intnr.triskellsoftware.com/triskell/    | X          |
 #      | https://ondemand.triskellsoftware.com/triskell/ | X          |
@@ -252,11 +251,11 @@
 #
 #    Examples:
 #      | webside                                        | quit_error |
-##      | https://intaws.triskellsoftware.com/triskell/  | OK         |
+#      | https://intaws.triskellsoftware.com/triskell/  | OK         |
 #      #      | https://intdev.triskellsoftware.com/triskell/  | OK         |
 #      #      | https://intnr.triskellsoftware.com/triskell/   | OK         |
 #      | https://ondemand.triskellsoftware.com/triskell | OK         |
-##      | https://intaws.triskellsoftware.com/triskell/  | X          |
+#      | https://intaws.triskellsoftware.com/triskell/  | X          |
 #      #      | https://intdev.triskellsoftware.com/triskell/  | X          |
 #      #      | https://intnr.triskellsoftware.com/triskell/   | X          |
 #      | https://ondemand.triskellsoftware.com/triskell | X          |
@@ -287,7 +286,7 @@
 #    And click in "X"
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -306,7 +305,7 @@
 #    And click in "Validate"
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -325,7 +324,7 @@
 #    And click in "Validate"
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
 #      #      | https://intdev.triskellsoftware.com/triskell/  |
 #      #      | https://intnr.triskellsoftware.com/triskell/   |
 #      | https://ondemand.triskellsoftware.com/triskell |
@@ -338,13 +337,13 @@
 #
 #    Examples:
 #      | webside                                                            |
-##      | https://intaws.triskellsoftware.com/triskell/'admin' OR '1'='1'    |
+#      | https://intaws.triskellsoftware.com/triskell/'admin' OR '1'='1'    |
 #      #      | https://intdev.triskellsoftware.com/triskell/'admin' OR '1'='1'    |
 #      #      | https://intnr.triskellsoftware.com/triskell/'admin' OR '1'='1'     |
-##      | https://intaws.triskellsoftware.com/triskell/'password' OR '1'='1' |
+#      | https://intaws.triskellsoftware.com/triskell/'password' OR '1'='1' |
 #      #      | https://intdev.triskellsoftware.com/triskell/'password' OR '1'='1' |
 #      #      | https://intnr.triskellsoftware.com/triskell/'password' OR '1'='1'  |
-##      | https://intaws.triskellsoftware.com/triskell/‘ or 1=1;–.           |
+#      | https://intaws.triskellsoftware.com/triskell/‘ or 1=1;–.           |
 #      #      | https://intdev.triskellsoftware.com/triskell/‘ or 1=1;–.           |
 #      #      | https://intnr.triskellsoftware.com/triskell/‘ or 1=1;–.            |
 #      | https://ondemand.triskellsoftware.com/triskell/‘ or 1=1;–.         |
@@ -363,7 +362,7 @@
 #    And click in "Validate"
 #    Examples:
 #      | webside                                         |
-##      | https://intaws.triskellsoftware.com/triskell/   |
+#      | https://intaws.triskellsoftware.com/triskell/   |
 #      #      | https://intdev.triskellsoftware.com/triskell/   |
 #      #      | https://intnr.triskellsoftware.com/triskell/    |
 #      | https://ondemand.triskellsoftware.com/triskell/ |
@@ -375,7 +374,7 @@
 #    Then check to "Login" hasn't loaded
 #    Examples:
 #      | webside                                       |
-###      | https://intaws.triskellsoftware.com/triskell/ |
+#      | https://intaws.triskellsoftware.com/triskell/ |
 ##      #      | https://intdev.triskellsoftware.com/triskell/ |
 ##      #      | https://intnr.triskellsoftware.com/triskell/  |
 #      | https://ondemand.triskellsoftware.com/triskell  |
@@ -394,7 +393,7 @@
 #    And click in "Validate"
 #    Examples:
 #      | webside                                       |
-##      | https://intaws.triskellsoftware.com/triskell/ |
+#      | https://intaws.triskellsoftware.com/triskell/ |
 #      #      | https://intdev.triskellsoftware.com/triskell/ |
 #      #      | https://intnr.triskellsoftware.com/triskell/  |
 #      | https://ondemand.triskellsoftware.com/triskell  |
@@ -410,20 +409,31 @@
 #    Then verify the text element "Error" is "User is required"
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
-##      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://intaws.triskellsoftware.com/triskell/  |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
+#      | https://ondemand.triskellsoftware.com/triskell |
 #      | https://ondemand.triskellsoftware.com/triskell |
 #
 #
@@ -433,13 +443,13 @@
 #    Then check to "bad url" has loaded
 #    Examples:
 #      | webside                                         |
-##      | https://intawss.triskellsoftware.com/triskell/  |
+#      | https://intawss.triskellsoftware.com/triskell/  |
 ##      | https://intdevs.triskellsoftware.com/triskell/  |
 ##      | https://intnrs.triskellsoftware.com/triskell/   |
-##      | https://intaws.triskellsoftwaree.com/triskell/  |
+#      | https://intaws.triskellsoftwaree.com/triskell/  |
 ##      | https://intdev.triskellsoftwaree.com/triskell/  |
 ##      | https://intnr.triskellsoftwareee.com/triskell/  |
-##      | https://intaws.triskellsoftware.como/triskell/  |
+#      | https://intaws.triskellsoftware.como/triskell/  |
 ##      | https://intdev.triskellsoftware.como/triskell/  |
 ##      | https://intnr.triskellsoftware.como/triskell/   |
 #      | https://ondemandr.triskellsoftware.com/triskell |
@@ -453,7 +463,7 @@
 #    Then check to "Login" has loaded
 #    Examples:
 #      | webside                                        |
-##      | https://intaws.triskellsoftware.com/truskell/  |
+#      | https://intaws.triskellsoftware.com/truskell/  |
 ##      | https://intdev.triskellsoftware.com/truskell/  |
 ##      | https://intnr.triskellsoftware.com/truskell/   |
 #      | https://ondemand.triskellsoftware.com/truskell |
