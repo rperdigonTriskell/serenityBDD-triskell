@@ -12,6 +12,7 @@ import static starter.tasks.GenericTasks.getWebelementFacade;
 import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.WaitElement.getWaitWebelementFacadeVisible;
 import static starter.tasks.WaitFor.waitFor;
+import static starter.tasks.WaitFor.waitUntil;
 
 public class ElementDataVerifier {
 
@@ -32,7 +33,7 @@ public class ElementDataVerifier {
      * @param expectedText The expected text to match.
      */
     public static void verifyElementTextIs(String element, String expectedText) {
-        waitFor(element, Constants.STATES.VISIBLE.getState());
+        performAttemptsTo("{0} wait for {1}", waitUntil(element, Constants.STATES.VISIBLE.getState()));
         performAttemptsTo("verify that element: {0} text matches expected text: {1}", VerifyElementTextIs.forElement(element, expectedText));
     }
 
@@ -56,6 +57,7 @@ public class ElementDataVerifier {
         // Process the DataTable into a list of maps
         List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
 
+        performAttemptsTo("{0} wait for {1}",waitUntil(context, Constants.STATES.VISIBLE.getState()));
         VerifyTableElements verifyTask = new VerifyTableElements(context, expectedData);
         performAttemptsTo(
                 "verify the following elements on the {0} should match the expected data",
