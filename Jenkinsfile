@@ -71,7 +71,7 @@ pipeline {
                         """
 
                  emailext(
-                    to: 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
+                    to: 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com',
                     subject: subject,
                     body: body,
                     attachmentsPattern: '**/target/site/serenity/**/*'
