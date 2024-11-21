@@ -27,7 +27,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Ejecuta comandos dependiendo del sistema operativo
                     if (isUnix()) {
                         sh "${MAVEN_HOME}/bin/mvn clean verify -Dserenity.properties=${env.serenityEnvironmentFile} -Dserenity.credentials.file=${CREDENTIALS_FILE}"
                     } else {
@@ -42,7 +41,7 @@ pipeline {
                     def reportDir = isUnix() ? 'target/site/serenity' : 'target\\site\\serenity'
                     def reportFiles = 'index.html'
 
-                    archiveArtifacts artifacts: "${reportDir}/*.html", allowEmptyArchive: true
+                    archiveArtifacts artifacts: "${reportDir}/**/*", allowEmptyArchive: true
                     publishHTML(target: [
                         reportDir: reportDir,
                         reportFiles: reportFiles,
@@ -62,12 +61,13 @@ pipeline {
 
                         The Serenity BDD test report for ${env.JOB_NAME} #${env.BUILD_NUMBER} has been generated successfully.
 
-                        You can find the full report attached.
+                        You can view the report here:
+                        ${env.BUILD_URL}target/site/serenity/index.html
 
                         Best regards,
                         Triskell
-                                """,
-                attachmentsPattern: '**/target/site/serenity/index.html'
+                        """,
+                attachmentsPattern: '**/target/site/serenity/**/*'
             )
         }
     }
