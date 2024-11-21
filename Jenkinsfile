@@ -55,7 +55,7 @@ pipeline {
     post {
         success {
             emailext(
-                to: 'rperdigon@triskellsoftware.com',
+                to: 'rperdigon@triskellsoftware.com, jmprieto@triskellsoftware.com, jburcio@triskellsoftware.com, agarcia@triskellsoftware.com',
                 subject: "Serenity BDD Test Report - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
                         Hello,
