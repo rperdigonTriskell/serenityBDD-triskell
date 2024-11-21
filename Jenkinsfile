@@ -70,7 +70,7 @@ pipeline {
                         Triskell
                         """
 
-                emailext(
+                 emailext(
                     to: 'rperdigon@triskellsoftware.com, jmprieto@triskellsoftware.com, jburcio@triskellsoftware.com, agarcia@triskellsoftware.com',
                     subject: subject,
                     body: body,
