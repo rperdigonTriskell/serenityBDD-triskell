@@ -54,28 +54,20 @@ pipeline {
     }
     post {
         success {
-            script {
-                // Comprimir el reporte si es necesario adjuntar toda la carpeta
-                if (isUnix()) {
-                    sh 'zip -r serenity-report.zip target/site/serenity'
-                } else {
-                    bat 'powershell Compress-Archive -Path target\\site\\serenity -DestinationPath serenity-report.zip'
-                }
-            }
             emailext(
                 to: 'rperdigon@triskellsoftware.com',
                 subject: "Serenity BDD Test Report - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                 body: """
-                    Hello,
+                        Hello,
 
-                    The Serenity BDD test report for ${env.JOB_NAME} #${env.BUILD_NUMBER} has been generated successfully.
+                        The Serenity BDD test report for ${env.JOB_NAME} #${env.BUILD_NUMBER} has been generated successfully.
 
-                    You can find the full report attached.
+                        You can find the full report attached.
 
-                    Best regards,
-                    Triskell
-                """,
-                attachmentsPattern: 'serenity-report.zip'
+                        Best regards,
+                        Triskell
+                                """,
+                attachmentsPattern: '**/target/site/serenity/index.html'
             )
         }
     }
