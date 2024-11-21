@@ -73,7 +73,7 @@ pipeline {
                     You can find the full report attached.
 
                     Best regards,
-                    Jenkins
+                    Triskell
                 """,
                 attachmentsPattern: 'serenity-report.zip'
             )
