@@ -52,23 +52,31 @@ pipeline {
         }
     }
     post {
-        success {
-            emailext(
-                to: 'rperdigon@triskellsoftware.com, jmprieto@triskellsoftware.com, jburcio@triskellsoftware.com, agarcia@triskellsoftware.com',
-                subject: "Serenity BDD Test Report - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                body: """
+        always {
+            script {
+                def buildStatus = currentBuild.result ?: 'SUCCESS'
+                def subject = "Serenity BDD Test Report - ${env.JOB_NAME} #${env.BUILD_NUMBER} [${buildStatus}]"
+                def body = """
                         Hello,
 
-                        The Serenity BDD test report for ${env.JOB_NAME} #${env.BUILD_NUMBER} has been generated successfully.
+                        The Serenity BDD test report for ${env.JOB_NAME} #${env.BUILD_NUMBER} has been generated.
+
+                        Build Status: ${buildStatus}
 
                         You can view the report here:
                         ${env.BUILD_URL}target/site/serenity/index.html
 
                         Best regards,
                         Triskell
-                        """,
-                attachmentsPattern: '**/target/site/serenity/**/*'
-            )
+                        """
+
+                emailext(
+                    to: 'rperdigon@triskellsoftware.com, jmprieto@triskellsoftware.com, jburcio@triskellsoftware.com, agarcia@triskellsoftware.com',
+                    subject: subject,
+                    body: body,
+                    attachmentsPattern: '**/target/site/serenity/**/*'
+                )
+            }
         }
     }
 }
