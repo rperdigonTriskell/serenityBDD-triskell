@@ -48,6 +48,7 @@ pipeline {
             script {
                 def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
                 def status = currentBuild.result ?: 'SUCCESS'
+                def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
 
                 emailext(
                     subject: "Serenity BDD Pipeline Execution: ${status}",
@@ -64,7 +65,7 @@ pipeline {
                         Regards,
                         Triskell
                     """,
-                    to: 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com',
+                    to: distributionList,
                     attachmentsPattern: "target/${env.REPORT_ZIP}"
                 )
             }
