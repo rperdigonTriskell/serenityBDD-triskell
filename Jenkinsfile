@@ -35,7 +35,9 @@ pipeline {
         stage('Archive Report') {
             steps {
                 script {
-                    sh "cd target && zip -r ${env.REPORT_ZIP} serenity/*"
+                    sh "ls -la target"
+                    sh "ls -la target/site/serenity"
+                    sh "cd target && zip -r ${env.REPORT_ZIP} site/serenity/*"
                 }
                 archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
             }
@@ -60,9 +62,9 @@ pipeline {
                         The full report is also attached as a ZIP file.
 
                         Regards,
-                        Triskell
+                        Jenkins
                      """,
-                     attachmentsPattern: "target/${env.REPORT_ZIP}"
+                     attachments: "target/${env.REPORT_ZIP}"
             }
         }
     }
