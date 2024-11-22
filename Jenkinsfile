@@ -49,9 +49,9 @@ pipeline {
                 def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
                 def status = currentBuild.result ?: 'SUCCESS'
 
-                mail to: 'rperdigon@triskellsoftware.com',
-                     subject: "Serenity BDD Pipeline Execution: ${status}",
-                     body: """
+                emailext(
+                    subject: "Serenity BDD Pipeline Execution: ${status}",
+                    body: """
                         Hello,
 
                         The Serenity BDD pipeline execution has completed with status: ${status}.
@@ -63,8 +63,10 @@ pipeline {
 
                         Regards,
                         Jenkins
-                     """,
-                     attachments: "target/${env.REPORT_ZIP}"
+                    """,
+                    to: 'rperdigon@triskellsoftware.com',
+                    attachmentsPattern: "target/${env.REPORT_ZIP}"
+                )
             }
         }
     }
