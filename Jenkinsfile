@@ -5,6 +5,7 @@ pipeline {
         JAVA_HOME = tool name: 'jdk-23', type: 'jdk'
         CREDENTIALS_FILE = credentials('CREDENTIALS_FILE')
         serenityEnvironmentFile = 'src/test/resources/environment.properties'
+        REPORT_ZIP = 'serenity-report.zip'
     }
     stages {
         stage('Checkout') {
@@ -27,62 +28,41 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    if (isUnix()) {
-                        sh "${MAVEN_HOME}/bin/mvn clean verify -Dserenity.properties=${env.serenityEnvironmentFile} -Dserenity.credentials.file=${CREDENTIALS_FILE}"
-                    } else {
-                        bat "${MAVEN_HOME}\\bin\\mvn clean verify -Dserenity.properties=${env.serenityEnvironmentFile} -Dserenity.credentials.file=${CREDENTIALS_FILE}"
-                    }
+                    sh "${MAVEN_HOME}/bin/mvn clean verify -Dserenity.properties=${env.serenityEnvironmentFile} -Dserenity.credentials.file=${CREDENTIALS_FILE}"
                 }
             }
         }
-        stage('Publish Reports') {
+        stage('Archive Report') {
             steps {
                 script {
-                    def reportDir = isUnix() ? 'target/site/serenity' : 'target\\site\\serenity'
-                    def zipFile = 'serenity-report.zip'
-
-                    if (isUnix()) {
-                        sh "zip -r ${zipFile} ${reportDir}"
-                    } else {
-                        bat "powershell Compress-Archive -Path ${reportDir}\\* -DestinationPath ${zipFile}"
-                    }
-
-                    // Publicar reporte en Jenkins
-                    archiveArtifacts artifacts: "${zipFile}", allowEmptyArchive: false
-                    publishHTML(target: [
-                        reportDir: reportDir,
-                        reportFiles: 'index.html',
-                        reportName: 'Serenity BDD Report'
-                    ])
+                    sh "cd target && zip -r ${env.REPORT_ZIP} serenity/*"
                 }
+                archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
             }
         }
     }
     post {
         always {
             script {
-                def buildStatus = currentBuild.result ?: 'SUCCESS'
-                def subject = "Serenity BDD Test Report - ${env.JOB_NAME} #${env.BUILD_NUMBER} [${buildStatus}]"
-                def body = """
+                def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
+                def status = currentBuild.result ?: 'SUCCESS'
+
+                mail to: 'rperdigon@triskellsoftware.com',
+                     subject: "Serenity BDD Pipeline Execution: ${status}",
+                     body: """
                         Hello,
 
-                        The Serenity BDD test report for ${env.JOB_NAME} #${env.BUILD_NUMBER} has been generated.
+                        The Serenity BDD pipeline execution has completed with status: ${status}.
 
-                        Build Status: ${buildStatus}
+                        You can find the test report here:
+                        ${indexPath}
 
-                        You can view the report here:
-                        ${env.BUILD_URL}target/site/serenity/index.html
+                        The full report is also attached as a ZIP file.
 
-                        Best regards,
+                        Regards,
                         Triskell
-                        """
-
-                emailext(
-                    to: 'rperdigon@triskellsoftware.com',
-                    subject: subject,
-                    body: body,
-                    attachmentsPattern: 'serenity-report.zip'
-                )
+                     """,
+                     attachmentsPattern: "target/${env.REPORT_ZIP}"
             }
         }
     }
