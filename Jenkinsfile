@@ -62,7 +62,7 @@ pipeline {
                         The full report is also attached as a ZIP file.
 
                         Regards,
-                        Jenkins
+                        Triskell
                     """,
                     to: 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com',
                     attachmentsPattern: "target/${env.REPORT_ZIP}"
