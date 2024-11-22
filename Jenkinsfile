@@ -64,7 +64,7 @@ pipeline {
                         Regards,
                         Jenkins
                     """,
-                    to: 'rperdigon@triskellsoftware.com',
+                    to: 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com',
                     attachmentsPattern: "target/${env.REPORT_ZIP}"
                 )
             }
