@@ -39,12 +39,19 @@ pipeline {
             steps {
                 script {
                     def reportDir = isUnix() ? 'target/site/serenity' : 'target\\site\\serenity'
-                    def reportFiles = 'index.html'
+                    def zipFile = 'serenity-report.zip'
 
-                    archiveArtifacts artifacts: "${reportDir}/**/*", allowEmptyArchive: true
+                    if (isUnix()) {
+                        sh "zip -r ${zipFile} ${reportDir}"
+                    } else {
+                        bat "powershell Compress-Archive -Path ${reportDir}\\* -DestinationPath ${zipFile}"
+                    }
+
+                    // Publicar reporte en Jenkins
+                    archiveArtifacts artifacts: "${zipFile}", allowEmptyArchive: false
                     publishHTML(target: [
                         reportDir: reportDir,
-                        reportFiles: reportFiles,
+                        reportFiles: 'index.html',
                         reportName: 'Serenity BDD Report'
                     ])
                 }
@@ -74,7 +81,7 @@ pipeline {
                     to: 'rperdigon@triskellsoftware.com',
                     subject: subject,
                     body: body,
-                    attachmentsPattern: '**/target/site/serenity/**/*'
+                    attachmentsPattern: 'serenity-report.zip'
                 )
             }
         }
