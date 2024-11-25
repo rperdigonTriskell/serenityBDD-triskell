@@ -32,29 +32,31 @@ pipeline {
                 }
             }
         }
-        stage('Archive Report') {
-            steps {
-                script {
-                    sh "ls -la target"
-                    sh "ls -la target/site/serenity"
-                    sh "cd target && zip -r ${env.REPORT_ZIP} site/serenity/* || echo 'Skipping ZIP creation due to error.'"
-                }
-                archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
-            }
-        }
     }
     post {
         always {
             script {
-                def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
-                def status = currentBuild.result ?: 'SUCCESS'
-                def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
+                echo "Archiving report and sending email regardless of build result."
 
+                // Intentar crear el ZIP del reporte
+                try {
+                    sh "cd target && zip -r ${env.REPORT_ZIP} site/serenity/* || echo 'Skipping ZIP creation due to error.'"
+                } catch (Exception e) {
+                    echo "Failed to create ZIP file: ${e.message}"
+                }
+
+                // Verificar si el archivo ZIP existe
                 def reportExists = fileExists("target/${env.REPORT_ZIP}")
                 if (!reportExists) {
                     echo "Warning: The report ZIP file does not exist. Skipping attachment."
                 }
 
+                // Configurar detalles del correo
+                def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
+                def status = currentBuild.result ?: 'SUCCESS'
+                def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
+
+                // Enviar correo con o sin adjunto
                 emailext(
                     subject: "Serenity BDD Pipeline Execution: ${status}",
                     body: """
