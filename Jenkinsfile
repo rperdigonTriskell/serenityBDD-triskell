@@ -37,7 +37,7 @@ pipeline {
                 script {
                     sh "ls -la target"
                     sh "ls -la target/site/serenity"
-                    sh "cd target && zip -r ${env.REPORT_ZIP} site/serenity/*"
+                    sh "cd target && zip -r ${env.REPORT_ZIP} site/serenity/* || echo 'Skipping ZIP creation due to error.'"
                 }
                 archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
             }
@@ -50,6 +50,11 @@ pipeline {
                 def status = currentBuild.result ?: 'SUCCESS'
                 def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
 
+                def reportExists = fileExists("target/${env.REPORT_ZIP}")
+                if (!reportExists) {
+                    echo "Warning: The report ZIP file does not exist. Skipping attachment."
+                }
+
                 emailext(
                     subject: "Serenity BDD Pipeline Execution: ${status}",
                     body: """
@@ -60,13 +65,13 @@ pipeline {
                         You can find the test report here:
                         ${indexPath}
 
-                        The full report is also attached as a ZIP file.
+                        ${reportExists ? 'The full report is also attached as a ZIP file.' : 'Unfortunately, the report ZIP file could not be created.'}
 
                         Regards,
                         Triskell
                     """,
                     to: distributionList,
-                    attachmentsPattern: "target/${env.REPORT_ZIP}"
+                    attachmentsPattern: reportExists ? "target/${env.REPORT_ZIP}" : ''
                 )
             }
         }
