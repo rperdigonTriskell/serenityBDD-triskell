@@ -1,4 +1,4 @@
-#Feature: User history
+#Feature: Manage Project and Timesheet
 #
 #  As a user, I want to add an project item to my project table so and can edit or delete it.
 #
@@ -50,8 +50,8 @@
 #    And verify the text element "System Administrator hour" is calculated in this month by 8 hour by day
 #    When click in "Gantt Chart"
 #    Then check to "Automation Testing Project Gantt Chart" has loaded
-#    And verify the element "Automatic progress" are "visible"
-#    When click in "OK"
+##    And verify the element "Automatic progress" are "visible"
+##    When click in "OK"
 #    When click in toolbar "Create"
 #    Then verify the element "Selected item: Automation Testing Project" are "visible"
 #    And verify the text element "Selected item: Automation Testing Project name" is "Selected item: Automation Testing Project"

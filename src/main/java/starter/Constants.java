@@ -69,5 +69,5 @@ public class Constants {
     }
 
     //wait time
-    public static final Duration WAIT_DURATION = Duration.ofSeconds(10);
+    public static final Duration WAIT_DURATION = Duration.ofSeconds(5);
 }

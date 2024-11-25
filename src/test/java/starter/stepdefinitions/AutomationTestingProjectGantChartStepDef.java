@@ -2,16 +2,15 @@ package starter.stepdefinitions;
 
 import io.cucumber.java.en.*;
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.serenitybdd.screenplay.actions.Click;
-import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 
 import java.util.List;
 
-import static starter.Constants.TOOLBAR_CONTEXT;
-import static starter.stepdefinitions.GenericStepDef.clickIn;
+import static starter.Constants.*;
+import static starter.stepdefinitions.GenericStepDef.*;
+import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.WaitElement.*;
-import static starter.tasks.utils.LaboralHours.calculateLaboralDaysFromStartDay;
+import static starter.tasks.utils.LaboralHours.*;
 
 public class AutomationTestingProjectGantChartStepDef {
     @When("click in {int} days more")
@@ -31,11 +30,11 @@ public class AutomationTestingProjectGantChartStepDef {
                 .thenFindAll(getWaitVisibleSelector("days calendar"));
 
         // Find and click the target day
-        for (WebElementFacade dayElement : daysInCalendar) {
-            int dayNumber = Integer.parseInt(dayElement.getText());
+        for (int i = currentDay; i < daysInCalendar.size(); i++) {
+            int dayNumber = Integer.parseInt(daysInCalendar.get(i).getText());
             if (dayNumber == targetDay) {
-                dayElement.click();
-                return; // Stop after clicking
+                clickOnTarget(daysInCalendar.get(i));
+                return;
             }
         }
 
