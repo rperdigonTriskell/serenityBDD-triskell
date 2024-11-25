@@ -8,8 +8,6 @@ Feature: Dashboard parts
     And click in "Validate"
     Then check to "Dashboard" has loaded
 
-  #@PROD @DEV @NR @PROD
-
   @PROD
   Scenario: See All components Dashboard
     Then check to the following "Sidebar" elements are:
