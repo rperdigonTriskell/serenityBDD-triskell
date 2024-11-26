@@ -19,6 +19,22 @@
         <tags></tags>
         <webdriver.base.url></webdriver.base.url>
     </properties>
+    <profiles>
+        <profile>
+            <id>PROD</id>
+            <properties>
+                <webdriver.base.url>https://ondemand.triskellsoftware.com/triskell/</webdriver.base.url>
+                <tags>@PROD</tags>
+            </properties>
+        </profile>
+        <profile>
+            <id>AWS</id>
+            <properties>
+                <webdriver.base.url>https://intaws.triskellsoftware.com/triskell/</webdriver.base.url>
+                <tags>@AWS</tags>
+            </properties>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>

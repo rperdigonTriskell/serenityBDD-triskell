@@ -43,23 +43,37 @@ public class GenericStepDef {
     @Before
     public void setTheStage(Scenario scenario) {
         OnStage.setTheStage(new OnlineCast());
-        OnStage.theActorCalled(actor);
-        Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
-        for (String tag : scenarioTags) {
-            try {
-                baseUrl = getEnvironmentBaseUrl(tag);
-                if (baseUrl != null) {
-                    break;
+        OnStage.theActorCalled("actor");
+
+        // Leer el entorno desde los argumentos del sistema
+        String environment = System.getProperty("environment");
+        if (environment != null) {
+            baseUrl = getEnvironmentBaseUrl("@" + environment);
+            System.out.println("Base URL para entorno especificado: " + baseUrl);
+        } else {
+            // Si no se especifica un entorno, usar tags del escenario
+            Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
+            System.out.println("Tags del escenario: " + scenarioTags);
+
+            for (String tag : scenarioTags) {
+                try {
+                    baseUrl = getEnvironmentBaseUrl(tag);
+                    if (baseUrl != null) {
+                        System.out.println("Base URL encontrada para tag '" + tag + "': " + baseUrl);
+                        break;
+                    }
+                } catch (RuntimeException e) {
+                    System.out.println("No URL found for tag: " + tag + ", checking next tag.");
                 }
-            } catch (RuntimeException e) {
-                System.out.println("No URL found for tag: " + tag + ", checking next tag.");
             }
         }
 
         if (baseUrl == null) {
-            throw new RuntimeException("No matching environment URL found for scenario tags.");
+            throw new RuntimeException("No matching environment URL found.");
         }
     }
+
+
 
     /**
      * Sets the stage after each scenario.
