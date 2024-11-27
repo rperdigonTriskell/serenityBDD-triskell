@@ -33,8 +33,6 @@ public class GenericStepDef {
     /**
      * Other utilities
      */
-    // Actor for scenario
-    String actor = getCredential("username", false);
     String baseUrl;
 
     /**
@@ -45,13 +43,11 @@ public class GenericStepDef {
         OnStage.setTheStage(new OnlineCast());
         OnStage.theActorCalled("actor");
 
-        // Leer el entorno desde los argumentos del sistema
         String environment = System.getProperty("environment");
         if (environment != null) {
             baseUrl = getEnvironmentBaseUrl("@" + environment);
             System.out.println("Base URL para entorno especificado: " + baseUrl);
         } else {
-            // Si no se especifica un entorno, usar tags del escenario
             Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
             System.out.println("Tags del escenario: " + scenarioTags);
 

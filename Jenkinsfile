@@ -7,6 +7,10 @@ pipeline {
         serenityEnvironmentFile = 'src/test/resources/environment.properties'
         REPORT_ZIP = 'serenity-report.zip'
     }
+    parameters {
+        string(name: 'DRIVER', defaultValue: 'chrome', description: 'Driver del navegador (chrome, firefox, etc.)')
+        choice(name: 'ENVIRONMENT', choices: ['PROD', 'AWS'], description: 'Entorno de ejecución')
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -28,7 +32,15 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh "${MAVEN_HOME}/bin/mvn clean verify -Dserenity.properties=${env.serenityEnvironmentFile} -Dserenity.credentials.file=${CREDENTIALS_FILE}"
+                    // Construir el comando mvn dinámicamente usando parámetros
+                    def mvnCommand = "${MAVEN_HOME}/bin/mvn clean verify " +
+                                     "-Dserenity.properties=${env.serenityEnvironmentFile} " +
+                                     "-Dserenity.credentials.file=${CREDENTIALS_FILE} " +
+                                     "-Ddriver=${params.DRIVER} " +
+                                     "-Denvironment=${params.ENVIRONMENT}"
+
+                    echo "Ejecutando comando Maven: ${mvnCommand}"
+                    sh mvnCommand
                 }
             }
         }
