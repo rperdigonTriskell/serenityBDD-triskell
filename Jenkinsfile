@@ -10,6 +10,7 @@ pipeline {
     parameters {
         string(name: 'DRIVER', defaultValue: 'chrome', description: 'Driver del navegador (chrome, firefox, etc.)')
         choice(name: 'ENVIRONMENT', choices: ['PROD', 'AWS'], description: 'Entorno de ejecución')
+        choice(name: 'TAGS', choices: ['@PROD', '@AWS', '@Dashboard'], description: 'Tag de las pruebas a ejecutar')
     }
     stages {
         stage('Checkout') {
@@ -32,12 +33,12 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Construir el comando mvn dinámicamente usando parámetros
                     def mvnCommand = "${MAVEN_HOME}/bin/mvn clean verify " +
                                      "-Dserenity.properties=${env.serenityEnvironmentFile} " +
                                      "-Dserenity.credentials.file=${CREDENTIALS_FILE} " +
                                      "-Ddriver=${params.DRIVER} " +
-                                     "-Denvironment=${params.ENVIRONMENT}"
+                                     "-Denvironment=${params.ENVIRONMENT} " +
+                                     "-Dtags=${params.TAGS}" // Agrega el parámetro TAGS
 
                     echo "Ejecutando comando Maven: ${mvnCommand}"
                     sh mvnCommand
@@ -49,27 +50,19 @@ pipeline {
         always {
             script {
                 echo "Archiving report and sending email regardless of build result."
-
-                // Intentar crear el ZIP del reporte
                 try {
-                    // Usar -q (quiet) para suprimir la salida de la compresión
                     sh "cd target && zip -rq ${env.REPORT_ZIP} site/serenity/* || echo 'Skipping ZIP creation due to error.'"
                 } catch (Exception e) {
                     echo "Failed to create ZIP file: ${e.message}"
                 }
-
-                // Verificar si el archivo ZIP existe
                 def reportExists = fileExists("target/${env.REPORT_ZIP}")
                 if (!reportExists) {
                     echo "Warning: The report ZIP file does not exist. Skipping attachment."
                 }
-
-                // Configurar detalles del correo
                 def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
                 def status = currentBuild.result ?: 'SUCCESS'
                 def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
 
-                // Enviar correo con o sin adjunto
                 emailext(
                     subject: "Serenity BDD Pipeline Execution: ${status}",
                     body: """
