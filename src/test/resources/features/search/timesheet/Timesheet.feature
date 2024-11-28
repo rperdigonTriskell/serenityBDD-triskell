@@ -10,7 +10,7 @@ Feature: Dashboard parts
     When click in "Sidebar Timesheet"
     Then check to "Timesheet" has loaded
 
-  @PROD
+  @PROD @AWS
   Scenario: See All components Timesheet
     When click in "Timesheet"
     Then check to the following "Timesheet" elements are:

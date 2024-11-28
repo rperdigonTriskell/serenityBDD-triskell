@@ -15,7 +15,7 @@ Feature: Delete an Activity
     Then verify the element timesheet board "Add Activities" are "visible"
     When if the table is "empty", "add" an activity
 
-  @PROD
+  @PROD @AWS
   Scenario: Delete an Activity
     When click in activity board checkbox "Automation Test"
     And click in timesheet board "Delete"
@@ -24,7 +24,7 @@ Feature: Delete an Activity
     Then verify the element "Question message" are "invisible"
     Then verify the text element timesheet board "activity board empty" is ""
 
-  @PROD
+  @PROD @AWS
   Scenario: Attempting to delete an activity that does not exist
     When click in timesheet board "Delete"
     Then verify the text element "Question message" is "Are you sure remove these items?"
