@@ -49,37 +49,33 @@ pipeline {
     post {
         always {
             script {
-                echo "Archiving report and sending email regardless of build result."
-                try {
-                    sh "cd target && zip -rq ${env.REPORT_ZIP} site/serenity/* || echo 'Skipping ZIP creation due to error.'"
-                } catch (Exception e) {
-                    echo "Failed to create ZIP file: ${e.message}"
-                }
-                def reportExists = fileExists("target/${env.REPORT_ZIP}")
-                if (!reportExists) {
-                    echo "Warning: The report ZIP file does not exist. Skipping attachment."
-                }
+                echo "Archiving Serenity report and sending email."
+
+                // Crear el ZIP del reporte
+                sh "cd target && zip -rq ${env.REPORT_ZIP} site/serenity/*"
+
+                // Configurar el path del reporte y los destinatarios
                 def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
-                def status = currentBuild.result ?: 'SUCCESS'
                 def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
 
+                // Enviar correo con el ZIP adjunto
                 emailext(
-                    subject: "Serenity BDD Pipeline Execution: ${status}",
+                    subject: "Serenity BDD Pipeline Execution: ${currentBuild.result ?: 'SUCCESS'}",
                     body: """
                         Hello,
 
-                        The Serenity BDD pipeline execution has completed with status: ${status}.
+                        The Serenity BDD pipeline execution has completed with status: ${currentBuild.result ?: 'SUCCESS'}.
 
-                        You can find the test report here:
+                        You can view the test report here:
                         ${indexPath}
 
-                        ${reportExists ? 'The full report is also attached as a ZIP file.' : 'Unfortunately, the report ZIP file could not be created.'}
+                        The full report is attached as a ZIP file.
 
                         Regards,
                         Triskell
                     """,
                     to: distributionList,
-                    attachmentsPattern: reportExists ? "target/${env.REPORT_ZIP}" : ''
+                    attachmentsPattern: "target/${env.REPORT_ZIP}"
                 )
             }
         }
