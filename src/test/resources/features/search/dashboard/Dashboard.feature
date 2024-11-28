@@ -12,7 +12,7 @@ Feature: Dashboard parts
   Scenario: See All components Dashboard
     Then check to the following "Sidebar" elements are:
       | element             | visibility |
-      | Home Page           | visible    |
+      | Homeewrwerw Page    | visible    |
       | Solutions           | visible    |
       | Portfolio           | visible    |
       | Project             | visible    |
