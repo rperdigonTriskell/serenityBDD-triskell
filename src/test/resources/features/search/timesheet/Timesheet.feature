@@ -12,7 +12,7 @@ Feature: Dashboard parts
 
   @PROD
   Scenario: See All components Timesheet
-    When click in "Timesheet"
+    When click in "Tiwwwwwwwwwmesheet"
     Then check to the following "Timesheet" elements are:
       | element                  | visibility |
       | My Timesheet             | visible    |
