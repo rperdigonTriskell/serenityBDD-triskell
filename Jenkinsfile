@@ -52,7 +52,8 @@ pipeline {
 
                 // Intentar crear el ZIP del reporte
                 try {
-                    sh "cd target && zip -r ${env.REPORT_ZIP} site/serenity/* || echo 'Skipping ZIP creation due to error.'"
+                    // Usar -q (quiet) para suprimir la salida de la compresión
+                    sh "cd target && zip -rq ${env.REPORT_ZIP} site/serenity/* || echo 'Skipping ZIP creation due to error.'"
                 } catch (Exception e) {
                     echo "Failed to create ZIP file: ${e.message}"
                 }
