@@ -8,8 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         plugin = {"pretty", "json:target/cucumber.json"},
         features = {"src/test/resources/features"},
-//        tags = "@PROD or @AWS",
-        tags = "@toDo",
+        tags = "@PROD or @AWS",
         glue = "starter.stepdefinitions"
 )
 public class CucumberTestSuite {
