@@ -15,6 +15,7 @@ import static starter.Constants.*;
 import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
+import static starter.tasks.IsLoad.isLoadPage;
 import static starter.tasks.SendTextTo.*;
 import static starter.tasks.WaitElement.*;
 
@@ -62,6 +63,9 @@ public class TimesheetTasks {
         clickOnTarget(TIMESHEET_CONTEXT + "all activities checkbox");
         clickOnTarget(TIMESHEET_BOARD + "Delete");
         clickOnTarget(TIMESHEET_CONTEXT + "Yes");
+
+        ifBlueColorThenEmptyTimesheetTimeTable();
+        
         performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
     }
 
@@ -204,6 +208,30 @@ public class TimesheetTasks {
                 clickOnTarget(TIMESHEET_CONTEXT + "Yes");
                 performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
             }
+        }
+    }
+
+    /**
+     * Checks if the user can not delete the timesheet.
+     */
+    public static void ifCanNotDeleteTimesheet() {
+        Target message = getWaitVisibleTarget(TIMESHEET_CONTEXT + "message can not delete");
+        if (message.isVisibleFor(getActor())) {
+            clickOnTarget(getWaitVisibleTarget(TIMESHEET_CONTEXT + "ok"));
+            clickOnTarget(getWaitVisibleTarget(SIDEBAR_CONTEXT + "Project"));
+            isLoadPage(PROJECT);
+            clickOnTarget(getWaitVisibleTarget(PROJECT_CONTEXT + "arrow"));
+            ///
+            isLoadPage(MANUAL_TESTING_PROJECT);
+            clickOnTarget(getWaitVisibleTarget("Gantt Chart"));
+            isLoadPage(MANUAL_TESTING_PROJECT_GANTT_CHART);
+            clickOnTarget(getWaitVisibleTarget("Automation Test Task"));
+            clickOnTarget(getWaitVisibleTarget("Remove"));//button.b-red
+            clickOnTarget(getWaitVisibleTarget("OK"));//button.b-messagedialog-okbutton
+            clickOnTarget(getWaitVisibleTarget("Create"));//button.b-green
+            clickOnTarget(getWaitVisibleTarget("Task"));//button.b-green
+            input("Automation Test Task",getWaitVisiWebelementFacadeVisible("Name"));//button.b-messagedialog-okbutton
+            clickOnTarget(getWaitVisibleTarget("Save"));
         }
     }
 }

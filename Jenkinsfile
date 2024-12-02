@@ -13,6 +13,19 @@ pipeline {
         choice(name: 'TAGS', choices: ['@PROD', '@AWS', '@Dashboard'], description: 'Tag de las pruebas a ejecutar')
     }
     stages {
+        stage('Set ENVIRONMENT to PROD on Sundays at 17:00') {
+            steps {
+                script {
+                    def dayOfWeek = new Date().format('u')
+                    def currentHour = new Date().format('H')
+
+                    if (dayOfWeek == '7' && currentHour == '17') {
+                        echo "Sunday at 17:00 ENVIRONMENT asigned to PROD."
+                        params.ENVIRONMENT = 'PROD'
+                    }
+                }
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'waitImplementation',
@@ -38,7 +51,7 @@ pipeline {
                                      "-Dserenity.credentials.file=${CREDENTIALS_FILE} " +
                                      "-Ddriver=${params.DRIVER} " +
                                      "-Denvironment=${params.ENVIRONMENT} " +
-                                     "-Dtags=${params.TAGS}" // Agrega el parámetro TAGS
+                                     "-Dtags=${params.TAGS}"
 
                     echo "Ejecutando comando Maven: ${mvnCommand}"
                     sh mvnCommand

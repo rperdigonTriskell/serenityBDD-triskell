@@ -39,6 +39,10 @@ public class ProjectPage extends AbstractPage {
         mapSelectors.put(PROJECT_CONTEXT + "delete", By.cssSelector("a[data-qtip='Remove']"));
         mapSelectors.put(PROJECT_CONTEXT + "delete anwser", By.xpath("(//div[contains(@id, 'messagebox')])[1]"));
         mapSelectors.put(PROJECT_CONTEXT + "yes", By.xpath("//a[.//span[text()='Yes']]"));
+
+        //
+        mapSelectors.put(PROJECT_CONTEXT + "arrow", By.cssSelector("span.fa-arrow-right"));
+
         return mapSelectors;
     }
 }

@@ -34,7 +34,7 @@ Feature: Generate Report
       | 8.00h | 8.00h | 8.00h | 8.00h | 8.00h |
 
 
-  @PROD @AWS
+  @PROD @AWS @toDo
   Scenario: Generating a Report with Data Replacement
     When send text to table "Timesheet board time board":
       | MON | TUE | WED | THU | FRI |
