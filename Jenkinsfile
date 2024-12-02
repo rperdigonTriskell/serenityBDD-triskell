@@ -19,8 +19,8 @@ pipeline {
                     def dayOfWeek = new Date().format('u')
                     def currentHour = new Date().format('H')
 
-                    if (dayOfWeek == '1' && currentHour == '10') {
-                        echo "Monday at 10:00 ENVIRONMENT asigned to PROD."
+                    if (dayOfWeek == '7' && currentHour == '17') {
+                        echo "Es domingo a las 17:00, estableciendo ENVIRONMENT a PROD."
                         params.ENVIRONMENT = 'PROD'
                     }
                 }
