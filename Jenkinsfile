@@ -62,34 +62,67 @@ pipeline {
     post {
         always {
             script {
-                echo "Archiving Serenity report and sending email."
+                echo "Archiving Serenity report and preparing email notification."
 
-                // Crear el ZIP del reporte
-                sh "cd target && zip -rq ${env.REPORT_ZIP} site/serenity/*"
+                def buildResult = currentBuild.result ?: 'SUCCESS'
+
+                // Crear el ZIP del reporte si existe el directorio
+                if (fileExists("target/site/serenity")) {
+                    sh "cd target && zip -rq ${env.REPORT_ZIP} site/serenity/*"
+                } else {
+                    echo "El directorio de reportes 'target/site/serenity' no existe. No se generará el archivo ZIP."
+                }
 
                 // Configurar el path del reporte y los destinatarios
                 def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
                 def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
 
-                // Enviar correo con el ZIP adjunto
-                emailext(
-                    subject: "Serenity BDD Pipeline Execution: ${currentBuild.result ?: 'SUCCESS'}",
-                    body: """
-                        Hello,
+                // Enviar correo con o sin adjunto
+                if (fileExists("target/${env.REPORT_ZIP}")) {
+                    emailext(
+                        subject: "Serenity BDD Pipeline Execution: ${buildResult}",
+                        body: """
+                            Hello,
 
-                        The Serenity BDD pipeline execution has completed with status: ${currentBuild.result ?: 'SUCCESS'}.
+                            The Serenity BDD pipeline execution has completed with status: ${buildResult}.
 
-                        You can view the test report here:
-                        ${indexPath}
+                            Execution details:
+                            - Driver: ${params.DRIVER}
+                            - Environment: ${params.ENVIRONMENT}
+                            - Tags: ${params.TAGS}
 
-                        The full report is attached as a ZIP file.
+                            You can view the test report here:
+                            ${indexPath}
 
-                        Regards,
-                        Triskell
-                    """,
-                    to: distributionList,
-                    attachmentsPattern: "target/${env.REPORT_ZIP}"
-                )
+                            The full report is attached as a ZIP file.
+
+                            Regards,
+                            Triskell
+                        """,
+                        to: distributionList,
+                        attachmentsPattern: "target/${env.REPORT_ZIP}"
+                    )
+                } else {
+                    emailext(
+                        subject: "Serenity BDD Pipeline Execution: ${buildResult}",
+                        body: """
+                            Hello,
+
+                            The Serenity BDD pipeline execution has completed with status: ${buildResult}.
+
+                            Execution details:
+                            - Driver: ${params.DRIVER}
+                            - Environment: ${params.ENVIRONMENT}
+                            - Tags: ${params.TAGS}
+
+                            However, the Serenity report could not be found.
+
+                            Regards,
+                            Triskell
+                        """,
+                        to: distributionList
+                    )
+                }
             }
         }
     }

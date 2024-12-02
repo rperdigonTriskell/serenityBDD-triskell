@@ -14,6 +14,7 @@ import java.util.*;
 import static starter.Constants.*;
 import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.ElementInteraction.*;
+import static starter.tasks.ElementInteraction.waitLoadingInteraction;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.IsLoad.isLoadPage;
 import static starter.tasks.SendTextTo.*;
@@ -220,17 +221,20 @@ public class TimesheetTasks {
             clickOnTarget(getWaitVisibleTarget(TIMESHEET_CONTEXT + "ok"));
             clickOnTarget(getWaitVisibleTarget(SIDEBAR_CONTEXT + "Project"));
             isLoadPage(PROJECT);
+            inputAndEnter(PROJECT_CONTEXT + "search parent", MANUAL_TESTING_PROJECT);
+            waitLoadingInteraction();
             clickOnTarget(getWaitVisibleTarget(PROJECT_CONTEXT + "arrow"));
             ///
             isLoadPage(MANUAL_TESTING_PROJECT);
             clickOnTarget(getWaitVisibleTarget("Gantt Chart"));
             isLoadPage(MANUAL_TESTING_PROJECT_GANTT_CHART);
+            clickOnTarget(getWaitVisibleTarget("OK"));
             clickOnTarget(getWaitVisibleTarget("Automation Test Task"));
-            clickOnTarget(getWaitVisibleTarget("Remove"));//button.b-red
-            clickOnTarget(getWaitVisibleTarget("OK"));//button.b-messagedialog-okbutton
-            clickOnTarget(getWaitVisibleTarget("Create"));//button.b-green
-            clickOnTarget(getWaitVisibleTarget("Task"));//button.b-green
-            input("Automation Test Task",getWaitVisiWebelementFacadeVisible("Name"));//button.b-messagedialog-okbutton
+            clickOnTarget(getWaitVisibleTarget("Remove"));
+            clickOnTarget(getWaitVisibleTarget("OK"));
+            clickOnTarget(getWaitVisibleTarget("Create"));
+            clickOnTarget(getWaitVisibleTarget("Task"));
+            input("Automation Test Task",getWaitVisiWebelementFacadeVisible("Name"));
             clickOnTarget(getWaitVisibleTarget("Save"));
         }
     }

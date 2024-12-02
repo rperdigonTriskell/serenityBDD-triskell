@@ -17,6 +17,7 @@ public class Constants {
     public final static String AUTOMATION_TESTING_PROJECT_GANTT_CHART = "Automation Testing Project Gantt Chart";
     public final static String MANUAL_TESTING_PROJECT = "Manual Testing Project";
     public final static String MANUAL_TESTING_PROJECT_GANTT_CHART = "Manual Testing Project Gantt Chart";
+    public final static String MANUAL_TESTING_PROJECT_CONTEXT = MANUAL_TESTING_PROJECT + " ";
     public final static String ADD_RESOURCES = "Add Resources";
     public final static String SIDEBAR_CONTEXT = "Sidebar ";
     public final static String HEADING_CONTEXT = "Heading ";
