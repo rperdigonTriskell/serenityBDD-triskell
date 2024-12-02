@@ -64,7 +64,7 @@ public class TimesheetTasks {
         clickOnTarget(TIMESHEET_BOARD + "Delete");
         clickOnTarget(TIMESHEET_CONTEXT + "Yes");
 
-        ifBlueColorThenEmptyTimesheetTimeTable();
+        ifCanNotDeleteTimesheet();
         
         performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
     }
