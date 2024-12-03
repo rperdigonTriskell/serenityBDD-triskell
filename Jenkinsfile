@@ -16,12 +16,14 @@ pipeline {
         stage('Set ENVIRONMENT to PROD on Sundays at 17:00') {
             steps {
                 script {
-                    def dayOfWeek = new Date().format('u')
-                    def currentHour = new Date().format('H')
+                    def dayOfWeek = new Date().format('u') // 1 (lunes) a 7 (domingo)
+                    def currentHour = new Date().format('H') // Hora en formato 24h
 
                     if (dayOfWeek == '7' && currentHour == '17') {
                         echo "Es domingo a las 17:00, estableciendo ENVIRONMENT a PROD."
-                        params.ENVIRONMENT = 'PROD'
+                        env.ACTUAL_ENVIRONMENT = 'PROD'
+                    } else {
+                        env.ACTUAL_ENVIRONMENT = params.ENVIRONMENT
                     }
                 }
             }
@@ -36,14 +38,12 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def mvnCommand = """
-                        ${MAVEN_HOME}/bin/mvn clean verify
-                        -Dserenity.properties=${env.serenityEnvironmentFile}
-                        -Dserenity.credentials.file=${CREDENTIALS_FILE}
-                        -Dwebdriver.driver=${params.DRIVER}
-                        -Denvironment=${params.ENVIRONMENT}
-                        -Dtags=${params.TAGS}
-                    """.stripIndent()
+                    def mvnCommand = "${MAVEN_HOME}/bin/mvn clean verify " +
+                        "-Dserenity.properties=${env.serenityEnvironmentFile} " +
+                        "-Dserenity.credentials.file=${CREDENTIALS_FILE} " +
+                        "-Dwebdriver.driver=${params.DRIVER} " +
+                        "-Denvironment=${env.ACTUAL_ENVIRONMENT} " +
+                        "-Dtags=${params.TAGS}"
 
                     echo "Ejecutando comando Maven: ${mvnCommand}"
                     sh mvnCommand
@@ -65,6 +65,9 @@ pipeline {
                     echo "El directorio de reportes 'target/site/serenity' no existe. No se generará el archivo ZIP."
                 }
 
+                // Archivar los reportes generados
+                archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
+
                 // Configurar el path del reporte y los destinatarios
                 def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
                 def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
@@ -80,7 +83,7 @@ pipeline {
 
                             Execution details:
                             - Driver: ${params.DRIVER}
-                            - Environment: ${params.ENVIRONMENT}
+                            - Environment: ${env.ACTUAL_ENVIRONMENT}
                             - Tags: ${params.TAGS}
 
                             You can view the test report here:
@@ -104,7 +107,7 @@ pipeline {
 
                             Execution details:
                             - Driver: ${params.DRIVER}
-                            - Environment: ${params.ENVIRONMENT}
+                            - Environment: ${env.ACTUAL_ENVIRONMENT}
                             - Tags: ${params.TAGS}
 
                             However, the Serenity report could not be found.
