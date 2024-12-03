@@ -33,25 +33,17 @@ pipeline {
                     credentialsId: 'gitCredentials'
             }
         }
-        stage('Check Environment Variables') {
-            steps {
-                script {
-                    echo "CREDENTIALS_FILE: ${env.CREDENTIALS_FILE}"
-                    if (!env.CREDENTIALS_FILE) {
-                        error "CREDENTIALS_FILE variable is not set. Exiting the build."
-                    }
-                }
-            }
-        }
         stage('Build') {
             steps {
                 script {
-                    def mvnCommand = "${MAVEN_HOME}/bin/mvn clean verify " +
-                                     "-Dserenity.properties=${env.serenityEnvironmentFile} " +
-                                     "-Dserenity.credentials.file=${CREDENTIALS_FILE} " +
-                                     "-Ddriver=${params.DRIVER} " +
-                                     "-Denvironment=${params.ENVIRONMENT} " +
-                                     "-Dtags=${params.TAGS}"
+                    def mvnCommand = """
+                        ${MAVEN_HOME}/bin/mvn clean verify
+                        -Dserenity.properties=${env.serenityEnvironmentFile}
+                        -Dserenity.credentials.file=${CREDENTIALS_FILE}
+                        -Dwebdriver.driver=${params.DRIVER}
+                        -Denvironment=${params.ENVIRONMENT}
+                        -Dtags=${params.TAGS}
+                    """.stripIndent()
 
                     echo "Ejecutando comando Maven: ${mvnCommand}"
                     sh mvnCommand

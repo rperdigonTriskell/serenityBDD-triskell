@@ -22,6 +22,8 @@ public class AutomationTestingProjectPage extends AbstractPage {
         mapSelectors.put(AUTOMATION_TESTING_PROJECT_CONTEXT + "Search in Grid", By.name("search"));
         mapSelectors.put(AUTOMATION_TESTING_PROJECT_CONTEXT + "project board", By.name("search"));
         mapSelectors.put(AUTOMATION_TESTING_PROJECT_CONTEXT + "Resource Boards", By.xpath("//a[.//span[text()='Resource Boards']]"));
+        mapSelectors.put("Overview table", By.xpath("(//table[contains(@class, 'x-table-layout') and contains(@id, 'ext-gen')])[1]"));
+        mapSelectors.put("OK", By.xpath("//a[.//span[text()='OK']]"));
         return mapSelectors;
     }
 }
