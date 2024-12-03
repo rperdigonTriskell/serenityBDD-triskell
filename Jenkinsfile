@@ -58,66 +58,48 @@ pipeline {
 
                 def buildResult = currentBuild.result ?: 'SUCCESS'
 
-                // Crear el ZIP del reporte si existe el directorio
-                if (fileExists("target/site/serenity")) {
-                    sh "cd target && zip -rq ${env.REPORT_ZIP} site/serenity/*"
-                } else {
-                    echo "El directorio de reportes 'target/site/serenity' no existe. No se generará el archivo ZIP."
-                }
+                // Asegurar que siempre se genere el ZIP
+                sh """
+                    mkdir -p target/site/serenity
+                    if [ -d "target/site/serenity" ]; then
+                        zip -rq target/${env.REPORT_ZIP} target/site/serenity/*
+                    else
+                        echo "No se encontraron archivos en target/site/serenity, pero se generará un ZIP vacío."
+                        zip -rq target/${env.REPORT_ZIP}
+                    fi
+                """
 
-                // Archivar los reportes generados
+                // Archivar el archivo ZIP generado
                 archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
 
                 // Configurar el path del reporte y los destinatarios
                 def indexPath = "${env.WORKSPACE}/target/site/serenity/index.html"
                 def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
 
-                // Enviar correo con o sin adjunto
-                if (fileExists("target/${env.REPORT_ZIP}")) {
-                    emailext(
-                        subject: "Serenity BDD Pipeline Execution: ${buildResult}",
-                        body: """
-                            Hello,
+                // Enviar correo con el ZIP siempre, incluso si no hay reporte generado
+                emailext(
+                    subject: "Serenity BDD Pipeline Execution: ${buildResult}",
+                    body: """
+                        Hello,
 
-                            The Serenity BDD pipeline execution has completed with status: ${buildResult}.
+                        The Serenity BDD pipeline execution has completed with status: ${buildResult}.
 
-                            Execution details:
-                            - Driver: ${params.DRIVER}
-                            - Environment: ${env.ACTUAL_ENVIRONMENT}
-                            - Tags: ${params.TAGS}
+                        Execution details:
+                        - Driver: ${params.DRIVER}
+                        - Environment: ${env.ACTUAL_ENVIRONMENT}
+                        - Tags: ${params.TAGS}
 
-                            You can view the test report here:
-                            ${indexPath}
+                        You can view the test report here:
+                        ${indexPath}
 
-                            The full report is attached as a ZIP file.
+                        The full report is attached as a ZIP file.
 
-                            Regards,
-                            Triskell
-                        """,
-                        to: distributionList,
-                        attachmentsPattern: "target/${env.REPORT_ZIP}"
-                    )
-                } else {
-                    emailext(
-                        subject: "Serenity BDD Pipeline Execution: ${buildResult}",
-                        body: """
-                            Hello,
-
-                            The Serenity BDD pipeline execution has completed with status: ${buildResult}.
-
-                            Execution details:
-                            - Driver: ${params.DRIVER}
-                            - Environment: ${env.ACTUAL_ENVIRONMENT}
-                            - Tags: ${params.TAGS}
-
-                            However, the Serenity report could not be found.
-
-                            Regards,
-                            Triskell
-                        """,
-                        to: distributionList
-                    )
-                }
+                        Regards,
+                        Triskell
+                    """,
+                    to: distributionList,
+                    attachmentsPattern: "target/${env.REPORT_ZIP}"
+                )
             }
         }
     }
