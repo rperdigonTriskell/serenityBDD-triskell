@@ -2,6 +2,7 @@ package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actors.OnStage;
 import starter.Constants;
 
@@ -57,11 +58,9 @@ public class ElementDataVerifier {
         // Process the DataTable into a list of maps
         List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
 
-        performAttemptsTo("{0} wait for {1}",waitUntil(context, Constants.STATES.VISIBLE.getState()));
-        VerifyTableElements verifyTask = new VerifyTableElements(context, expectedData);
         performAttemptsTo(
                 "verify the following elements on the {0} should match the expected data",
-                verifyTask
+                new VerifyTableElements(context, expectedData)
         );
     }
 }

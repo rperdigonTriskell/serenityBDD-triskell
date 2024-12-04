@@ -45,6 +45,7 @@ Feature: Project parts
     When click in Automation Testing Project sidebar "Project"
     Then check to "Project" has loaded
     When send text and enter Project "Automation Testing Project" to element "search parent"
+    When wait for loading
     Then verify the following Project elements on the "project board" should match the expected data:
       | Check   | [empty] | FAV     | ATT     | NAME                       | PROJECT TYPE | DESCRIPTION | HEALTH  | WORKFLOW   | START DATE | FINISH DATE | TREND  | DELAY  | %COMPLETED | DURATION | DURATION UNIT | SCORE | TECH | RISK | EST. WORK | ACT. WORK | ACT. UNIT | PROJECT MANAGER |
       | [empty] | [empty] | [empty] | [empty] | Automation Testing Project | [empty]      | [empty]     | Correct | Initiation | [empty]    | [actual date]  | Stable | 0 days | 0 %        | 0        | [empty]       | 0     | None | None | 0 hours   | 0 Hours   | [empty]   | [empty]         |
