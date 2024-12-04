@@ -9,21 +9,21 @@ pipeline {
     }
     parameters {
         string(name: 'DRIVER', defaultValue: 'chrome', description: 'Driver del navegador (chrome, firefox, etc.)')
-        choice(name: 'ENVIRONMENT', choices: ['PROD', 'AWS'], description: 'Entorno de ejecución')
         choice(name: 'TAGS', choices: ['@PROD', '@AWS', '@Dashboard'], description: 'Tag de las pruebas a ejecutar')
     }
     stages {
-        stage('Set ENVIRONMENT to PROD on Sundays at 17:00') {
+        stage('Determine Environment') {
             steps {
                 script {
-                    def dayOfWeek = new Date().format('u') // 1 (lunes) a 7 (domingo)
-                    def currentHour = new Date().format('H') // Hora en formato 24h
-
-                    if (dayOfWeek == '7' && currentHour == '17') {
-                        echo "Es domingo a las 17:00, estableciendo ENVIRONMENT a PROD."
+                    // Detectar el entorno basado en el nombre del job
+                    if (env.JOB_NAME.contains('AWS')) {
+                        env.ACTUAL_ENVIRONMENT = 'AWS'
+                        echo "Detected AWS environment based on job name: ${env.JOB_NAME}"
+                    } else if (env.JOB_NAME.contains('PROD')) {
                         env.ACTUAL_ENVIRONMENT = 'PROD'
+                        echo "Detected PROD environment based on job name: ${env.JOB_NAME}"
                     } else {
-                        env.ACTUAL_ENVIRONMENT = params.ENVIRONMENT
+                        error "Unable to determine environment. Please ensure job name includes 'AWS' or 'PROD'."
                     }
                 }
             }
@@ -78,7 +78,7 @@ pipeline {
 
                 // Enviar correo con el ZIP siempre, incluso si no hay reporte generado
                 emailext(
-                    subject: "Serenity BDD Pipeline Execution: ${buildResult}",
+                    subject: "Serenity BDD Pipeline Execution: ${buildResult} [${env.ACTUAL_ENVIRONMENT}]",
                     body: """
                         Hello,
 
