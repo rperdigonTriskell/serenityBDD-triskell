@@ -3,7 +3,11 @@ package starter.tasks;
 
 import net.serenitybdd.core.Serenity;
 import net.thucydides.core.pages.PageObject;
+import starter.Constants;
 import starter.pageselectors.factory.PageFactory;
+
+import static starter.Constants.PROJECT_CONTEXT;
+import static starter.tasks.GenericTasks.performAttemptsTo;
 
 
 public class IsLoad extends PageObject {
@@ -15,8 +19,7 @@ public class IsLoad extends PageObject {
      */
     public static void isLoadPage(String pageName) {
         PageFactory.setCurrentPage(pageName);
-        Serenity.recordReportData().withTitle("visible page: ").andContents(pageName);
-        VerifyElementVisibility.verifyElementIsVisible(pageName);
+        performAttemptsTo("visible page: ",VerifyElementVisibility.verifyElementIsVisible(pageName));
     }
 
     /**

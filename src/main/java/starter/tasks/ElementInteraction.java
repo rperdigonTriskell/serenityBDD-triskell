@@ -18,7 +18,7 @@ import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitElement.getWaitClicableTarget;
 import static starter.tasks.WaitElement.getWaitVisibleTarget;
-import static starter.tasks.WaitFor.*;
+import static starter.tasks.WaitForTask.*;
 
 
 public class ElementInteraction {
@@ -99,8 +99,8 @@ public class ElementInteraction {
         Target targetElement = getTarget(target);
 
         return Task.where("{0} waits for and right-clicks on selector",
-                WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
-                WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+                WaitForTask.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                WaitForTask.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                 RightClick.on(targetElement) // Right-click action
         );
     }
@@ -118,8 +118,8 @@ public class ElementInteraction {
         Target targetElement = getTarget(target);
 
         return Task.where("{0} waits for and right-clicks on selector",
-                WaitFor.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
-                WaitFor.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
+                WaitForTask.waitUntil(targetElement, Constants.STATES.VISIBLE.getState()),
+                WaitForTask.waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                 DoubleClick.on(targetElement)
         );
     }
@@ -149,7 +149,7 @@ public class ElementInteraction {
         // Find the web table based on the provided context
         Target table = getTarget(board);
 
-        performAttemptsTo("{0} waits for table to be visible", WaitFor.waitUntil(board,Constants.STATES.VISIBLE.getState()));
+        performAttemptsTo("{0} waits for table to be visible", WaitForTask.waitUntil(board,Constants.STATES.VISIBLE.getState()));
 
         // Find the table rows on the web
         List<WebElementFacade> rows = getTableRows(table);
@@ -188,7 +188,7 @@ public class ElementInteraction {
         WebElementFacade element = getWebelementFacade("loading");
         waitFor(element, Constants.STATES.VISIBLE.getState());
         element.waitForCondition().until(driver -> !element.isVisible());
-        performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", Constants.STATES.INVISIBLE.getState()));
+        performAttemptsTo("{0} wait for loading", WaitForTask.waitUntil("loading", Constants.STATES.INVISIBLE.getState()));
     }
 
 }

@@ -1,6 +1,5 @@
 package starter.tasks;
 
-import io.cucumber.java.ja.且つ;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
@@ -17,11 +16,11 @@ import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.pageselectors.factory.PageFactory.getStaticDriver;
 import static starter.tasks.GenericTasks.*;
 
-public class WaitFor implements Task {
+public class WaitForTask implements Task {
     private final Target target;
     private final String state;
 
-    public WaitFor(Target target, String state) {
+    public WaitForTask(Target target, String state) {
         this.target = target;
         this.state = state.toLowerCase();
     }
@@ -52,16 +51,16 @@ public class WaitFor implements Task {
     }
 
     // Factory Methods
-    public static WaitFor waitUntil(Target target, String state) {
-        return new WaitFor(target, state);
+    public static WaitForTask waitUntil(Target target, String state) {
+        return new WaitForTask(target, state);
     }
 
-    public static WaitFor waitUntil(String target, String state) {
-        return new WaitFor(getTarget(target), state);
+    public static WaitForTask waitUntil(String target, String state) {
+        return new WaitForTask(getTarget(target), state);
     }
 
-    public static WaitFor waitUntil(By locator, String state) {
-        return new WaitFor(Target.the("element").located(locator), state);
+    public static WaitForTask waitUntil(By locator, String state) {
+        return new WaitForTask(Target.the("element").located(locator), state);
     }
 
     //Other waits methods

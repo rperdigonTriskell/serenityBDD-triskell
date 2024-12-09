@@ -15,7 +15,7 @@ public class ProjectPage extends AbstractPage {
      */
     @Override
     public Map mapSelectors() {
-        mapSelectors.put(PROJECT, By.cssSelector("table[id*='gridview']"));
+        mapSelectors.put(PROJECT, By.xpath("("+linkXpathText("Project")+")[2]"));
         mapSelectors.put(PROJECT_CONTEXT + "add Project", By.xpath("("+linkXpathText("Project")+")[2]"));
         mapSelectors.put(PROJECT_CONTEXT + "Create New Project", By.xpath("(//div[contains(@id, 'tkBodyWindow')])[1]"));
         //

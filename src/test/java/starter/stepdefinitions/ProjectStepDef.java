@@ -5,13 +5,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.targets.Target;
-import starter.tasks.VerifyElementVisibility;
-import starter.tasks.WaitFor;
+import starter.tasks.WaitForTask;
 
 import java.util.List;
 
 import static starter.Constants.*;
-import static starter.stepdefinitions.AutomationTestingProjectStepDef.*;
 import static starter.stepdefinitions.GenericStepDef.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
@@ -97,7 +95,7 @@ public class ProjectStepDef {
         waitLoading();
 
         Target projectTable = getTarget(PROJECT_CONTEXT + "empty project board");
-        performAttemptsTo("{0}", WaitFor.waitUntil(projectTable, STATES.PRESENT.getState()));
+        performAttemptsTo("{0}", WaitForTask.waitUntil(projectTable, STATES.PRESENT.getState()));
 
         List<WebElementFacade> rows = getTableRows(projectTable);
 

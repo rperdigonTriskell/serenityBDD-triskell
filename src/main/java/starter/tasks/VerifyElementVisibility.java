@@ -25,7 +25,7 @@ public class VerifyElementVisibility implements Task {
         String visibilityState = visibility.toLowerCase();
 
         // wait until the element parameter visibility state
-        actor.attemptsTo(WaitFor.waitUntil(locator, visibilityState));
+        actor.attemptsTo(WaitForTask.waitUntil(locator, visibilityState));
 
         if (visibilityState.equals(STATES.VISIBLE.getState())) { // visible
             performShouldSeeThat("{0} verifies that the element {1} is visible",

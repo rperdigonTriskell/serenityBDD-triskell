@@ -1,9 +1,6 @@
 package starter.tasks;
 
 import io.cucumber.datatable.DataTable;
-import net.serenitybdd.core.pages.WebElementFacade;
-import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.actors.OnStage;
 import starter.Constants;
 
 import java.util.List;
@@ -11,9 +8,8 @@ import java.util.Map;
 
 import static starter.tasks.GenericTasks.getWebelementFacade;
 import static starter.tasks.GenericTasks.performAttemptsTo;
-import static starter.tasks.WaitElement.getWaitWebelementFacadeVisible;
-import static starter.tasks.WaitFor.waitFor;
-import static starter.tasks.WaitFor.waitUntil;
+import static starter.tasks.WaitForTask.waitFor;
+import static starter.tasks.WaitForTask.waitUntil;
 
 public class ElementDataVerifier {
 

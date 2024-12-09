@@ -6,16 +6,14 @@ import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
 import starter.Constants;
 
 import java.util.List;
 
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitFor.*;
+import static starter.tasks.WaitForTask.*;
 
 public class WaitElement {
 

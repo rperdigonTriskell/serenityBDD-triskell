@@ -3,14 +3,13 @@ package starter.stepdefinitions;
 import io.cucumber.java.en.*;
 import net.serenitybdd.screenplay.targets.Target;
 import starter.tasks.DragAndDropBetweenElements;
-import starter.tasks.DragAndDropToElements;
 
 import static starter.Constants.*;
 import static starter.stepdefinitions.GenericStepDef.waitLoading;
 import static starter.tasks.ElementDataVerifier.verifyElementTextIs;
 import static starter.tasks.ElementInteraction.clickOnTarget;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitFor.waitForVisibility;
+import static starter.tasks.WaitForTask.waitForVisibility;
 import static starter.tasks.utils.LaboralHours.getLaboralHours;
 
 public class AutomationTestingProjectResourceBoardsStepDef {

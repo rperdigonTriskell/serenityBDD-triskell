@@ -2,12 +2,11 @@ package starter.stepdefinitions;
 
 import io.cucumber.datatable.DataTable;
 import net.serenitybdd.core.pages.WebElementFacade;
-import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
 import starter.Constants;
 import starter.tasks.FillTableWithValues;
-import starter.tasks.WaitFor;
+import starter.tasks.WaitForTask;
 
 import java.util.*;
 
@@ -19,8 +18,6 @@ import static starter.tasks.GenericTasks.*;
 import static starter.tasks.IsLoad.isLoadPage;
 import static starter.tasks.SendTextTo.*;
 import static starter.tasks.WaitElement.*;
-
-import static starter.tasks.WaitFor.*;
 
 public class TimesheetTasks {
 
@@ -37,7 +34,7 @@ public class TimesheetTasks {
 
         performAttemptsTo(
                 "{0} waits for table to be visible",
-                WaitFor.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
+                WaitForTask.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
         );
 
         List<WebElementFacade> rows = getTableRows(targetTable);
@@ -67,7 +64,7 @@ public class TimesheetTasks {
 
         ifCanNotDeleteTimesheet();
         
-        performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
+        performAttemptsTo("{0} waits for Yes button to disappear", WaitForTask.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
     }
 
     /**
@@ -76,17 +73,17 @@ public class TimesheetTasks {
      * element to disappear.
      */
     public static void addTimesheetActivity() {
-        performAttemptsTo("{0}", WaitFor.waitUntil(TIMESHEET_BOARD + "Add Activities", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitForTask.waitUntil(TIMESHEET_BOARD + "Add Activities", STATES.VISIBLE.getState()));
         clickOnTarget(TIMESHEET_BOARD + "Add Activities");
-        performAttemptsTo("{0}", WaitFor.waitUntil("Search", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitForTask.waitUntil("Search", STATES.VISIBLE.getState()));
         input("Automation Test Task", "Search");
-        performAttemptsTo("{0}", WaitFor.waitUntil("Search icon", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitForTask.waitUntil("Search icon", STATES.VISIBLE.getState()));
         clickOnTarget("Search icon");
-        performAttemptsTo("{0}", WaitFor.waitUntil("first search result", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitForTask.waitUntil("first search result", STATES.VISIBLE.getState()));
         clickOnTarget("first search result");
-        performAttemptsTo("{0}", WaitFor.waitUntil("Add & Close", STATES.VISIBLE.getState()));
+        performAttemptsTo("{0}", WaitForTask.waitUntil("Add & Close", STATES.VISIBLE.getState()));
         clickOnTarget("Add & Close");
-        performAttemptsTo("{0}", WaitFor.waitUntil("Add & Close", STATES.INVISIBLE.getState()));
+        performAttemptsTo("{0}", WaitForTask.waitUntil("Add & Close", STATES.INVISIBLE.getState()));
     }
 
 
@@ -115,7 +112,7 @@ public class TimesheetTasks {
      */
     public static void fillTableWithValues(By tableSelector, List<Map<String, String>> rowsData) {
         // wait for the table to be visible
-        performAttemptsTo("{0} waits for table to be visible", WaitFor.waitUntil(tableSelector, Constants.STATES.VISIBLE.getState()));
+        performAttemptsTo("{0} waits for table to be visible", WaitForTask.waitUntil(tableSelector, Constants.STATES.VISIBLE.getState()));
         for (int rowIndex = 0; rowIndex < rowsData.size(); rowIndex++) {
             Map<String, String> rowData = rowsData.get(rowIndex);
 
@@ -127,7 +124,7 @@ public class TimesheetTasks {
 
                 //  wait and re ubicate the table before interacting with the cell
                 Target updatedTable = getTarget(tableSelector);
-                performAttemptsTo("{0} waits for table to be visible", WaitFor.waitUntil(updatedTable, Constants.STATES.VISIBLE.getState()));
+                performAttemptsTo("{0} waits for table to be visible", WaitForTask.waitUntil(updatedTable, Constants.STATES.VISIBLE.getState()));
 
                 // locate the cell
                 WebElementFacade cell = getTimesheetTableCell(updatedTable, rowIndex, colIndex);
@@ -167,7 +164,7 @@ public class TimesheetTasks {
         // click on the cell to refresh the DOM
         clickOnTarget(cell);
 
-        performAttemptsTo("{0} waits for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
+        performAttemptsTo("{0} waits for loading", WaitForTask.waitUntil("loading", STATES.INVISIBLE.getState()));
 
         // wait for the input to be visible
         List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
@@ -207,7 +204,7 @@ public class TimesheetTasks {
                 clickOnTarget(submit);
                 clickOnTarget(TIMESHEET_BOARD + "Delete");
                 clickOnTarget(TIMESHEET_CONTEXT + "Yes");
-                performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
+                performAttemptsTo("{0} waits for Yes button to disappear", WaitForTask.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
             }
         }
     }
