@@ -12,13 +12,15 @@ import starter.tasks.WaitFor;
 import java.util.*;
 
 import static starter.Constants.*;
-import static starter.pageselectors.factory.PageFactory.getCurrentPage;
+import static starter.pageselectors.factory.PageFactory.*;
 import static starter.tasks.ElementInteraction.*;
+import static starter.tasks.ElementInteraction.waitLoadingInteraction;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.GenericTasks.performAttemptsTo;
+import static starter.tasks.IsLoad.isLoadPage;
 import static starter.tasks.SendTextTo.*;
-import static starter.tasks.WaitFor.waitFor;
-import static starter.tasks.WaitFor.waitForElementPresent;
+import static starter.tasks.WaitElement.*;
+
+import static starter.tasks.WaitFor.*;
 
 public class TimesheetTasks {
 
@@ -29,13 +31,7 @@ public class TimesheetTasks {
      * @param action     the action to perform ("add" or "delete")
      */
     public static void manageTimesheetTable(String tableState, String action) {
-        Target targetTable = getTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX + " empty");
-        performAttemptsTo(
-                "{0} waits for table to be visible",
-                WaitFor.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
-        );
-
-        List<WebElementFacade> rows = getTableRows(targetTable);
+        Target targetTable = getWaitVisibleTarget(TIMESHEET_BOARD + ACTIVITY + BOARD_SUFFIX + " empty");
 
         ifBlueColorThenEmptyTimesheetTimeTable();
 
@@ -44,7 +40,7 @@ public class TimesheetTasks {
                 WaitFor.waitUntil(targetTable, Constants.STATES.VISIBLE.getState())
         );
 
-        rows = getTableRows(targetTable);
+        List<WebElementFacade> rows = getTableRows(targetTable);
 
         if (tableState.equals(EMPTY)) {
             if (rows.isEmpty() && ADD.equals(action)) {
@@ -68,6 +64,9 @@ public class TimesheetTasks {
         clickOnTarget(TIMESHEET_CONTEXT + "all activities checkbox");
         clickOnTarget(TIMESHEET_BOARD + "Delete");
         clickOnTarget(TIMESHEET_CONTEXT + "Yes");
+
+        ifCanNotDeleteTimesheet();
+        
         performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
     }
 
@@ -102,19 +101,10 @@ public class TimesheetTasks {
         List<Map<String, String>> rowsData = getListFromDatatable(dataTable);
 
         // Get the table's selector
-        By tableSelector = getCurrentPage().getSelector(tableName);
-
-        // Wait for the table to be visible
-        performAttemptsTo(
-                "{0} waits for table to be visible",
-                WaitFor.waitUntil(tableSelector, Constants.STATES.VISIBLE.getState())
-        );
+        By tableSelector = getWaitVisibleSelector(tableName);
 
         // Fill the table with the provided values
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                FillTableWithValues.inTable(tableSelector, rowsData)
-        );
-
+        performAttemptsTo("{0} fills the table", FillTableWithValues.inTable(tableSelector, rowsData));
     }
 
     /**
@@ -192,9 +182,7 @@ public class TimesheetTasks {
      * fills the table with default values.
      */
     public static void ifBlueColorThenEmptyTimesheetTimeTable() {
-        Target timetable = getTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX + " empty");
-
-        waitForElementPresent(timetable);
+        Target timetable = getWaitPresentTarget(TIMESHEET_BOARD + TIME + BOARD_SUFFIX + " empty");
 
         List<Map<String, String>> rowsData = new ArrayList<>();
         Map<String, String> rowData = new HashMap<>();
@@ -204,21 +192,50 @@ public class TimesheetTasks {
         rowData.put("THU", "");
         rowData.put("FRI", "");
         rowsData.add(rowData);
+
         if (!getTableRows(timetable).isEmpty()) {
             String timerows = getTableRows(timetable).get(0).thenFindAll(By.cssSelector("td > div")).get(0).getCssValue("color");
             if (timerows.equals("rgba(33, 150, 243, 1)")) {
-                OnStage.theActorInTheSpotlight().attemptsTo(
-                        FillTableWithValues.inTable(getCurrentPage().getSelector(TIMESHEET_BOARD + TIME + BOARD_SUFFIX), rowsData)
+                performAttemptsTo(
+                        "{0} fills the table with default values",
+                        FillTableWithValues.inTable(getCurrentPage().getSelector(TIMESHEET_BOARD + TIME + BOARD_SUFFIX),
+                                rowsData)
                 );
-                Target submit = getTarget(TIMESHEET_BOARD + "Submit Timesheet");
+                Target submit = getWaitVisibleTarget(TIMESHEET_BOARD + "Submit Timesheet");
                 clickOnTarget(submit);
-                submit = getTarget(TIMESHEET_CONTEXT + "Submit");
+                submit = getWaitVisibleTarget(TIMESHEET_CONTEXT + "Submit");
                 clickOnTarget(submit);
-                WaitFor.waitUntil(submit, Constants.STATES.VISIBLE.getState());
                 clickOnTarget(TIMESHEET_BOARD + "Delete");
                 clickOnTarget(TIMESHEET_CONTEXT + "Yes");
                 performAttemptsTo("{0} waits for Yes button to disappear", WaitFor.waitUntil(TIMESHEET_CONTEXT + "Yes", STATES.INVISIBLE.getState()));
             }
+        }
+    }
+
+    /**
+     * Checks if the user can not delete the timesheet.
+     */
+    public static void ifCanNotDeleteTimesheet() {
+        Target message = getWaitVisibleTarget(TIMESHEET_CONTEXT + "message can not delete");
+        if (message.isVisibleFor(getActor())) {
+            clickOnTarget(getWaitVisibleTarget(TIMESHEET_CONTEXT + "ok"));
+            clickOnTarget(getWaitVisibleTarget(SIDEBAR_CONTEXT + "Project"));
+            isLoadPage(PROJECT);
+            inputAndEnter(PROJECT_CONTEXT + "search parent", MANUAL_TESTING_PROJECT);
+            waitLoadingInteraction();
+            clickOnTarget(getWaitVisibleTarget(PROJECT_CONTEXT + "arrow"));
+            ///
+            isLoadPage(MANUAL_TESTING_PROJECT);
+            clickOnTarget(getWaitVisibleTarget("Gantt Chart"));
+            isLoadPage(MANUAL_TESTING_PROJECT_GANTT_CHART);
+            clickOnTarget(getWaitVisibleTarget("OK"));
+            clickOnTarget(getWaitVisibleTarget("Automation Test Task"));
+            clickOnTarget(getWaitVisibleTarget("Remove"));
+            clickOnTarget(getWaitVisibleTarget("OK"));
+            clickOnTarget(getWaitVisibleTarget("Create"));
+            clickOnTarget(getWaitVisibleTarget("Task"));
+            input("Automation Test Task",getWaitVisiWebelementFacadeVisible("Name"));
+            clickOnTarget(getWaitVisibleTarget("Save"));
         }
     }
 }

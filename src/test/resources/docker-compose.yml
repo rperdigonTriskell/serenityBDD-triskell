@@ -1,4 +1,5 @@
-version: "3"
+version: '3.8'
+
 services:
   selenium-hub:
     image: selenium/hub:latest
@@ -10,7 +11,7 @@ services:
       - GRID_BROWSER_TIMEOUT=300
       - GRID_TIMEOUT=300
 
-  chrome:
+  chrome_1:
     image: selenium/node-chrome:latest
     volumes:
       - /dev/shm:/dev/shm

@@ -42,8 +42,8 @@ public class DashboardPage extends AbstractPage {
         mapSelectors.put(HEADING_CONTEXT + "Create", By.xpath("//span[text()='Create ...']/ancestor::a"));
         mapSelectors.put(HEADING_CONTEXT + "Configuration icon", By.cssSelector("a[data-qtip='Go to Configuration Environment']"));
         mapSelectors.put(HEADING_CONTEXT + "Supersede icon", By.cssSelector("a[data-qtip='Supersede a User']"));
-        mapSelectors.put(HEADING_CONTEXT + "Notifications icon", By.cssSelector("a[data-qtip='Supersede a User'] ~ a:has(svg)"));
-        mapSelectors.put(HEADING_CONTEXT + "User icon", By.cssSelector("a:has(div.avatar.user-image)"));
+        mapSelectors.put(HEADING_CONTEXT + "Notifications icon", By.cssSelector("a.notifications-button"));
+        mapSelectors.put(HEADING_CONTEXT + "User icon", By.cssSelector("a.user-avatar-link"));
         mapSelectors.put(HEADING_CONTEXT + HOME_PAGE, By.xpath("//a[.//span[contains(@class, 'x-tab-inner x-tab-inner-center') and text()='Home page']]"));
         mapSelectors.put(HEADING_CONTEXT + "Activity Feed", By.xpath(linkXpathText("Activity Feed")));
         mapSelectors.put(HEADING_CONTEXT + "Resource Costs Budget", By.xpath("//a[.//span[text()='Resource Costs Budget']]"));

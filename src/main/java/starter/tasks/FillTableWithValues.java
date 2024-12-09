@@ -3,18 +3,16 @@ package starter.tasks;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.actions.Clear;
-import net.serenitybdd.screenplay.actions.Click;
-import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
-import net.serenitybdd.screenplay.waits.WaitUntil;
 import org.openqa.selenium.By;
 
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
-import static starter.Constants.*;
+import static starter.tasks.ElementInteraction.clickOnTarget;
+import static starter.tasks.ElementInteraction.waitLoadingInteraction;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitFor.waitForVisibility;
+import static starter.tasks.SendTextTo.input;
+import static starter.tasks.WaitElement.*;
+import static starter.tasks.WaitElement.getWaitWebelementFacadeVisible;
 
 import java.util.List;
 import java.util.Map;
@@ -35,11 +33,6 @@ public class FillTableWithValues implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
-        // Wait for the table to be visible
-        actor.attemptsTo(
-                WaitUntil.the(tableSelector, isVisible()).forNoMoreThan(WAIT_DURATION)
-        );
-
         for (int rowIndex = 0; rowIndex < rowsData.size(); rowIndex++) {
             Map<String, String> rowData = rowsData.get(rowIndex);
             int colIndex = 0;
@@ -48,16 +41,13 @@ public class FillTableWithValues implements Task {
                 String cellValue = rowData.get(columnName);
 
                 // Re-locate the table and wait for it to be visible
-                Target updatedTable = getTarget(tableSelector);
-                actor.attemptsTo(
-                        WaitUntil.the(updatedTable, isVisible()).forNoMoreThan(WAIT_DURATION)
-                );
+                Target updatedTable = getWaitVisibleSelector(tableSelector);
 
                 // Locate the cell
                 WebElementFacade cell = getTimesheetTableCell(updatedTable, rowIndex, colIndex);
 
                 // Enter text into the cell
-                enterTimesheetTextInCell(actor, cell, cellValue);
+                enterTimesheetTextInCell(cell, cellValue);
 
                 colIndex++;
             }
@@ -77,29 +67,11 @@ public class FillTableWithValues implements Task {
     /**
      * Enters text into the input field within a table cell.
      */
-    private void enterTimesheetTextInCell(Actor actor, WebElementFacade cell, String text) {
-        waitForVisibility(cell);
-        WaitFor.waitForClickable(cell);
-        actor.attemptsTo(
-                Click.on(cell)  // Click to refresh DOM and reveal input
-        );
-
-
-        // Wait for input field to appear
-        WebElementFacade element = getWebelementFacade("loading");
-        element.waitForCondition().until(driver -> !element.isVisible());
-        performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
-
+    private void enterTimesheetTextInCell(WebElementFacade cell, String text) {
+        clickOnTarget(getWaitWebelementFacadeVisible(cell));
+        waitLoadingInteraction();
         List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
-
-        // Wait for the last input field to be visible
-        waitForVisibility(inputField.get(inputField.size() - 1));
-        WaitFor.waitForClickable(inputField.get(inputField.size() - 1));
-        // Enter the text in the last input field
-        actor.attemptsTo(
-                Clear.field(inputField.get(inputField.size() - 1)),
-                Enter.theValue(text).into(inputField.get(inputField.size() - 1))
-        );
+        input(text, inputField.get(inputField.size() - 1));
     }
 
     /**
@@ -128,6 +100,6 @@ public class FillTableWithValues implements Task {
      */
     public static List<WebElementFacade> getWebElementsFacadeBySelector(By selector) {
         Target targetElements = Target.the("elements list").located(selector);
-        return targetElements.resolveAllFor(OnStage.theActorInTheSpotlight());
+        return targetElements.resolveAllFor(getActor());
     }
 }

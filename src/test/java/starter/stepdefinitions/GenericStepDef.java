@@ -6,18 +6,14 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 import net.serenitybdd.core.Serenity;
-import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.targets.Target;
 import org.junit.AfterClass;
-import starter.Constants;
 import starter.tasks.*;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static starter.Constants.*;
@@ -25,7 +21,6 @@ import static starter.stepdefinitions.TimesheetTasks.*;
 import static starter.tasks.ElementDataVerifier.*;
 import static starter.tasks.ElementInteraction.*;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.GenericTasks.performAttemptsTo;
 import static starter.tasks.IsLoad.*;
 import static starter.tasks.NavigateTo.*;
 import static starter.pageselectors.factory.PageFactory.*;
@@ -38,8 +33,6 @@ public class GenericStepDef {
     /**
      * Other utilities
      */
-    // Actor for scenario
-    String actor = getCredential("username", false);
     String baseUrl;
 
     /**
@@ -48,23 +41,35 @@ public class GenericStepDef {
     @Before
     public void setTheStage(Scenario scenario) {
         OnStage.setTheStage(new OnlineCast());
-        OnStage.theActorCalled(actor);
-        Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
-        for (String tag : scenarioTags) {
-            try {
-                baseUrl = getBaseUrl(tag);
-                if (baseUrl != null) {
-                    break;
+        OnStage.theActorCalled("actor");
+
+        String environment = System.getProperty("environment");
+        if (environment != null) {
+            baseUrl = getEnvironmentBaseUrl("@" + environment);
+            System.out.println("Base URL para entorno especificado: " + baseUrl);
+        } else {
+            Set<String> scenarioTags = new HashSet<>(scenario.getSourceTagNames());
+            System.out.println("Tags del escenario: " + scenarioTags);
+
+            for (String tag : scenarioTags) {
+                try {
+                    baseUrl = getEnvironmentBaseUrl(tag);
+                    if (baseUrl != null) {
+                        System.out.println("Base URL encontrada para tag '" + tag + "': " + baseUrl);
+                        break;
+                    }
+                } catch (RuntimeException e) {
+                    System.out.println("No URL found for tag: " + tag + ", checking next tag.");
                 }
-            } catch (RuntimeException e) {
-                System.out.println("No URL found for tag: " + tag + ", checking next tag.");
             }
         }
 
         if (baseUrl == null) {
-            throw new RuntimeException("No matching environment URL found for scenario tags.");
+            throw new RuntimeException("No matching environment URL found.");
         }
     }
+
+
 
     /**
      * Sets the stage after each scenario.
@@ -241,16 +246,7 @@ public class GenericStepDef {
      */
     @Then("verify the following elements on the {string} should match the expected data:")
     public static void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
-        // Process the DataTable into a list of maps
-        List<Map<String, String>> expectedData = dataTable.asMaps(String.class, String.class);
-
-        WebElementFacade element = getWebelementFacade(context);
-        element.waitForCondition().until(driver -> element.isVisible());
-
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                WaitFor.waitUntil(context, Constants.STATES.VISIBLE.getState()),
-                 new VerifyTableElements(context, expectedData)
-        );
+        verifyElementsMatchData(context, dataTable);
     }
 
     /**
@@ -271,6 +267,16 @@ public class GenericStepDef {
     @When("left click in {string}")
     public static void leftClickIn(String element) {
         rightClickOnTarget(element);
+    }
+
+/**
+     * Clicks on an element.
+     *
+     * @param element the element to click on
+     */
+    @When("double click in {string}")
+    public static void doubleClickIn(String element) {
+        doubleClickOnTarget(element);
     }
 
     /**
@@ -343,10 +349,7 @@ public class GenericStepDef {
      */
     @Then("wait for loading")
     public static void waitLoading() {
-        WebElementFacade element = getWebelementFacade("loading");
-        waitFor(element, STATES.VISIBLE.getState());
-        element.waitForCondition().until(driver -> !element.isVisible());
-        performAttemptsTo("{0} wait for loading", WaitFor.waitUntil("loading", STATES.INVISIBLE.getState()));
+        waitLoadingInteraction();
     }
 
 
@@ -369,5 +372,15 @@ public class GenericStepDef {
     @When("moves the cursor over the element {string}")
     public static void movesTheCursorOverTheElement(String element) {
         hoverOverTarget(element);
+    }
+
+    /**
+     * Checks if a page has loaded.
+     *
+     * @param file the name of the file to check
+     */
+    @Then("check to {string} has download")
+    public static void checkToHasDownloadLoaded(String file) {
+        verifyFileNamw(file);
     }
 }

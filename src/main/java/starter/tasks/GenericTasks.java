@@ -18,7 +18,8 @@ import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.*;
 import static starter.pageselectors.factory.PageFactory.*;
-import static starter.tasks.WaitFor.waitFor;
+import static starter.tasks.WaitElement.getActor;
+import static starter.tasks.WaitElement.getWaitVisibleWebelementFacadeFromTarget;
 
 public class GenericTasks {
     /**
@@ -108,7 +109,7 @@ public class GenericTasks {
      * @return The WebElementFacade for the Target.
      */
     private static WebElementFacade resolveFacade(Target target) {
-        Actor actor = OnStage.theActorInTheSpotlight();
+        Actor actor = getActor();
         return target.resolveFor(actor);
     }
 
@@ -119,7 +120,7 @@ public class GenericTasks {
      * @return A list of WebElementFacade instances for the Target.
      */
     private static List<WebElementFacade> resolveAllFacade(Target target) {
-        Actor actor = OnStage.theActorInTheSpotlight();
+        Actor actor = getActor();
         return target.resolveAllFor(actor);
     }
 
@@ -132,46 +133,20 @@ public class GenericTasks {
      * @param <T>              The type of the question result.
      */
     public static <T> void performShouldSeeThat(String description, Function<Actor, T> questionFunction, Matcher<T> matcher) {
-        OnStage.theActorInTheSpotlight().should(
+        getActor().should(
                 seeThat(description, questionFunction::apply, matcher)
         );
     }
 
     /**
-     * Executes a task as the actor in the spotlight.
+     * Executes one or more tasks as the actor in the spotlight.
      *
-     * @param description a description of the task
-     * @param task        the task to be executed
+     * @param description a description of the actions being executed
+     * @param actions     the tasks or actions to be executed
      */
-    public static void performAttemptsTo(String description, Task task) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                Task.where(description, task)
-        );
-    }
-
-    /**
-     * Executes a task as the actor in the spotlight.
-     *
-     * @param description a description of the task
-     * @param task1       the task to be executed
-     * @param task2       the task to be executed
-     */
-    public static void performAttemptsTo(String description, Task task1, Task task2) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                Task.where(description, task1),
-                Task.where(description, task2)
-        );
-    }
-
-    /**
-     * Executes a task as the actor in the spotlight.
-     *
-     * @param description a description of the task
-     * @param performable the task to be executed
-     */
-    public static void performAttemptsTo(String description, Performable performable) {
-        OnStage.theActorInTheSpotlight().attemptsTo(
-                Task.where(description, performable)
+    public static void performAttemptsTo(String description, Performable... actions) {
+        getActor().attemptsTo(
+                Task.where(description, actions)
         );
     }
 
@@ -205,7 +180,7 @@ public class GenericTasks {
      * @return a list of WebElements representing the table rows
      */
     public static List<WebElementFacade> getTableRows(Target targetTable) {
-        WebElementFacade table = getWebelementFacadeFromTarget(targetTable);
+        WebElementFacade table = getWaitVisibleWebelementFacadeFromTarget(targetTable);
         List<WebElementFacade> rows;
         if (!table.findElements(By.xpath(".//table")).isEmpty()) {
             rows = table.thenFindAll(By.xpath(".//table//tbody//tr"));
@@ -236,4 +211,7 @@ public class GenericTasks {
         return dataTable.asMaps(String.class, String.class);
     }
 
+    public static void verifyFileNamw(String fileName) {
+        performAttemptsTo("verify that the file name is {0}", VerifyFileDownloaded.withNameInRemotePath(fileName));
+    }
 }

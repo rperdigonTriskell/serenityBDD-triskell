@@ -7,9 +7,11 @@ import starter.tasks.DragAndDropToElements;
 
 import static starter.Constants.*;
 import static starter.stepdefinitions.GenericStepDef.waitLoading;
+import static starter.tasks.ElementDataVerifier.verifyElementTextIs;
 import static starter.tasks.ElementInteraction.clickOnTarget;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.WaitFor.waitForVisibility;
+import static starter.tasks.utils.LaboralHours.getLaboralHours;
 
 public class AutomationTestingProjectResourceBoardsStepDef {
     /**
@@ -41,5 +43,15 @@ public class AutomationTestingProjectResourceBoardsStepDef {
         );
 
         waitLoading();
+    }
+
+    /**
+     * Verifies the text of an element.
+     *
+     * @param element the element to verify
+     */
+    @Then("verify the text element {string} is calculated in this month by 8 hour by day")
+    public void verifyTheTextElementIs(String element) {
+        verifyElementTextIs(element, getLaboralHours());
     }
 }

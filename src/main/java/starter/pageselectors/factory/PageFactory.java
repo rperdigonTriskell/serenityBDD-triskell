@@ -29,6 +29,8 @@ public class PageFactory extends PageObject {
         put(AUTOMATION_TESTING_PROJECT_RESOURCE_BOARDS, initElements(getStaticDriver(), AutomationTestingProjectResourceBoardsPage.class));
         put(AUTOMATION_TESTING_PROJECT_GANTT_CHART, initElements(getStaticDriver(), AutomationTestingProjectGantChartPage.class));
         put(ADD_RESOURCES, initElements(getStaticDriver(), AddResourcesPage.class));
+        put(MANUAL_TESTING_PROJECT, initElements(getStaticDriver(), ManualTestingProjectPage.class));
+        put(MANUAL_TESTING_PROJECT_GANTT_CHART, initElements(getStaticDriver(), ManualTestingProjectGanttChartPage.class));
     }};
 
     /**

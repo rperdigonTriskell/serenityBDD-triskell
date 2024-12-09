@@ -63,8 +63,8 @@ public class TimesheetPage extends AbstractPage {
         //Timesheet Submit
         mapSelectors.put(TIMESHEET_CONTEXT + TIMESHEET_CONTEXT + "Submit", By.xpath("(//div[contains(@id, 'tkBodyWindow')])[1]"));
         mapSelectors.put(TIMESHEET_CONTEXT + "Submit", By.xpath("//a[.//span[text()='Submit']]"));
-
-
+        //other messages
+        mapSelectors.put(TIMESHEET_CONTEXT + "message can not delete", By.cssSelector("div[id*='displayfield-inputEl']"));
         return mapSelectors;
     }
 }
