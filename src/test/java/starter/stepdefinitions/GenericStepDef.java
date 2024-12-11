@@ -42,6 +42,22 @@ public class GenericStepDef {
         OnStage.setTheStage(new OnlineCast());
         OnStage.theActorCalled("actor");
 
+        // First, check if we can reach the URL with the certificates via Docker
+        try {
+            String command = "docker exec -it zalenium curl -v --cert /usr/local/share/ca-certificates/extra/genericClient.cer --key /usr/local/share/ca-certificates/extra/genericClient.privkey.pem https://tkaws.triskellsoftware.com:8443/triskell/";
+            Process process = Runtime.getRuntime().exec(command);
+            int exitCode = process.waitFor();  // Wait for the process to complete
+
+            if (exitCode != 0) {
+                System.out.println("Error: Unable to reach the URL with SSL certificates.");
+            } else {
+                System.out.println("Successfully connected to the URL with SSL certificates.");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("Exception occurred while trying to execute the curl command: " + e.getMessage());
+        }
+
         String environment = System.getProperty("environment");
         if (environment != null) {
             baseUrl = getEnvironmentBaseUrl("@" + environment);
