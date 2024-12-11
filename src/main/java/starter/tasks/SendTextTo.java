@@ -21,7 +21,7 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void input(String text, String element) {
-        Target target = getWaitVisibleTarget(element);
+        Target target = WaitElement.getVisibleTargetWithWait(element);
         performAttemptsTo(
                 "clear {1} and input text",
                 Clear.field(target),
@@ -35,7 +35,7 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void inputAndEnter(String text, String element) {
-        Target target = getWaitVisibleTarget(element);
+        Target target = WaitElement.getVisibleTargetWithWait(element);
         performAttemptsTo(
                 "clear {1}, input text and hit enter",
                 Clear.field(target),
@@ -50,7 +50,7 @@ public class SendTextTo {
      * @param element the element to input the text into
      */
     public static void input(String text, WebElementFacade element) {
-        element = getWaitWebelementFacadeVisible(element);
+        element = getVisibleWebelementFacadeWithWait(element);
         performAttemptsTo(
                 "clear {1} and input text",
                 Clear.field(element),

@@ -3,6 +3,7 @@ package starter.stepdefinitions;
 import io.cucumber.java.en.*;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.targets.Target;
+import starter.tasks.WaitElement;
 
 import java.util.List;
 
@@ -16,18 +17,18 @@ public class AutomationTestingProjectGantChartStepDef {
     @When("click in {int} days more")
     public static void clickOnDayAfterLaboralDays(int daysToMove) {
         // Get the calendar and active day elements
-        Target calendar = getWaitVisibleTarget("calendar");
-        Target activeDay = getWaitVisibleTarget("active day");
+        Target calendar = WaitElement.getVisibleTargetWithWait("calendar");
+        Target activeDay = WaitElement.getVisibleTargetWithWait("active day");
 
         // Get the current day as an integer
-        int currentDay = Integer.parseInt(activeDay.resolveFor(getActor()).getText());
+        int currentDay = Integer.parseInt(activeDay.resolveFor(getCurrentActor()).getText());
 
         // Calculate the target business day
         int targetDay = calculateLaboralDaysFromStartDay(currentDay, daysToMove);
 
         // Retrieve the list of calendar days
-        List<WebElementFacade> daysInCalendar = calendar.resolveFor(getActor())
-                .thenFindAll(getWaitVisibleSelector("days calendar"));
+        List<WebElementFacade> daysInCalendar = calendar.resolveFor(getCurrentActor())
+                .thenFindAll(getVisibleSelectorWithWait("days calendar"));
 
         // Find and click the target day
         for (int i = currentDay; i < daysInCalendar.size(); i++) {

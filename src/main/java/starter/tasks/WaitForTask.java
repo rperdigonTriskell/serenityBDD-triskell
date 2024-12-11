@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import starter.Constants;
 
+import java.util.regex.Matcher;
+
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.*;
 import static starter.Constants.WAIT_DURATION;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
@@ -38,7 +40,7 @@ public class WaitForTask implements Task {
             waitFor(webElementFacade, Constants.STATES.PRESENT.getState());
             actor.attemptsTo(WaitUntil.the(target, isPresent()).forNoMoreThan(WAIT_DURATION));
         } else if (state.equals(Constants.STATES.NOT_PRESENT.getState())) {
-            waitForElementPresent(webElementFacade);
+            waitForElementNotPresent(webElementFacade);
             actor.attemptsTo(WaitUntil.the(target, isNotPresent()).forNoMoreThan(WAIT_DURATION));
         } else if (state.equals(Constants.STATES.CLICKABLE.getState())) {
             waitForClickable(webElementFacade);
@@ -59,11 +61,15 @@ public class WaitForTask implements Task {
         return new WaitForTask(getTarget(target), state);
     }
 
+    public static WaitForTask waitUntil(WebElementFacade element, String state) {
+        return new WaitForTask(Target.the("element").locatedBy(element.getWrappedElement().toString()), state);
+    }
+
     public static WaitForTask waitUntil(By locator, String state) {
         return new WaitForTask(Target.the("element").located(locator), state);
     }
 
-    //Other waits methods
+    // Other waits methods
     private static WebDriver driver = getStaticDriver();
 
     public static void waitFor(Object element, String state) {
@@ -115,7 +121,6 @@ public class WaitForTask implements Task {
         waitForInvisibility(getWebelementFacade(element));
     }
 
-
     public static void waitForClickable(WebElementFacade element) {
         retryOnStaleElement(() -> new WebDriverWait(driver, WAIT_DURATION)
                 .until(ExpectedConditions.elementToBeClickable(element)));
@@ -134,13 +139,12 @@ public class WaitForTask implements Task {
         waitForClickable(getWebelementFacade(element));
     }
 
-    // Espera explícita para que el elemento esté presente usando WebElementFacade
     public static void waitForElementPresent(WebElementFacade element) {
         retryOnStaleElement(() -> element.waitUntilPresent());
     }
 
     public static void waitForElementPresent(Target target) {
-        WebElement element = target.resolveFor(getStaticDriver()); // Resolver el Target en un WebElement
+        WebElement element = target.resolveFor(getStaticDriver());
         retryOnStaleElement(() -> new WebDriverWait(driver, WAIT_DURATION)
                 .until(ExpectedConditions.visibilityOf(element)));
     }
@@ -160,39 +164,32 @@ public class WaitForTask implements Task {
         waitForElementNotPresent(by);
     }
 
+    public static void waitForElementNotPresent(WebElementFacade element) {
+        retryOnStaleElement(() -> element.waitUntilNotVisible());
+    }
+
     public static void waitForElementNotPresent(By element) {
         retryOnStaleElement(() -> new WebDriverWait(driver, WAIT_DURATION)
                 .until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(element))));
     }
 
-
-    /**
-     * Retry the given action up to a defined number of times when a StaleElementReferenceException occurs.
-     * Adds a delay between retries to allow the DOM to stabilize.
-     *
-     * @param action The action to be performed that may throw a StaleElementReferenceException.
-     */
+    // Retry logic
     public static void retryOnStaleElement(Runnable action) {
         int retries = 10; // Number of retry attempts
         int retryDelay = 1000; // Delay between retries in milliseconds (1 second)
 
-        // Loop for the number of retries
         while (retries > 0) {
             try {
-                // Try to perform the action
                 action.run();
                 return; // Exit method if successful
             } catch (StaleElementReferenceException | NoSuchElementException e) {
-                // Decrement retries and check if exhausted
                 retries--;
                 if (retries == 0) {
                     throw e; // Throw exception if no more retries are left
                 }
                 try {
-                    // Sleep for the specified delay before retrying
                     Thread.sleep(retryDelay);
                 } catch (InterruptedException ie) {
-                    // Restore the interrupted status of the thread
                     Thread.currentThread().interrupt();
                 }
             }

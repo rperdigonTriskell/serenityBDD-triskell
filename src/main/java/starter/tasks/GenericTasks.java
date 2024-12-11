@@ -5,7 +5,6 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.hamcrest.Matcher;
 import org.openqa.selenium.By;
@@ -18,8 +17,7 @@ import java.util.function.Function;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.*;
 import static starter.pageselectors.factory.PageFactory.*;
-import static starter.tasks.WaitElement.getActor;
-import static starter.tasks.WaitElement.getWaitVisibleWebelementFacadeFromTarget;
+import static starter.tasks.WaitElement.*;
 
 public class GenericTasks {
     /**
@@ -109,7 +107,7 @@ public class GenericTasks {
      * @return The WebElementFacade for the Target.
      */
     private static WebElementFacade resolveFacade(Target target) {
-        Actor actor = getActor();
+        Actor actor = getCurrentActor();
         return target.resolveFor(actor);
     }
 
@@ -120,7 +118,7 @@ public class GenericTasks {
      * @return A list of WebElementFacade instances for the Target.
      */
     private static List<WebElementFacade> resolveAllFacade(Target target) {
-        Actor actor = getActor();
+        Actor actor = getCurrentActor();
         return target.resolveAllFor(actor);
     }
 
@@ -133,7 +131,7 @@ public class GenericTasks {
      * @param <T>              The type of the question result.
      */
     public static <T> void performShouldSeeThat(String description, Function<Actor, T> questionFunction, Matcher<T> matcher) {
-        getActor().should(
+        getCurrentActor().should(
                 seeThat(description, questionFunction::apply, matcher)
         );
     }
@@ -145,7 +143,7 @@ public class GenericTasks {
      * @param actions     the tasks or actions to be executed
      */
     public static void performAttemptsTo(String description, Performable... actions) {
-        getActor().attemptsTo(
+        getCurrentActor().attemptsTo(
                 Task.where(description, actions)
         );
     }
@@ -180,7 +178,7 @@ public class GenericTasks {
      * @return a list of WebElements representing the table rows
      */
     public static List<WebElementFacade> getTableRows(Target targetTable) {
-        WebElementFacade table = getWaitVisibleWebelementFacadeFromTarget(targetTable);
+        WebElementFacade table = getVisibleWebElementFacadeWithWait(targetTable);
         List<WebElementFacade> rows;
         if (!table.findElements(By.xpath(".//table")).isEmpty()) {
             rows = table.thenFindAll(By.xpath(".//table//tbody//tr"));

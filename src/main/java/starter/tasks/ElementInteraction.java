@@ -16,8 +16,7 @@ import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static starter.Constants.CHECKBOX;
 import static starter.pageselectors.factory.PageFactory.getCurrentPage;
 import static starter.tasks.GenericTasks.*;
-import static starter.tasks.WaitElement.getWaitClicableTarget;
-import static starter.tasks.WaitElement.getWaitVisibleTarget;
+import static starter.tasks.WaitElement.*;
 import static starter.tasks.WaitForTask.*;
 
 
@@ -41,7 +40,7 @@ public class ElementInteraction {
         if (target instanceof By) {
             return Task.where("{0} waits for clickable and clicks on By locator",
                     waitUntil((By) target, Constants.STATES.CLICKABLE.getState()),
-                    Click.on((By) target)
+                    Click.on(getVisibleByWithWait((By) target))
             );
         }
         if (target instanceof WebElementFacade) {
@@ -52,14 +51,14 @@ public class ElementInteraction {
             );
         }
         if (target instanceof Target) {
-            Target targetElement = (Target) target;
+            Target targetElement = WaitElement.getVisibleTargetWithWait((Target) target);
             return Task.where("{0} waits for clickable and clicks on Target",
                     waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                     Click.on(targetElement)
             );
         }
         if (target instanceof String) {
-            Target targetElement = getWaitClicableTarget((String) target);
+            Target targetElement = getClicableTargetWithWait((String) target);
             return Task.where("{0} waits for clickable and clicks on selector",
                     waitUntil(targetElement, Constants.STATES.CLICKABLE.getState()),
                     Click.on(targetElement)

@@ -3,7 +3,6 @@ package starter.tasks;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.targets.Target;
 import org.openqa.selenium.By;
 
@@ -12,7 +11,7 @@ import static starter.tasks.ElementInteraction.waitLoadingInteraction;
 import static starter.tasks.GenericTasks.*;
 import static starter.tasks.SendTextTo.input;
 import static starter.tasks.WaitElement.*;
-import static starter.tasks.WaitElement.getWaitWebelementFacadeVisible;
+import static starter.tasks.WaitElement.getVisibleWebelementFacadeWithWait;
 
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class FillTableWithValues implements Task {
                 String cellValue = rowData.get(columnName);
 
                 // Re-locate the table and wait for it to be visible
-                Target updatedTable = getWaitVisibleSelector(tableSelector);
+                Target updatedTable = getVisibleSelectorWithWait(tableSelector);
 
                 // Locate the cell
                 WebElementFacade cell = getTimesheetTableCell(updatedTable, rowIndex, colIndex);
@@ -68,7 +67,7 @@ public class FillTableWithValues implements Task {
      * Enters text into the input field within a table cell.
      */
     private void enterTimesheetTextInCell(WebElementFacade cell, String text) {
-        clickOnTarget(getWaitWebelementFacadeVisible(cell));
+        clickOnTarget(getVisibleWebelementFacadeWithWait(cell));
         waitLoadingInteraction();
         List<WebElementFacade> inputField = getWebElementsFacadeBySelector(By.cssSelector("input[name*='PERIODID_']"));
         input(text, inputField.get(inputField.size() - 1));
@@ -100,6 +99,6 @@ public class FillTableWithValues implements Task {
      */
     public static List<WebElementFacade> getWebElementsFacadeBySelector(By selector) {
         Target targetElements = Target.the("elements list").located(selector);
-        return targetElements.resolveAllFor(getActor());
+        return targetElements.resolveAllFor(getCurrentActor());
     }
 }
