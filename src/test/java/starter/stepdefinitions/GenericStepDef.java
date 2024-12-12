@@ -42,20 +42,37 @@ public class GenericStepDef {
         OnStage.setTheStage(new OnlineCast());
         OnStage.theActorCalled("actor");
 
-        // First, check if we can reach the URL with the certificates via Docker
+        // Primero, verificar que los certificados están accesibles en Docker
         try {
-            String command = "docker exec -it zalenium curl -v --cert /usr/local/share/ca-certificates/extra/genericClient.cer --key /usr/local/share/ca-certificates/extra/genericClient.privkey.pem https://tkaws.triskellsoftware.com:8443/triskell/";
-            Process process = Runtime.getRuntime().exec(command);
-            int exitCode = process.waitFor();  // Wait for the process to complete
+            // Comando para verificar los certificados en el contenedor Docker
+            String checkCommand = "docker exec -it zalenium ls /usr/local/share/ca-certificates/extra";
+            Process checkProcess = Runtime.getRuntime().exec(checkCommand);
+            int checkExitCode = checkProcess.waitFor();  // Espera a que el proceso termine
 
-            if (exitCode != 0) {
-                System.out.println("Error: Unable to reach the URL with SSL certificates.");
+            if (checkExitCode != 0) {
+                System.out.println("Error: Los certificados no están disponibles en el contenedor.");
             } else {
-                System.out.println("Successfully connected to the URL with SSL certificates.");
+                System.out.println("Certificados disponibles en el contenedor.");
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            System.out.println("Exception occurred while trying to execute the curl command: " + e.getMessage());
+            System.out.println("Ocurrió una excepción al intentar verificar los certificados: " + e.getMessage());
+        }
+
+        // Comprobar si podemos alcanzar la URL con los certificados mediante Docker
+        try {
+            String command = "docker exec -it zalenium curl -v --cert /usr/local/share/ca-certificates/extra/genericClient.cer --key /usr/local/share/ca-certificates/extra/genericClient.privkey.pem --cacert /usr/local/share/ca-certificates/extra/ca.cer https://tkaws.triskellsoftware.com:8443/triskell/";
+            Process process = Runtime.getRuntime().exec(command);
+            int exitCode = process.waitFor();  // Espera a que el proceso termine
+
+            if (exitCode != 0) {
+                System.out.println("Error: No se pudo acceder a la URL con los certificados SSL.");
+            } else {
+                System.out.println("Conexión exitosa a la URL con los certificados SSL.");
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("Ocurrió una excepción al intentar ejecutar el comando curl: " + e.getMessage());
         }
 
         String environment = System.getProperty("environment");
@@ -83,8 +100,6 @@ public class GenericStepDef {
             throw new RuntimeException("No matching environment URL found.");
         }
     }
-
-
 
     /**
      * Sets the stage after each scenario.
@@ -121,7 +136,7 @@ public class GenericStepDef {
      */
     @Given("go to web {string}")
     public void goToWeb(String url) {
-        performAttemptsTo("{0} attempts navigate to ",theWebSite(url));
+        performAttemptsTo("{0} attempts navigate to ", theWebSite(url));
     }
 
     /**
@@ -129,7 +144,7 @@ public class GenericStepDef {
      */
     @Given("go to web Triskell")
     public void goToTriskell() {
-        performAttemptsTo("{0} attempts navigate to ",theWebSite(baseUrl));
+        performAttemptsTo("{0} attempts navigate to ", theWebSite(baseUrl));
     }
 
 
@@ -140,7 +155,7 @@ public class GenericStepDef {
      */
     @Given("go to wrong web {string}")
     public void goToWrongWeb(String url) {
-        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url));
+        performAttemptsTo("{0} attempts navigate to ", theWrongWebSite(url));
     }
 
     /**
@@ -151,7 +166,7 @@ public class GenericStepDef {
      */
     @Given("go to web {string} with domain {string}")
     public void goToWebWithDomain(String url, String domain) {
-        performAttemptsTo("{0} attempts navigate to ",theWebSite(url + getCredential(domain, false)));
+        performAttemptsTo("{0} attempts navigate to ", theWebSite(url + getCredential(domain, false)));
     }
 
     /**
@@ -163,7 +178,7 @@ public class GenericStepDef {
     @Given("go to wrong web {string} with domain {string}")
     public void goToWrongWebWithDomain(String url, String domain) {
         url = url.replace("domain", getCredential(domain, false));
-        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url));
+        performAttemptsTo("{0} attempts navigate to ", theWrongWebSite(url));
     }
 
     /**
@@ -173,7 +188,7 @@ public class GenericStepDef {
      */
     @Given("go to wrong web {string} with XSS atack")
     public void goToWrongWebWithXSSAtack(String url) {
-        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url + "<script>alert('XSS')</script>"));
+        performAttemptsTo("{0} attempts navigate to ", theWrongWebSite(url + "<script>alert('XSS')</script>"));
     }
 
     /**
@@ -185,7 +200,7 @@ public class GenericStepDef {
     @Given("go to wrong web {string} with domain {string} and XSS atack")
     public void goToWrongWebWithDomainAndXSSAtack(String url, String domain) {
         url = url.replace("domain", getCredential(domain, false));
-        performAttemptsTo("{0} attempts navigate to ",theWrongWebSite(url + "<script>alert('XSS')</script>"));
+        performAttemptsTo("{0} attempts navigate to ", theWrongWebSite(url + "<script>alert('XSS')</script>"));
     }
 
     /**
@@ -201,12 +216,12 @@ public class GenericStepDef {
     /**
      * Verifies the visibility of an element.
      *
-     * @param element the element to verify
+     * @param element    the element to verify
      * @param visibility the expected visibility of the element
      */
     @Then("verify the element {string} are {string}")
     public static void verifyTheElementAre(String element, String visibility) {
-        performAttemptsTo("element {0} are: {1} ",new VerifyElementVisibility(element,visibility));
+        performAttemptsTo("element {0} are: {1} ", new VerifyElementVisibility(element, visibility));
     }
 
     /**
@@ -217,7 +232,7 @@ public class GenericStepDef {
      */
     @Then("check to the following {string} elements are:")
     public void checkFollowingElementsAre(String context, DataTable dataTable) {
-        performAttemptsTo("{0} check to the following {1} elements are:",VerifyTableElementsVisibility.verifyElementsVisibility(context,dataTable));
+        performAttemptsTo("{0} check to the following {1} elements are:", VerifyTableElementsVisibility.verifyElementsVisibility(context, dataTable));
     }
 
     /**
@@ -255,8 +270,8 @@ public class GenericStepDef {
     /**
      * Verifies that the elements on the specified context match the expected data.
      *
-     * @param  context   the context in which to verify the elements
-     * @param  dataTable the DataTable containing the expected data for the elements
+     * @param context   the context in which to verify the elements
+     * @param dataTable the DataTable containing the expected data for the elements
      */
     @Then("verify the following elements on the {string} should match the expected data:")
     public static void verifyFollowingElementsOnTheShouldMatchTheExpectedData(String context, DataTable dataTable) {
@@ -283,7 +298,7 @@ public class GenericStepDef {
         rightClickOnTarget(element);
     }
 
-/**
+    /**
      * Clicks on an element.
      *
      * @param element the element to click on
