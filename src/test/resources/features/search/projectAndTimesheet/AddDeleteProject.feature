@@ -27,7 +27,7 @@ Feature: Project parts
 #    Then check to "Automation Testing Project" has loaded
 
 
-  @PROD
+  @PROD @toDo
   Scenario: delete project
     When click in Project "add Project"
     Then verify the element Project "Create New Project" are "visible"

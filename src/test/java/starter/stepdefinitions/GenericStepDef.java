@@ -42,39 +42,6 @@ public class GenericStepDef {
         OnStage.setTheStage(new OnlineCast());
         OnStage.theActorCalled("actor");
 
-        // Primero, verificar que los certificados están accesibles en Docker
-        try {
-            // Comando para verificar los certificados en el contenedor Docker
-            String checkCommand = "docker exec -it zalenium ls /usr/local/share/ca-certificates/extra";
-            Process checkProcess = Runtime.getRuntime().exec(checkCommand);
-            int checkExitCode = checkProcess.waitFor();  // Espera a que el proceso termine
-
-            if (checkExitCode != 0) {
-                System.out.println("Error: Los certificados no están disponibles en el contenedor.");
-            } else {
-                System.out.println("Certificados disponibles en el contenedor.");
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            System.out.println("Ocurrió una excepción al intentar verificar los certificados: " + e.getMessage());
-        }
-
-        // Comprobar si podemos alcanzar la URL con los certificados mediante Docker
-        try {
-            String command = "docker exec -it zalenium curl -v --cert /usr/local/share/ca-certificates/extra/genericClient.cer --key /usr/local/share/ca-certificates/extra/genericClient.privkey.pem --cacert /usr/local/share/ca-certificates/extra/ca.cer https://tkaws.triskellsoftware.com:8443/triskell/";
-            Process process = Runtime.getRuntime().exec(command);
-            int exitCode = process.waitFor();  // Espera a que el proceso termine
-
-            if (exitCode != 0) {
-                System.out.println("Error: No se pudo acceder a la URL con los certificados SSL.");
-            } else {
-                System.out.println("Conexión exitosa a la URL con los certificados SSL.");
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            System.out.println("Ocurrió una excepción al intentar ejecutar el comando curl: " + e.getMessage());
-        }
-
         String environment = System.getProperty("environment");
         if (environment != null) {
             baseUrl = getEnvironmentBaseUrl("@" + environment);
