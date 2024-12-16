@@ -44,16 +44,18 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Construir el comando Maven con la configuración correcta
                     def mvnCommand = """
                         ${MAVEN_HOME}/bin/mvn clean verify \
-                        -Dserenity.properties=${SERENITY_ENV_FILE} \
-                        -Dserenity.credentials.file=${CREDENTIALS_FILE} \
+                        -Dserenity.properties=${env.SERENITY_ENV_FILE} \
+                        -Dserenity.credentials.file=${env.CREDENTIALS_FILE} \
                         -Dwebdriver.driver=chrome \
                         -Denvironment=${env.ACTUAL_ENVIRONMENT} \
                         -Dtags=@PROD
                     """
                     echo "Executing Maven command: ${mvnCommand}"
-                    sh mvnCommand
+                    // Ejecutar el comando Maven
+                    sh script: mvnCommand, returnStatus: true
                 }
             }
         }
@@ -64,7 +66,7 @@ pipeline {
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
-                // Compress Serenity reports
+                // Comprimir los reportes de Serenity
                 sh '''
                     mkdir -p target/site/serenity
                     if [ -d "target/site/serenity" ]; then
@@ -75,13 +77,13 @@ pipeline {
                     fi
                 '''
 
-                // Archive artifacts
+                // Archivar los artefactos generados
                 archiveArtifacts artifacts: "target/${REPORT_ZIP}", allowEmptyArchive: true
 
                 def indexPath = "target/site/serenity/index.html"
                 def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
 
-                // Email content
+                // Contenido del correo
                 def emailBody = """
                 <html>
                 <head>
@@ -112,6 +114,7 @@ pipeline {
                 </html>
                 """
 
+                // Enviar correo
                 emailext(
                     subject: "Serenity BDD Pipeline Execution: ${buildResult} [${env.ACTUAL_ENVIRONMENT}]",
                     body: emailBody,
