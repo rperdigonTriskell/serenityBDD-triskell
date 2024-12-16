@@ -44,13 +44,14 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def mvnCommand = "${MAVEN_HOME}/bin/mvn clean verify \" +
-                        "-Dserenity.properties=${SERENITY_ENV_FILE} \" +
-                        "-Dserenity.credentials.file=${CREDENTIALS_FILE} \" +
-                        "-Dwebdriver.driver=chrome \" +
-                        "-Denvironment=${env.ACTUAL_ENVIRONMENT} \" +
-                        "-Dtags=@PROD"
-
+                    def mvnCommand = """
+                        ${MAVEN_HOME}/bin/mvn clean verify \
+                        -Dserenity.properties=${SERENITY_ENV_FILE} \
+                        -Dserenity.credentials.file=${CREDENTIALS_FILE} \
+                        -Dwebdriver.driver=chrome \
+                        -Denvironment=${env.ACTUAL_ENVIRONMENT} \
+                        -Dtags=@PROD
+                    """
                     echo "Executing Maven command: ${mvnCommand}"
                     sh mvnCommand
                 }
