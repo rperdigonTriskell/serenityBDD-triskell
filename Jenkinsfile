@@ -7,10 +7,6 @@ pipeline {
         serenityEnvironmentFile = 'src/test/resources/environment.properties'
         REPORT_ZIP = 'serenity-report.zip'
     }
-    parameters {
-        string(name: 'DRIVER', defaultValue: 'chrome', description: 'Driver del navegador (chrome, firefox, etc.)')
-        choice(name: 'TAGS', choices: ['@PROD', '@AWS', '@Dashboard'], description: 'Tag de las pruebas a ejecutar')
-    }
     stages {
         stage('Determine Environment') {
             steps {
