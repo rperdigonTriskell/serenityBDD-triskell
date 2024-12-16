@@ -37,9 +37,9 @@ pipeline {
                     def mvnCommand = "${MAVEN_HOME}/bin/mvn clean verify " +
                         "-Dserenity.properties=${env.serenityEnvironmentFile} " +
                         "-Dserenity.credentials.file=${CREDENTIALS_FILE} " +
-                        "-Dwebdriver.driver=${params.DRIVER} " +
+                        "-Dwebdriver.driver=chrome " +
                         "-Denvironment=${env.ACTUAL_ENVIRONMENT} " +
-                        "-Dtags=${params.TAGS}"
+                        "-Dtags=@PROD"
 
                     echo "Ejecutando comando Maven: ${mvnCommand}"
                     sh mvnCommand
@@ -81,9 +81,9 @@ pipeline {
                         The Serenity BDD pipeline execution has completed with status: ${buildResult}.
 
                         Execution details:
-                        - Driver: ${params.DRIVER}
+                        - Driver: chrome
                         - Environment: ${env.ACTUAL_ENVIRONMENT}
-                        - Tags: ${params.TAGS}
+                        - Tags: @PROD
 
                         You can view the test report here:
                         ${indexPath}
