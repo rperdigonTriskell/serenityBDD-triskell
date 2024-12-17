@@ -13,21 +13,21 @@ Feature: Project parts
     Then check to "Project" has loaded
     When if the table Project "not empty", "delete" an Project
 
-#  @PROD @AWS
-#  Scenario: create project
-#    When click in Project "add Project"
-#    Then verify the element Project "Create New Project" are "visible"
-#    When send text Project "Automation Testing Project" to element "Name input"
-#    And click in Project "Choose Parent button"
-#    Then verify the element Project "Add Object as New Parent" are "visible"
-#    When send text Project "testing" to element "search parent"
-#    When click in Project "testing"
-#    Then verify the element Project "Create New Project" are "visible"
-#    When click in Project "save"
-#    Then check to "Automation Testing Project" has loaded
+  @PROD @AWS
+  Scenario: create project
+    When click in Project "add Project"
+    Then verify the element Project "Create New Project" are "visible"
+    When send text Project "Automation Testing Project" to element "Name input"
+    And click in Project "Choose Parent button"
+    Then verify the element Project "Add Object as New Parent" are "visible"
+    When send text Project "testing" to element "search parent"
+    When click in Project "testing"
+    Then verify the element Project "Create New Project" are "visible"
+    When click in Project "save"
+    Then check to "Automation Testing Project" has loaded
 
 
-  @PROD @toDo
+  @PROD
   Scenario: delete project
     When click in Project "add Project"
     Then verify the element Project "Create New Project" are "visible"
