@@ -40,7 +40,7 @@ pipeline {
                         "-Dserenity.credentials.file=${CREDENTIALS_FILE} " +
                         "-Dwebdriver.driver=chrome " +
                         "-Denvironment=${env.ACTUAL_ENVIRONMENT} " +
-                        "-Dtags=@PROD"
+                        "-Dtags=@${env.ACTUAL_ENVIRONMENT}"
 
                     echo "Executing Maven command: ${mvnCommand}"
                     sh mvnCommand
