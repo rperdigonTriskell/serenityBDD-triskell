@@ -55,6 +55,14 @@ pipeline {
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
+                // Ruta del video (esto debe ajustarse según cómo esté configurado Zalenium)
+                def videoPath = "/tmp/videos/test_video.mp4"  // Ajusta esta ruta según la ubicación real del video
+
+                // Verifica si el video existe y cópialo al directorio de Jenkins
+                if (fileExists(videoPath)) {
+                    sh "cp ${videoPath} target/test_video.mp4"
+                }
+
                 // Generate report zip
                 def reportPath = "target/site/serenity"
                 if (fileExists(reportPath)) {
@@ -108,7 +116,7 @@ pipeline {
                     body: emailBody,
                     mimeType: 'text/html',
                     to: env.DISTRIBUTION_LIST,
-                    attachmentsPattern: "target/${env.REPORT_ZIP}",
+                    attachmentsPattern: "target/${env.REPORT_ZIP},target/test_video.mp4",
                     attachLog: true
                 )
             }
