@@ -1,33 +1,30 @@
 pipeline {
     agent any
-
     environment {
-        MAVEN_HOME = tool(name: 'Maven 3.9.6', type: 'maven')
-        JAVA_HOME = tool(name: 'jdk-23', type: 'jdk')
+        MAVEN_HOME = tool name: 'Maven 3.9.6', type: 'maven'
+        JAVA_HOME = tool name: 'jdk-23', type: 'jdk'
         CREDENTIALS_FILE = credentials('CREDENTIALS_FILE')
         serenityEnvironmentFile = 'src/test/resources/environment.properties'
         REPORT_ZIP = 'serenity-report.zip'
         LOGO_PATH = 'src/test/resources/images/triskell.png'
         PARTNER_LOGO_PATH = 'src/test/resources/images/partner.png'
+        DISTRIBUTION_LIST = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
     }
-
     stages {
         stage('Determine Environment') {
             steps {
                 script {
                     if (env.JOB_NAME.contains('AWS')) {
                         env.ACTUAL_ENVIRONMENT = 'AWS'
-                        echo "Detected AWS environment based on job name: ${env.JOB_NAME}"
                     } else if (env.JOB_NAME.contains('PROD')) {
                         env.ACTUAL_ENVIRONMENT = 'PROD'
-                        echo "Detected PROD environment based on job name: ${env.JOB_NAME}"
                     } else {
                         error "Unable to determine environment. Please ensure job name includes 'AWS' or 'PROD'."
                     }
+                    echo "Detected environment: ${env.ACTUAL_ENVIRONMENT}"
                 }
             }
         }
-
         stage('Checkout') {
             steps {
                 git branch: 'waitImplementation',
@@ -35,7 +32,6 @@ pipeline {
                     credentialsId: 'gitCredentials'
             }
         }
-
         stage('Build') {
             steps {
                 script {
@@ -52,99 +48,54 @@ pipeline {
             }
         }
     }
-
     post {
         always {
             script {
-                // Default result handling
+                // Determine build result
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
-                // Prepare report for archiving
-                sh '''
-                    mkdir -p target/site/serenity
-                    if [ -d "target/site/serenity" ]; then
-                        zip -rq target/${REPORT_ZIP} target/site/serenity/*
-                    else
-                        echo "No files found in target/site/serenity. Generating empty ZIP."
-                        zip -rq target/${REPORT_ZIP}
-                    fi
-                '''
+                // Generate report zip
+                def reportPath = "target/site/serenity"
+                if (fileExists(reportPath)) {
+                    sh "zip -rq target/${env.REPORT_ZIP} ${reportPath}/*"
+                } else {
+                    echo "No files found at ${reportPath}. Creating an empty ZIP file."
+                    sh "zip -rq target/${env.REPORT_ZIP}"
+                }
 
-                archiveArtifacts artifacts: "target/${REPORT_ZIP}", allowEmptyArchive: true
+                // Archive artifacts
+                archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
 
-                def indexPath = "target/site/serenity/index.html"
-                def distributionList = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
-
+                // Define email body
                 def emailBody = """
                 <html>
                 <head>
                     <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            line-height: 1.6;
-                        }
-                        .header {
-                            text-align: center;
-                            margin-bottom: 20px;
-                        }
-                        .status {
-                            color: ${statusColor};
-                            font-size: 18px;
-                            font-weight: bold;
-                        }
-                        .content {
-                            border: 1px solid #ddd;
-                            padding: 20px;
-                            border-radius: 8px;
-                            background-color: #f9f9f9;
-                        }
-                        .footer {
-                            margin-top: 20px;
-                            text-align: center;
-                            font-size: 12px;
-                            color: #555;
-                            border-top: 1px solid #ddd;
-                            padding-top: 10px;
-                        }
-                        .footer img {
-                            width: 120px;
-                            margin-right: 10px;
-                        }
-                        .footer a {
-                            color: #007bff;
-                            text-decoration: none;
-                        }
+                        body { font-family: Arial, sans-serif; line-height: 1.6; }
+                        .status { color: ${statusColor}; font-size: 18px; font-weight: bold; }
+                        .content { border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9; }
+                        .footer { margin-top: 20px; text-align: center; font-size: 12px; color: #555; }
+                        .footer img { width: 120px; margin-right: 10px; }
+                        .footer a { color: #007bff; text-decoration: none; }
                     </style>
                 </head>
                 <body>
-                    <div class="header">
-                        <p class="status">Triskell Report</p>
-                    </div>
                     <div class="content">
                         <p class="status">The Serenity BDD pipeline execution has completed with status: ${buildResult}.</p>
-                        <p>Execution details:</p>
-                        <ul>
-                            <li><strong>Driver:</strong> Chrome</li>
-                            <li><strong>Environment:</strong> ${env.ACTUAL_ENVIRONMENT}</li>
-                            <li><strong>Tags:</strong> @PROD</li>
-                        </ul>
+                        <p><strong>Environment:</strong> ${env.ACTUAL_ENVIRONMENT}</p>
                         <p>You can view the test report here:</p>
-                        <a href="${indexPath}" style="color: #007bff;">${indexPath}</a>
+                        <a href="/target/site/serenity/index.html" style="color: #007bff;">Serenity Report</a>
                         <p>The full report is attached as a ZIP file.</p>
                     </div>
                     <div class="footer">
-                        <p>QA Automation Testing Team</p>
-                        <p>
-                            <a href="mailto:rperdigon@triskellsoftware.com">rperdigon@triskellsoftware.com</a><br>
-                            <a href="http://triskellsoftware.com" target="_blank">triskellsoftware.com</a>
-                        </p>
+                        <p>Testing Message | Network and System Administrator (NSA)</p>
                         <div>
-                            <img src="cid:triskell-logo" alt="Triskell Logo" width="150" />
+                            <img src="cid:triskell-logo" alt="Triskell Logo" />
                             <img src="cid:partner-logo" alt="Partner Logo" />
                         </div>
                         <p>
-                            Information on data protection: The personal data contained in this message are subject to the security measures of Art. 32 of Regulation (EU) 2016/679. For further information, please contact <a href="mailto:rgpd@triskellsoftware.com">rgpd@triskellsoftware.com</a>.
+                            For further information, contact us at <a href="mailto:rgpd@triskellsoftware.com">rgpd@triskellsoftware.com</a>.
                         </p>
                     </div>
                 </body>
@@ -156,8 +107,8 @@ pipeline {
                     subject: "Serenity BDD Pipeline Execution: ${buildResult} [${env.ACTUAL_ENVIRONMENT}]",
                     body: emailBody,
                     mimeType: 'text/html',
-                    to: distributionList,
-                    attachmentsPattern: "target/${REPORT_ZIP}",
+                    to: env.DISTRIBUTION_LIST,
+                    attachmentsPattern: "target/${env.REPORT_ZIP}",
                     attachLog: true
                 )
             }
