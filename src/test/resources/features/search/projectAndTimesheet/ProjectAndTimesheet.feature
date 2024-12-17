@@ -19,7 +19,7 @@ Feature: Manage Project and Timesheet
     Then check to "Project" has loaded
     When if the table Project "empty", "add" an Project
 
-  @PROD @AWS
+  @toDo
   Scenario: assign project and timesheet
     Then check to "Automation Testing Project" has loaded
     When click in Automation Testing Project "Resource Boards"

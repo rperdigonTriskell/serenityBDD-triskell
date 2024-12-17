@@ -1,62 +1,62 @@
-#Feature: Dashboard parts
-#
-#  Background:
-#    Given go to web Triskell
-#    Then check to "Login" has loaded
-#    When send credential "username" to element "Username"
-#    And send credential "password" to element "Password"
-#    And click in "Validate"
-#    Then check to "Dashboard" has loaded
-#
-#  @Dashboard @PROD @AWS
-#  Scenario: See All components Dashboard
-#    Then check to the following "Sidebar" elements are:
-#      | element             | visibility |
-#      | Home Page           | visible    |
-#      | Solutions           | visible    |
-#      | Portfolio           | visible    |
-#      | Project             | visible    |
-#      | Agile Task          | visible    |
-#      | Request             | visible    |
-#      | Product             | visible    |
-#      | Sprint              | visible    |
-#      | Issue               | visible    |
-#      | Department          | visible    |
-#      | Timesheet           | visible    |
-#      | Reports             | visible    |
-#      | Strategic Plan      | visible    |
-#      | Strategic Objective | visible    |
-#      | Risk                | visible    |
-#      | Task                | visible    |
-#      | Testing Comp        | visible    |
-#      | Favorites           | visible    |
-#      | IT (Team 1)         | visible    |
-#    Then check to the following "Heading" elements are:
-#      | element               | visibility |
-#      | Sidebar icon          | visible    |
-#      | Search                | visible    |
-#      | Create                | visible    |
-#      | Configuration icon    | visible    |
-#      | Supersede icon        | visible    |
-#      | Notifications icon    | visible    |
-#      | User icon             | visible    |
-#      | Home Page             | visible    |
-#      | Activity Feed         | visible    |
-#      | Resource Costs Budget | visible    |
-#      | Dashboard 1           | visible    |
-#      | +                     | visible    |
-#    Then check to the following "Dashboard" elements are:
-#      | element                     | visibility |
-#      | My Items                    | visible    |
-#      | Favorites                   | visible    |
-#      | Last Modified               | visible    |
-#      | Subscriptions               | visible    |
-#      | Favorites board             | visible    |
-#      | My Alerts and Notifications | visible    |
-#      | My Calendar View            | visible    |
-#
-#
-#
+Feature: Dashboard parts
+
+  Background:
+    Given go to web Triskell
+    Then check to "Login" has loaded
+    When send credential "username" to element "Username"
+    And send credential "password" to element "Password"
+    And click in "Validate"
+    Then check to "Dashboard" has loaded
+
+  @Dashboard @PROD @AWS
+  Scenario: See All components Dashboard
+    Then check to the following "Sidebar" elements are:
+      | element             | visibility |
+      | Home Page           | visible    |
+      | Solutions           | visible    |
+      | Portfolio           | visible    |
+      | Project             | visible    |
+      | Agile Task          | visible    |
+      | Request             | visible    |
+      | Product             | visible    |
+      | Sprint              | visible    |
+      | Issue               | visible    |
+      | Department          | visible    |
+      | Timesheet           | visible    |
+      | Reports             | visible    |
+      | Strategic Plan      | visible    |
+      | Strategic Objective | visible    |
+      | Risk                | visible    |
+      | Task                | visible    |
+      | Testing Comp        | visible    |
+      | Favorites           | visible    |
+      | IT (Team 1)         | visible    |
+    Then check to the following "Heading" elements are:
+      | element               | visibility |
+      | Sidebar icon          | visible    |
+      | Search                | visible    |
+      | Create                | visible    |
+      | Configuration icon    | visible    |
+      | Supersede icon        | visible    |
+      | Notifications icon    | visible    |
+      | User icon             | visible    |
+      | Home Page             | visible    |
+      | Activity Feed         | visible    |
+      | Resource Costs Budget | visible    |
+      | Dashboard 1           | visible    |
+      | +                     | visible    |
+    Then check to the following "Dashboard" elements are:
+      | element                     | visibility |
+      | My Items                    | visible    |
+      | Favorites                   | visible    |
+      | Last Modified               | visible    |
+      | Subscriptions               | visible    |
+      | Favorites board             | visible    |
+      | My Alerts and Notifications | visible    |
+      | My Calendar View            | visible    |
+
+
+
 ##  Identificar las funcionalidades clave de la sección web:
 ##
 ##  Observa la imagen y determina las funcionalidades principales que se deben probar. En este caso, podría ser la gestión de elementos en "My Items", la verificación de alertas y notificaciones en "My Alerts and Notifications", y la visualización de eventos en "My Calendar View".
