@@ -39,18 +39,10 @@ public class GenericStepDef {
      */
     @Before
     public void setTheStage(Scenario scenario) {
-        // Configurar el nombre dinámico del video
-        String environment = System.getProperty("environment", "defaultEnv"); // Obtenemos el entorno
-        String testName = scenario.getName(); // Usamos el nombre del escenario para el nombre del video
-
-        // Configurar la propiedad del nombre del video para Zalenium
-        String videoName = environment + "_" + testName;
-        System.setProperty("zal:name", videoName); // Establecemos el nombre del video en Zalenium
-
-
         OnStage.setTheStage(new OnlineCast());
         OnStage.theActorCalled("actor");
 
+        String environment = System.getProperty("environment");
         if (environment != null) {
             baseUrl = getEnvironmentBaseUrl("@" + environment);
             System.out.println("Base URL para entorno especificado: " + baseUrl);
