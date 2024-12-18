@@ -55,27 +55,33 @@ pipeline {
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
-                // Ruta del video (esto debe ajustarse según cómo esté configurado Zalenium)
-                def videoPath = "/tmp/videos/test_video.mp4"  // Ajusta esta ruta según la ubicación real del video
+                // Ruta de los videos generados por Zalenium
+                def videoDir = "/tmp/videos"  // Directorio donde Zalenium guarda los videos
+                def videoFiles = findFiles(glob: "${videoDir}/video-*.mp4")
 
-                // Verifica si el video existe y cópialo al directorio de Jenkins
-                if (fileExists(videoPath)) {
-                    sh "cp ${videoPath} target/test_video.mp4"
+                if (videoFiles) {
+                    // Seleccionar el primer video (puedes agregar lógica para elegir el correcto si es necesario)
+                    def selectedVideo = videoFiles[0].path
+                    echo "Video encontrado: ${selectedVideo}"
+                    // Copiar el video a la ubicación de trabajo de Jenkins
+                    sh "cp ${selectedVideo} target/test_video.mp4"
+                } else {
+                    echo "No se encontraron videos."
                 }
 
-                // Generate report zip
+                // Generar el reporte zip
                 def reportPath = "target/site/serenity"
                 if (fileExists(reportPath)) {
                     sh "zip -rq target/${env.REPORT_ZIP} ${reportPath}/*"
                 } else {
-                    echo "No files found at ${reportPath}. Creating an empty ZIP file."
+                    echo "No se encontraron archivos en ${reportPath}. Creando un ZIP vacío."
                     sh "zip -rq target/${env.REPORT_ZIP}"
                 }
 
-                // Archive artifacts
-                archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
+                // Archivar los artefactos
+                archiveArtifacts artifacts: "target/${env.REPORT_ZIP}, target/test_video.mp4", allowEmptyArchive: true
 
-                // Define email body with video embedded as attachment
+                // Definir el cuerpo del correo electrónico con el video adjunto
                 def emailBody = """
                 <html>
                 <head>
@@ -109,7 +115,7 @@ pipeline {
                 </html>
                 """
 
-                // Send email
+                // Enviar correo
                 mail to: "${env.DISTRIBUTION_LIST}",
                     subject: "Serenity BDD Test Report - ${buildResult}",
                     body: emailBody,
