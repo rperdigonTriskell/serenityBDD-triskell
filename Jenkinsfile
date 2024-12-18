@@ -55,12 +55,19 @@ pipeline {
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
-                // Ruta del video (esto debe ajustarse según cómo esté configurado Zalenium)
-                def videoPath = "/tmp/videos/test_video.mp4"  // Ajusta esta ruta según la ubicación real del video
+                // Ruta del directorio de videos de Zalenium
+                def videoDir = '/tmp/videos/'  // Ajusta esta ruta según donde Zalenium guarde los videos
 
-                // Verifica si el video existe y cópialo al directorio de Jenkins
+                // Buscar el archivo .mp4 más reciente
+                def videoPath = sh(script: "ls -t ${videoDir}/*.mp4 | head -n 1", returnStdout: true).trim()
+
+                // Verifica si el archivo de video existe
                 if (fileExists(videoPath)) {
-                    sh "cp ${videoPath} target/test_video.mp4"
+                    // Copia el video al directorio target con su nombre original
+                    def videoFileName = videoPath.substring(videoPath.lastIndexOf('/') + 1)
+                    sh "cp ${videoPath} target/${videoFileName}"
+                } else {
+                    echo "No video found at ${videoPath}. Skipping video attachment."
                 }
 
                 // Generate report zip
@@ -116,7 +123,7 @@ pipeline {
                     body: emailBody,
                     mimeType: 'text/html',
                     to: env.DISTRIBUTION_LIST,
-                    attachmentsPattern: "target/${env.REPORT_ZIP}, target/test_video.mp4",
+                    attachmentsPattern: "target/${env.REPORT_ZIP},target/${videoFileName}",
                     attachLog: true
                 )
             }
