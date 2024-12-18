@@ -9,6 +9,8 @@ pipeline {
         LOGO_PATH = 'src/test/resources/images/triskell.png'
         PARTNER_LOGO_PATH = 'src/test/resources/images/partner.png'
         DISTRIBUTION_LIST = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
+        VIDEO_DIR = '/tmp/videos' // Directorio donde Zalenium guarda los videos
+        ARCHIVE_DIR = 'target/videos' // Directorio donde guardarás los videos en Jenkins
     }
     stages {
         stage('Determine Environment') {
@@ -47,24 +49,34 @@ pipeline {
                 }
             }
         }
+        stage('Run Zalenium') {
+            steps {
+                script {
+                    // Ejecutar Zalenium (o cualquier otro contenedor que utilices)
+                    sh 'docker run -d --rm -ti --name zalenium -p 4444:4444 -v //var/run/docker.sock://var/run/docker.sock -v //tmp/videos:/home/seluser/videos --privileged dosel/zalenium start --desiredContainers 8 --maxDockerSeleniumContainers 8'
+
+                    // Esperar un tiempo adecuado para que Zalenium y las pruebas se completen
+                    sleep(60)
+                }
+            }
+        }
+        stage('Archive Videos') {
+            steps {
+                script {
+                    // Copiar los videos generados en el contenedor Zalenium a Jenkins
+                    sh "cp -r ${env.VIDEO_DIR}/* ${env.ARCHIVE_DIR}/"
+                }
+            }
+        }
     }
-    post {
     post {
         always {
             script {
-                // Determinar el resultado de la construcción
+                // Determine build result
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
-                // Ruta del video (esto debe ajustarse según cómo esté configurado Zalenium)
-                def videoPath = "/tmp/videos/test_video.mp4"  // Ajusta esta ruta según la ubicación real del video
-
-                // Verifica si el video existe y cópialo al directorio de Jenkins
-                if (fileExists(videoPath)) {
-                    sh "cp ${videoPath} target/test_video.mp4"
-                }
-
-                // Generar el ZIP del reporte
+                // Generate report zip
                 def reportPath = "target/site/serenity"
                 if (fileExists(reportPath)) {
                     sh "zip -rq target/${env.REPORT_ZIP} ${reportPath}/*"
@@ -73,13 +85,10 @@ pipeline {
                     sh "zip -rq target/${env.REPORT_ZIP}"
                 }
 
-                // Archivar los artefactos
-                archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
-                if (fileExists("target/test_video.mp4")) {
-                    archiveArtifacts artifacts: "target/test_video.mp4", allowEmptyArchive: true
-                }
+                // Archive serenity report and videos
+                archiveArtifacts artifacts: "target/${env.REPORT_ZIP},${env.ARCHIVE_DIR}/*.mp4", allowEmptyArchive: true
 
-                // Definir el cuerpo del correo electrónico
+                // Define email body
                 def emailBody = """
                 <html>
                 <head>
@@ -97,10 +106,8 @@ pipeline {
                         <p class="status">The Serenity BDD pipeline execution has completed with status: ${buildResult}.</p>
                         <p><strong>Environment:</strong> ${env.ACTUAL_ENVIRONMENT}</p>
                         <p>You can view the test report here:</p>
-                        <p>{Download Folder}/target/site/serenity/index.html</p>
+                        <p>{Download Folder}/target/site/serenity/index.html<p>
                         <p>The full report is attached as a ZIP file.</p>
-                        <p>Video file:</p>
-                        <p><a href="file://${BUILD_URL}target/test_video.mp4">Download video</a></p>
                     </div>
                     <div class="footer">
                         <p>Testing Message | QA Team <a href="mailto:rperdigon@triskellsoftware.com">rperdigon@triskellsoftware.com</a></p>
@@ -122,10 +129,9 @@ pipeline {
                     body: emailBody,
                     mimeType: 'text/html',
                     to: env.DISTRIBUTION_LIST,
-                    attachmentsPattern: "target/${env.REPORT_ZIP},target/test_video.mp4",
+                    attachmentsPattern: "target/${env.REPORT_ZIP},${env.ARCHIVE_DIR}/*.mp4",
                     attachLog: true
                 )
-
             }
         }
     }
