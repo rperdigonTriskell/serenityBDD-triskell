@@ -55,21 +55,6 @@ pipeline {
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
-                // Ruta del directorio de videos de Zalenium
-                def videoDir = '/tmp/videos/'  // Ajusta esta ruta según donde Zalenium guarde los videos
-
-                // Buscar el archivo .mp4 más reciente
-                def videoPath = sh(script: "ls -t ${videoDir}/*.mp4 | head -n 1", returnStdout: true).trim()
-
-                // Verifica si el archivo de video existe
-                if (fileExists(videoPath)) {
-                    // Copia el video al directorio target con su nombre original
-                    def videoFileName = videoPath.substring(videoPath.lastIndexOf('/') + 1)
-                    sh "cp ${videoPath} target/${videoFileName}"
-                } else {
-                    echo "No video found at ${videoPath}. Skipping video attachment."
-                }
-
                 // Generate report zip
                 def reportPath = "target/site/serenity"
                 if (fileExists(reportPath)) {
@@ -123,7 +108,7 @@ pipeline {
                     body: emailBody,
                     mimeType: 'text/html',
                     to: env.DISTRIBUTION_LIST,
-                    attachmentsPattern: "target/${env.REPORT_ZIP},target/${videoFileName}",
+                    attachmentsPattern: "target/${env.REPORT_ZIP}",
                     attachLog: true
                 )
             }
