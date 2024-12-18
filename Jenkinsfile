@@ -6,8 +6,6 @@ pipeline {
         CREDENTIALS_FILE = credentials('CREDENTIALS_FILE')
         serenityEnvironmentFile = 'src/test/resources/environment.properties'
         REPORT_ZIP = 'serenity-report.zip'
-        LOGO_PATH = 'src/test/resources/images/triskell.png'
-        PARTNER_LOGO_PATH = 'src/test/resources/images/partner.png'
         DISTRIBUTION_LIST = 'rperdigon@triskellsoftware.com,jmprieto@triskellsoftware.com,jburcio@triskellsoftware.com,agarcia@triskellsoftware.com'
     }
     stages {
