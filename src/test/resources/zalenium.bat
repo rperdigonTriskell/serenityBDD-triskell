@@ -1,1 +1,1 @@
-docker run -d --rm -ti --name zalenium -p 4444:4444 -v //var/run/docker.sock://var/run/docker.sock -v //tmp/videos:/home/seluser/videos --privileged dosel/zalenium start --desiredContainers 8 --maxDockerSeleniumContainers 8
+docker run -d --rm -ti --name zalenium -p 4444:4444 -v //var/run/docker.sock://var/run/docker.sock -v //tmp/videos:/home/seluser/videos --privileged dosel/zalenium start --desiredContainers 16 --maxDockerSeleniumContainers 16
