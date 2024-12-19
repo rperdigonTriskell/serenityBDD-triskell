@@ -71,8 +71,6 @@ pipeline {
                 // Archive artifacts
                 archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
 
-                 sh "rm -rf ${env.VIDEO_PATH}/*"
-
                 // Define email body
                 def emailBody = """
                 <html>
