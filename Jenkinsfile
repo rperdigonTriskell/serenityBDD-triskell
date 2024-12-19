@@ -50,12 +50,11 @@ pipeline {
     post {
         always {
             script {
-                // Determine build result
+                // Determinar el resultado de la compilación
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
                 // Obtener el nombre del escenario desde una variable de entorno o archivo
-                // Supongamos que el nombre del escenario está disponible en la variable `env.SCENARIO_NAME`
                 def scenarioName = env.SCENARIO_NAME ?: "unknown_scenario"
 
                 // Reemplazar caracteres no válidos para nombres de directorios
@@ -67,30 +66,26 @@ pipeline {
                 // Crear el directorio para almacenar los videos
                 sh "mkdir -p ${videoFolder}"
 
-                // Generate report zip
+                // Generar el archivo ZIP del reporte
                 def reportPath = "target/site/serenity"
                 if (fileExists(reportPath)) {
                     sh "zip -rq target/${env.REPORT_ZIP} ${reportPath}/*"
+
                     // Verificar si existen archivos de video en VIDEO_PATH
                     if (fileExists(env.VIDEO_PATH)) {
                         // Mover todos los archivos .mp4 a la carpeta dinámica
                         sh "mv ${env.VIDEO_PATH}/*.mp4 ${videoFolder}/"
 
-                        // Iterar sobre los videos en la carpeta y agregar cada uno al archivo ZIP
-                        def videos = sh(
-                            script: "ls ${videoFolder}/*.mp4",
-                            returnStdout: true
-                        ).trim().split("\n")
+                        // Comprimir todos los videos en un solo archivo ZIP
+                        def videoZip = "target/${scenarioName}_videos.zip"
+                        sh "zip -rq ${videoZip} ${videoFolder}/"
 
-                        // Agregar cada video al archivo ZIP
-                        videos.each { video ->
-                            if (video) {
-                                echo "Adding video: ${video}"
-                                sh "zip -j target/${env.REPORT_ZIP} ${video}"
-                            }
-                        }
+                        echo "Compressed videos into: ${videoZip}"
+
+                        // Opcional: Agregar el archivo ZIP de los videos al archivo ZIP del reporte
+                        sh "zip -j target/${env.REPORT_ZIP} ${videoZip}"
                     } else {
-                        echo "No video files found in ${env.VIDEO_PATH}. Skipping video attachment."
+                        echo "No video files found in ${env.VIDEO_PATH}. Skipping video compression."
                     }
                 } else {
                     echo "No files found at ${reportPath}. Creating an empty ZIP file."
