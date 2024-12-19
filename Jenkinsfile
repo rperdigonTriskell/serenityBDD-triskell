@@ -58,11 +58,21 @@ pipeline {
                 def reportPath = "target/site/serenity"
                 if (fileExists(reportPath)) {
                     sh "zip -rq target/${env.REPORT_ZIP} ${reportPath}/*"
+
+                    // Add only the most recent video if it exists
                     if (fileExists(env.VIDEO_PATH)) {
-                        sh "zip -rq target/${env.REPORT_ZIP} ${env.VIDEO_PATH}/*"
-                    } else {
-                        echo "No video files found at ${env.VIDEO_PATH}. Skipping video attachment."
-                    }
+                        def recentVideo = sh(
+                            script: "ls -t ${env.VIDEO_PATH}/*.mp4 | head -n 1",
+                            returnStdout: true
+                        ).trim()
+
+                        if (recentVideo) {
+                            echo "Adding the most recent video: ${recentVideo}"
+                            sh "zip -j target/${env.REPORT_ZIP} ${recentVideo}"
+                        } else {
+                            echo "No video files found in ${env.VIDEO_PATH}. Skipping video attachment."
+                        }
+
                 } else {
                     echo "No files found at ${reportPath}. Creating an empty ZIP file."
                     sh "zip -rq target/${env.REPORT_ZIP}"
