@@ -78,12 +78,12 @@ pipeline {
                 }
 
                 // Eliminar los videos
-                if (fileExists(env.VIDEO_PATH)) {
-                    echo "Eliminando videos del directorio ${env.VIDEO_PATH}."
-                    sh "rm -rf ${env.VIDEO_PATH}/*"
-                } else {
-                    echo "No se encontró el directorio ${env.VIDEO_PATH}."
-                }
+                //if (fileExists(env.VIDEO_PATH)) {
+                //    echo "Eliminando videos del directorio ${env.VIDEO_PATH}."
+                //    sh "rm -rf ${env.VIDEO_PATH}/*"
+                //} else {
+                //    echo "No se encontró el directorio ${env.VIDEO_PATH}."
+                //}
 
                 // Archive artifacts
                 archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
