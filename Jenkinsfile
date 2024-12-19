@@ -68,6 +68,7 @@ pipeline {
                         if (recentVideo) {
                             echo "Adding the most recent video: ${recentVideo}"
                             sh "zip -j target/${env.REPORT_ZIP} ${recentVideo}"
+                            sh "rm -rf ${env.VIDEO_PATH}/*"
                         } else {
                             echo "No video files found in ${env.VIDEO_PATH}. Skipping video attachment."
                         }
