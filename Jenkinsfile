@@ -10,19 +10,6 @@ pipeline {
         VIDEO_PATH = '/tmp/videos'
     }
     stages {
-        stage('Clean Old Videos') {
-            steps {
-                script {
-                    // Limpiar los videos antiguos
-                    if (fileExists(env.ZALENIUM_VIDEO_PATH)) {
-                        echo "Cleaning old videos from ${env.VIDEO_PATH}"
-                        sh "rm -rf ${env.VIDEO_PATH}/*"
-                    } else {
-                        echo "No previous videos found to clean."
-                    }
-                }
-            }
-        }
         stage('Determine Environment') {
             steps {
                 script {
@@ -83,6 +70,8 @@ pipeline {
 
                 // Archive artifacts
                 archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
+
+                 sh "rm -rf ${env.VIDEO_PATH}/*"
 
                 // Define email body
                 def emailBody = """
