@@ -68,7 +68,6 @@ pipeline {
                         if (recentVideo) {
                             echo "Adding the most recent video: ${recentVideo}"
                             sh "zip -j target/${env.REPORT_ZIP} ${recentVideo}"
-                            sh "rm -rf ${env.VIDEO_PATH}/*"
                         } else {
                             echo "No video files found in ${env.VIDEO_PATH}. Skipping video attachment."
                         }
@@ -76,6 +75,14 @@ pipeline {
                 } else {
                     echo "No files found at ${reportPath}. Creating an empty ZIP file."
                     sh "zip -rq target/${env.REPORT_ZIP}"
+                }
+
+                // Eliminar los videos
+                if (fileExists(env.VIDEO_PATH)) {
+                    echo "Eliminando videos del directorio ${env.VIDEO_PATH}."
+                    sh "rm -rf ${env.VIDEO_PATH}/*"
+                } else {
+                    echo "No se encontró el directorio ${env.VIDEO_PATH}."
                 }
 
                 // Archive artifacts
