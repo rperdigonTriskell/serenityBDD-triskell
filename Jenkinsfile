@@ -54,36 +54,32 @@ pipeline {
                 def buildResult = currentBuild.result ?: 'SUCCESS'
                 def statusColor = (buildResult == 'SUCCESS') ? 'green' : 'red'
 
+                // Crear la carpeta con el nombre de la ejecución
+                def executionFolder = "target/${env.JOB_NAME}_${env.BUILD_ID}"
+                sh "mkdir -p ${executionFolder}"
+
+                // Mover todos los videos a la carpeta
+                if (fileExists(env.VIDEO_PATH)) {
+                    sh "mv ${env.VIDEO_PATH}/*.mp4 ${executionFolder}/"
+                } else {
+                    echo "No se encontraron videos en ${env.VIDEO_PATH}. No se moverán archivos."
+                }
+
+                // Crear un archivo zip con todos los videos en la carpeta
+                def videosZip = "${executionFolder}/videos.zip"
+                sh "zip -rq ${videosZip} ${executionFolder}/*.mp4"
+
                 // Generate report zip
                 def reportPath = "target/site/serenity"
                 if (fileExists(reportPath)) {
                     sh "zip -rq target/${env.REPORT_ZIP} ${reportPath}/*"
-
-                    // Add only the most recent video if it exists
-                    if (fileExists(env.VIDEO_PATH)) {
-                        def recentVideo = sh(
-                            script: "ls -t ${env.VIDEO_PATH}/*.mp4 | head -n 1",
-                            returnStdout: true
-                        ).trim()
-                        if (recentVideo) {
-                            echo "Adding the most recent video: ${recentVideo}"
-                            sh "zip -j target/${env.REPORT_ZIP} ${recentVideo}"
-                        } else {
-                            echo "No video files found in ${env.VIDEO_PATH}. Skipping video attachment."
-                        }
-                    }
                 } else {
                     echo "No files found at ${reportPath}. Creating an empty ZIP file."
                     sh "zip -rq target/${env.REPORT_ZIP}"
                 }
 
-                // Eliminar los videos
-                //if (fileExists(env.VIDEO_PATH)) {
-                //    echo "Eliminando videos del directorio ${env.VIDEO_PATH}."
-                //    sh "rm -rf ${env.VIDEO_PATH}/*"
-                //} else {
-                //    echo "No se encontró el directorio ${env.VIDEO_PATH}."
-                //}
+                // Incluir el ZIP de los videos en el reporte
+                sh "zip -r target/${env.REPORT_ZIP} ${videosZip}"
 
                 // Archive artifacts
                 archiveArtifacts artifacts: "target/${env.REPORT_ZIP}", allowEmptyArchive: true
@@ -132,6 +128,9 @@ pipeline {
                     attachmentsPattern: "target/${env.REPORT_ZIP}",
                     attachLog: true
                 )
+
+                // Eliminar la carpeta creada para limpiar
+                sh "rm -rf ${executionFolder}"
             }
         }
     }

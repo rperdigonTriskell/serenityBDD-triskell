@@ -42,10 +42,6 @@ public class GenericStepDef {
         OnStage.setTheStage(new OnlineCast());
         OnStage.theActorCalled("actor");
 
-        // Configurar el nombre dinámico del video basado en el escenario
-        String scenarioName = scenario.getName().replaceAll(" ", "_"); // Reemplazar espacios por guiones bajos
-        System.setProperty("webdriver.capabilities.name", scenarioName);
-
         String environment = System.getProperty("environment");
         if (environment != null) {
             baseUrl = getEnvironmentBaseUrl("@" + environment);
